@@ -7,6 +7,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Label x:Name="lbl_NummerplaatNL" Content="Nummerplaat" HorizontalAlignment="Left" Margin="58,47,0,0" VerticalAlignment="Top" Height="56" Width="175" FontSize="24"/>
+        <TextBox x:Name="txtBox_NummerplaatNL" HorizontalAlignment="Left" Margin="241,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="443" Height="56" FontSize="24"/>
+        <Label x:Name="lbl_BedrijfNL" Content="Bedrijf" HorizontalAlignment="Left" Margin="58,169,0,0" VerticalAlignment="Top" FontSize="24" Width="130"/>
+        <Button x:Name="Btn_FR" Content="FR" HorizontalAlignment="Left" Margin="58,364,0,0" VerticalAlignment="Top" Height="44" Width="65" FontSize="24"/>
+        <Button x:Name="Btn_ENG" Content="ENG" HorizontalAlignment="Left" Margin="146,364,0,0" VerticalAlignment="Top" FontSize="24" Width="64" Height="44"/>
+        <RadioButton Content="AllPhi" HorizontalAlignment="Left" Margin="241,180,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="True" Width="144"/>
+        <RadioButton Content="Bedrijf2" HorizontalAlignment="Left" Margin="400,180,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="False" Width="144"/>
+        <RadioButton Content="Bedrijf3" HorizontalAlignment="Left" Margin="573,180,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="False" Width="144"/>
+        <RadioButton Content="Bedrijf4" HorizontalAlignment="Left" Margin="241,241,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="False" Width="144"/>
+        <RadioButton Content="Bedrijf5" HorizontalAlignment="Left" Margin="400,241,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="False" Width="144"/>
+        <RadioButton Content="Bedrijf6" HorizontalAlignment="Left" Margin="573,241,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="False" Width="144"/>
 
     </Grid>
 </Window>
