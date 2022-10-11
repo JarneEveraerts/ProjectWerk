@@ -1,11 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Allphi.Models;
+﻿using Allphi.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Allphi.Data
 {
-    internal class AllphiContect : DbContext
+    public class AllphiContext : DbContext
     {
+        public AllphiContext()
+        {
+        }
+
+        public AllphiContext(DbContextOptions<AllphiContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<Business> Business { get; set; }
         public DbSet<Contract> Contract { get; set; }
         public DbSet<Employee> Employee { get; set; }
@@ -15,7 +24,7 @@ namespace Allphi.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=.\sqlexpress;Initial Catalog=Allphi;Integrated Security=True");
+            optionsBuilder.UseSqlServer(Services.Configurator.DbConnection);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Allphi.Migrations
 {
-    [DbContext(typeof(AllphiContect))]
-    [Migration("20221010215001_InitialCreate")]
-    partial class InitialCreate
+    [DbContext(typeof(AllphiContext))]
+    [Migration("20221011211920_updateParking")]
+    partial class updateParking
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -130,7 +130,6 @@ namespace Allphi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Plate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VisitorId")

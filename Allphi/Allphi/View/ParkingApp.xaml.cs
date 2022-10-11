@@ -11,16 +11,22 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Allphi.Models;
+using Allphi.Services;
+using Allphi.Data.Repositorys;
 
 namespace Allphi.View
 {
     /// <summary>
     /// Interaction logic for ParkingEntrance.xaml
     /// </summary>
-    public partial class Parking : Window
+    public partial class ParkingApp : Window
     {
-        public Parking()
+        public IParkingRepository parkingRepository;
+
+        public ParkingApp()
         {
+            parkingRepository = new ParkingRepository();
             InitializeComponent();
         }
 
@@ -72,6 +78,10 @@ namespace Allphi.View
 
         private void Btn_Submit_Click(object sender, RoutedEventArgs e)
         {
+            Parking parking;
+            parking = new Parking(txtBox_LicensePlate.Text);
+
+            parkingRepository.AddParking(parking);
         }
     }
 }

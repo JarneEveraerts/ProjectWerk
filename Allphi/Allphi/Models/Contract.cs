@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Allphi.Models
 {
-    internal class Contract : Entity
+    public class Contract : Entity
     {
         public Contract(Business business, DateTime startDate, DateTime endDate, int totalSpaces)
         {
