@@ -69,5 +69,9 @@ namespace Allphi.View
         {
             Bussines = Rbtn_AllPhi.Content.ToString();
         }
+
+        private void Btn_Submit_Click(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }

@@ -18,12 +18,12 @@
         <RadioButton Content="Bedrijf4" HorizontalAlignment="Left" Margin="241,241,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="False" Width="144" />
         <RadioButton Content="Bedrijf5" HorizontalAlignment="Left" Margin="400,241,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="False" Width="144" />
         <RadioButton Content="Bedrijf6" HorizontalAlignment="Left" Margin="573,241,0,0" VerticalAlignment="Top" FontSize="30" IsChecked="False" Width="144" />
-        <Button x:Name="Btn_SubmitNL" Content="Inzenden" HorizontalAlignment="Left" Margin="274,364,0,0" VerticalAlignment="Top" FontSize="30" Width="443" Height="44" />
+        <Button x:Name="Btn_SubmitNL" Content="Inzenden" HorizontalAlignment="Left" Margin="274,364,0,0" VerticalAlignment="Top" FontSize="30" Width="443" Height="44" Click="Btn_Submit_Click" />
         <Label x:Name="lbl_NummerplaatFR" Content="Plaque de numéro" HorizontalAlignment="Left" Margin="29,47,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
         <Label x:Name="lbl_BedrijfFR" Content="Entreprise" HorizontalAlignment="Left" Margin="58,169,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
         <Button x:Name="Btn_NL" Content="NL" HorizontalAlignment="Left" Margin="173,364,0,0" VerticalAlignment="Top" FontSize="24" Width="60" Height="44" Visibility="Hidden" Click="Btn_NL_Click" />
-        <Button x:Name="Btn_SubmitENG" Content="Submit" HorizontalAlignment="Left" Margin="274,361,0,28" FontSize="30" Width="442" Height="44" Visibility="Hidden" />
-        <Button x:Name="Btn_SubmitFR" Content="Soumettre" HorizontalAlignment="Left" Margin="274,364,0,0" VerticalAlignment="Top" Height="44" FontSize="30" Width="442" Visibility="Hidden" />
+        <Button x:Name="Btn_SubmitENG" Content="Submit" HorizontalAlignment="Left" Margin="274,361,0,28" FontSize="30" Width="442" Height="44" Visibility="Hidden" Click="Btn_Submit_Click" />
+        <Button x:Name="Btn_SubmitFR" Content="Soumettre" HorizontalAlignment="Left" Margin="274,364,0,0" VerticalAlignment="Top" Height="44" FontSize="30" Width="442" Visibility="Hidden" Click="Btn_Submit_Click" />
         <Label x:Name="lbl_NummerplaatENG" Content="License plate" HorizontalAlignment="Left" Margin="59,47,0,0" VerticalAlignment="Top" FontSize="24" Width="174" Visibility="Hidden" />
         <Label x:Name="lbl_BedrijfENG" Content="Company" HorizontalAlignment="Left" Margin="58,169,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
         <Label x:Name="lbl_LicensePlateFR" Content="Plaque D'Immatriculation" HorizontalAlignment="Left" Margin="58,47,0,0" VerticalAlignment="Top" Height="56" Width="175" FontSize="24" Visibility="Collapsed" />
