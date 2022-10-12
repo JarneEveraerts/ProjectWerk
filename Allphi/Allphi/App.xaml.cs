@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Allphi
+namespace Domain
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -11,9 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Domain.Models;
-using Domain.Services;
-using Domain.Data.Repositorys;
 
 namespace Domain.View
 {
@@ -22,7 +19,7 @@ namespace Domain.View
     /// </summary>
     public partial class ParkingApp : Window
     {
-        public IParkingRepository parkingRepository;
+      // mag niet  public IParkingRepository parkingRepository;
 
         public ParkingApp()
         {
