@@ -4,7 +4,7 @@ using Persistance.Data;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Persistance.Data.Repositorys
+namespace Persistance.Data.Repositories
 {
     public class ParkingRepository : IParkingRepository
     {

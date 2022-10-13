@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Persistance.Data
+namespace Persistance.Data.Configuration
 {
     public class ConfigSettings
     {

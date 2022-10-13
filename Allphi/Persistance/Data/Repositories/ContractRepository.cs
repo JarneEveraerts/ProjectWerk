@@ -1,6 +1,6 @@
 ﻿using Domain.Services;
 
-namespace Persistance.Data.Repositorys;
+namespace Persistance.Data.Repositories;
 
 public class ContractRepository : IContractRepository
 {

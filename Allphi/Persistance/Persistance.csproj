@@ -25,13 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\appsettings.json">
+    <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Configuration\" />
   </ItemGroup>
 
 </Project>
