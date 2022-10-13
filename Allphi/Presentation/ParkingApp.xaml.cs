@@ -19,12 +19,14 @@ namespace Domain.View
     /// </summary>
     public partial class ParkingApp : Window
     {
-      // mag niet  public IParkingRepository parkingRepository;
+        // mag niet  public IParkingRepository parkingRepository;
+        private Domaincontroller _dc;
 
-        public ParkingApp()
+        public ParkingApp(Domaincontroller dc)
         {
-            parkingRepository = new ParkingRepository();
+            _dc = dc;
             InitializeComponent();
+            
         }
 
         private string Bussines { get; set; }
@@ -75,10 +77,7 @@ namespace Domain.View
 
         private void Btn_Submit_Click(object sender, RoutedEventArgs e)
         {
-            Parking parking;
-            parking = new Parking(txtBox_LicensePlate.Text);
-
-            parkingRepository.AddParking(parking);
+            _dc.AddParking(txtBox_LicensePlate.Text);
         }
     }
 }
