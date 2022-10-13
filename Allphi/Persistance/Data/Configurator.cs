@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Persistance.Data.Configuration
+namespace Persistance.Data
 {
     public class ConfigSettings
     {
@@ -40,7 +40,6 @@ namespace Persistance.Data.Configuration
 
             var config = new ConfigSettings();
             Configuration.Bind("ConfigSettings", config);
-
             DbConnection = config.DbConnection;
         }
     }

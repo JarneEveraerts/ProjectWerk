@@ -1,6 +1,4 @@
-﻿using Persistance.Data.Configuration;
-
-namespace Persistance.Data
+﻿namespace Persistance.Data
 {
     public static class Services
     {

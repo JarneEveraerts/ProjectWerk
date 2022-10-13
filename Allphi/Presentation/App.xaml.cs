@@ -6,12 +6,11 @@ using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Persistance.Data;
 using Domain.Services;
-using Persistance.Data.Configuration;
 using Domain;
 using Persistance.Data.Repositorys;
 using Domain.View;
+using Persistance.Data;
 
 namespace Presentation
 {
@@ -24,14 +23,12 @@ namespace Presentation
         {
 
             Services.Configurator = new Configurator(new string[] { });
-
             IBussinesRepository bussinesRepo = new BusinessRepository();
             IContractRepository contractRepo = new ContractRepository();
             IEmployeeRepository employeeRepo = new EmployeeRepository();
             IParkingRepository parkingRepo = new ParkingRepository();
             IVisitorRepository visitorRepo = new VisitorRepository();
             IVisitRepository visitRepo = new VisitRepository();
-
 
             Domaincontroller dc = new Domaincontroller(bussinesRepo, contractRepo,employeeRepo, parkingRepo, visitorRepo,visitRepo);
 
