@@ -1,4 +1,4 @@
-﻿namespace Persistance.Data
+﻿namespace Persistance.Data.Configuration
 {
     public interface IConfigurator
     {
