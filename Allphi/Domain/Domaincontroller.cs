@@ -9,16 +9,26 @@ namespace Domain
 {
     public class Domaincontroller
     {
-        private AllPhi _allPhi;
+        private IBusinessRepository _businessRepo;
+        private IContractRepository _contractRepo;
+        private IEmployeeRepository _employeeRepo;
+        private IParkingRepository _parkingRepo;
+        private IVisitorRepository _visitorRepo;
+        private IVisitRepository _visitRepo;
 
-        public Domaincontroller(IBussinesRepository bussinesRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
+        public Domaincontroller(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
         {
-            _allPhi = new AllPhi(bussinesRepo, contractRepo, employeeRepo, parkingRepo, visitorRepo, visitRepo);
+            this._businessRepo = businessRepo;
+            this._contractRepo = contractRepo;
+            this._employeeRepo = employeeRepo;
+            this._parkingRepo = parkingRepo;
+            this._visitorRepo = visitorRepo;
+            this._visitRepo = visitRepo;
         }
 
         public void AddParking(string NamePlate)
         {
-            _allPhi.Addparking(NamePlate);
+            _parkingRepo.AddParking(new Models.Parking(NamePlate));
         }
     }
 }

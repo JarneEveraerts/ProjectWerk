@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using Domain.Services;
 using Domain;
-using Persistance.Data.Repositorys;
+using Persistance.Data.Repositories;
 using Domain.View;
 using Persistance.Data;
+using Persistance.Data.Configuration;
 
 namespace Presentation
 {
@@ -21,20 +22,18 @@ namespace Presentation
     {
         private void App_Startup(object sender, StartupEventArgs e)
         {
-
-            Services.Configurator = new Configurator(new string[] { });
-            IBussinesRepository bussinesRepo = new BusinessRepository();
+            Services.Configurator = new Configurator(e.Args);
+            IBusinessRepository businessRepo = new BusinessRepository();
             IContractRepository contractRepo = new ContractRepository();
             IEmployeeRepository employeeRepo = new EmployeeRepository();
             IParkingRepository parkingRepo = new ParkingRepository();
             IVisitorRepository visitorRepo = new VisitorRepository();
             IVisitRepository visitRepo = new VisitRepository();
 
-            Domaincontroller dc = new Domaincontroller(bussinesRepo, contractRepo,employeeRepo, parkingRepo, visitorRepo,visitRepo);
+            Domaincontroller dc = new Domaincontroller(businessRepo, contractRepo, employeeRepo, parkingRepo, visitorRepo, visitRepo);
 
-            ParkingApp scherm = new(dc);
-            scherm.Show();
+            ParkingApp parkingApp = new(dc);
+            parkingApp.Show();
         }
     }
-
 }
