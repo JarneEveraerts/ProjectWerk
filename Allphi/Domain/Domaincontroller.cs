@@ -9,12 +9,18 @@ namespace Domain
 {
     public class Domaincontroller
     {
+        #region Decleration
+
         private IBusinessRepository _businessRepo;
         private IContractRepository _contractRepo;
         private IEmployeeRepository _employeeRepo;
         private IParkingRepository _parkingRepo;
         private IVisitorRepository _visitorRepo;
         private IVisitRepository _visitRepo;
+
+        #endregion Decleration
+
+        #region CTOR
 
         public Domaincontroller(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
         {
@@ -26,9 +32,6 @@ namespace Domain
             this._visitRepo = visitRepo;
         }
 
-        public void AddParking(string NamePlate)
-        {
-            _parkingRepo.AddParking(new Models.Parking(NamePlate));
-        }
+        #endregion CTOR
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Domain.View"
         mc:Ignorable="d"
-        Title="Parking" Height="450" Width="800">
+        Title="ParkingSpot" Height="450" Width="800">
     <Grid>
         <Label x:Name="lbl_LicensePlateNL" Content="Nummerplaat" HorizontalAlignment="Left" Margin="58,47,0,0" VerticalAlignment="Top" Height="56" Width="175" FontSize="24" />
         <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Left" Margin="274,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="443" Height="56" FontSize="24" />

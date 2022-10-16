@@ -6,24 +6,24 @@ using System.Linq;
 
 namespace Persistance.Data.Repositories
 {
-    public class ParkingRepository : IParkingRepository
+    public class ParkingSpotRepository : IParkingSpotsRepository
     {
         private readonly AllphiContext _context;
 
-        public ParkingRepository()
+        public ParkingSpotRepository()
         {
             _context = new AllphiContext();
         }
 
-        public void AddParking(Parking? parking)
+        public void AddParking(ParkingSpot? parking)
         {
             _context.Parking.Add(parking);
             _context.SaveChanges();
         }
 
-        public List<Parking> GetAllParking()
+        public List<ParkingSpot> GetAllParking()
         {
-            List<Parking> parkingList = _context.Parking.ToList();
+            List<ParkingSpot> parkingList = _context.Parking.ToList();
             return parkingList;
         }
     }
