@@ -1,30 +1,77 @@
 ﻿using Domain.Models;
 using Domain.Services;
-using Persistance.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Persistance.Data.Repositories
 {
-    public class ParkingSpotRepository : IParkingSpotsRepository
+    public class ParkingSpotRepository : IParkingSpotRepository
     {
-        private readonly AllphiContext _context;
+        private readonly AllphiContext _allphiContext;
 
         public ParkingSpotRepository()
         {
-            _context = new AllphiContext();
+            _allphiContext = new();
         }
 
-        public void AddParking(ParkingSpot? parking)
+        #region GET
+
+        public List<ParkingSpot> GetParkingSpots()
         {
-            _context.Parking.Add(parking);
-            _context.SaveChanges();
+            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.ToList();
+            return parkingSpots;
         }
 
-        public List<ParkingSpot> GetAllParking()
+        public List<ParkingSpot> GetParkingSpotsByReserved(Business reserved)
         {
-            List<ParkingSpot> parkingList = _context.Parking.ToList();
-            return parkingList;
+            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.Reserved == reserved).ToList();
+            return parkingSpots;
         }
+
+        public ParkingSpot GetParkingSpotByLicense(string licensePlate)
+        {
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Plate == licensePlate);
+            return parkingSpot;
+        }
+
+        public ParkingSpot GetParkingSpotByEmployee(Employee employee)
+        {
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Employee == employee);
+            return parkingSpot;
+        }
+
+        public ParkingSpot GetParkingSpotByVisitor(Visitor visitor)
+        {
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Visitor == visitor);
+            return parkingSpot;
+        }
+
+        #endregion GET
+
+        #region CREATE
+
+        public void CreateParkingSpot(ParkingSpot parkingSpot)
+        {
+            _allphiContext.ParkingSpot.Add(parkingSpot);
+            _allphiContext.SaveChanges();
+        }
+
+        #endregion CREATE
+
+        #region UPDATE
+
+        public void UpdateParkingSpot(ParkingSpot parkingSpot)
+        {
+            _allphiContext.ParkingSpot.Update(parkingSpot);
+        }
+
+        #endregion UPDATE
+
+        #region DELETE
+
+        public void DeleteParkingSpot(ParkingSpot parkingSpot)
+        {
+            _allphiContext.ParkingSpot.Remove(parkingSpot);
+        }
+
+        #endregion DELETE
     }
 }
