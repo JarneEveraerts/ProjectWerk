@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.DirectoryServices.ActiveDirectory;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using Domain.Services;
 using Domain;
 using Persistance.Data.Repositories;
 using Domain.View;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Persistance.Data;
-using Persistance.Data.Configuration;
 
 namespace Presentation
 {
@@ -20,19 +17,40 @@ namespace Presentation
     /// </summary>
     public partial class App : Application
     {
+        //setup dependencyInjector
+        private IServiceProvider _serviceProvider;
+
+        private IConfiguration _configuration;
+
+        public App()
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            _configuration = builder.Build();
+            ServiceCollection services = new();
+            ConfigureServices(services);
+            _serviceProvider = services.BuildServiceProvider();
+        }
+
+        private void ConfigureServices(ServiceCollection services)
+        {
+            services.AddDbContext<AllphiContext>(options =>
+            {
+                options.UseSqlServer(_configuration.GetConnectionString("DbConnection"));
+            });
+            services.AddScoped<IBusinessRepository, BusinessRepository>();
+            services.AddScoped<IContractRepository, ContractRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IParkingSpotRepository, ParkingSpotRepository>();
+            services.AddScoped<IVisitorRepository, VisitorRepository>();
+            services.AddScoped<IVisitRepository, VisitRepository>();
+            services.AddScoped<DomainController>();
+            services.AddSingleton<ParkingApp>();
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            Services.Configurator = new Configurator(e.Args);
-            IBusinessRepository businessRepo = new BusinessRepository();
-            IContractRepository contractRepo = new ContractRepository();
-            IEmployeeRepository employeeRepo = new EmployeeRepository();
-            IParkingRepository parkingRepo = new ParkingRepository();
-            IVisitorRepository visitorRepo = new VisitorRepository();
-            IVisitRepository visitRepo = new VisitRepository();
-
-            Domaincontroller dc = new Domaincontroller(businessRepo, contractRepo, employeeRepo, parkingRepo, visitorRepo, visitRepo);
-
-            ParkingApp parkingApp = new(dc);
+            ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
             parkingApp.Show();
         }
     }

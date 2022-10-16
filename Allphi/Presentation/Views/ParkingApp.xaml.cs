@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Domain.Models;
 
 namespace Domain.View
 {
@@ -20,13 +21,12 @@ namespace Domain.View
     public partial class ParkingApp : Window
     {
         // mag niet  public IParkingRepository parkingRepository;
-        private Domaincontroller _dc;
+        private DomainController _dc;
 
-        public ParkingApp(Domaincontroller dc)
+        public ParkingApp(DomainController dc)
         {
             _dc = dc;
             InitializeComponent();
-            
         }
 
         private string Bussines { get; set; }
@@ -77,7 +77,6 @@ namespace Domain.View
 
         private void Btn_Submit_Click(object sender, RoutedEventArgs e)
         {
-            _dc.AddParking(txtBox_LicensePlate.Text);
         }
     }
 }

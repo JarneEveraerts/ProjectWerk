@@ -1,25 +1,22 @@
 ﻿namespace Domain.Models
 {
-    public class Parking : Entity
+    public class ParkingSpot : Entity
     {
-        public Parking(Employee? employee, Visitor? visitor, string? plate)
+        public ParkingSpot(Employee? employee, Visitor? visitor, string? plate, Business? reserved)
         {
             Employee = employee;
             Visitor = visitor;
             Plate = plate;
+            Reserved = reserved;
         }
 
-        public Parking(string? plate)
-        {
-            Plate = plate;
-        }
-
-        public Parking()
+        public ParkingSpot()
         {
         }
 
         public Visitor? Visitor { get; set; }
         public Employee? Employee { get; set; }
         public string? Plate { get; set; }
+        public Business? Reserved { get; set; }
     }
 }

@@ -4,19 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain
 {
-    public class Domaincontroller
+    public class DomainController
     {
+        #region Decleration
+
         private IBusinessRepository _businessRepo;
         private IContractRepository _contractRepo;
         private IEmployeeRepository _employeeRepo;
-        private IParkingRepository _parkingRepo;
+        private IParkingSpotRepository _parkingRepo;
         private IVisitorRepository _visitorRepo;
         private IVisitRepository _visitRepo;
 
-        public Domaincontroller(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
+        #endregion Decleration
+
+        #region CTOR
+
+        public DomainController(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingSpotRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
         {
             this._businessRepo = businessRepo;
             this._contractRepo = contractRepo;
@@ -26,9 +34,6 @@ namespace Domain
             this._visitRepo = visitRepo;
         }
 
-        public void AddParking(string NamePlate)
-        {
-            _parkingRepo.AddParking(new Models.Parking(NamePlate));
-        }
+        #endregion CTOR
     }
 }
