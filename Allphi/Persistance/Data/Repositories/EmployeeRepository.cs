@@ -7,9 +7,9 @@ public class EmployeeRepository : IEmployeeRepository
 {
     private readonly AllphiContext _allphiContext;
 
-    public EmployeeRepository()
+    public EmployeeRepository(AllphiContext allphiContext)
     {
-        _allphiContext = new();
+        _allphiContext = allphiContext;
     }
 
     #region GET

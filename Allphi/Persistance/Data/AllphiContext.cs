@@ -6,10 +6,6 @@ namespace Persistance.Data
 {
     public class AllphiContext : DbContext
     {
-        public AllphiContext()
-        {
-        }
-
         public AllphiContext(DbContextOptions<AllphiContext> options)
             : base(options)
         {
@@ -21,11 +17,6 @@ namespace Persistance.Data
         public DbSet<Visit> Visit { get; set; }
         public DbSet<Visitor> Visitor { get; set; }
         public DbSet<ParkingSpot> ParkingSpot { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(Services.Configurator.DbConnection);
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

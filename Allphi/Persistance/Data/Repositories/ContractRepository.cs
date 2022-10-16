@@ -7,9 +7,9 @@ public class ContractRepository : IContractRepository
 {
     private readonly AllphiContext _allphiContext;
 
-    public ContractRepository()
+    public ContractRepository(AllphiContext allphiContext)
     {
-        _allphiContext = new();
+        _allphiContext = allphiContext;
     }
 
     #region GET
@@ -26,7 +26,7 @@ public class ContractRepository : IContractRepository
         return contract;
     }
 
-    public Contract GetContractByEndDate(DateOnly date)
+    public Contract GetContractByEndDate(DateTime date)
     {
         Contract contract = _allphiContext.Contract.First(c => c.EndDate == date);
         return contract;

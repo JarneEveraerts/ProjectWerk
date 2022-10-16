@@ -10,9 +10,9 @@ namespace Persistance.Data.Repositories
     {
         private readonly AllphiContext _allphiContext;
 
-        public VisitorRepository()
+        public VisitorRepository(AllphiContext allphiContext)
         {
-            _allphiContext = new();
+            _allphiContext = allphiContext;
         }
 
         #region GET

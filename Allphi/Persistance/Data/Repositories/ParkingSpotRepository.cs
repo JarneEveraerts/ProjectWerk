@@ -7,9 +7,9 @@ namespace Persistance.Data.Repositories
     {
         private readonly AllphiContext _allphiContext;
 
-        public ParkingSpotRepository()
+        public ParkingSpotRepository(AllphiContext allphiContext)
         {
-            _allphiContext = new();
+            _allphiContext = allphiContext;
         }
 
         #region GET

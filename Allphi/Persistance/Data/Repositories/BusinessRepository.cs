@@ -7,9 +7,9 @@ public class BusinessRepository : IBusinessRepository
 {
     private readonly AllphiContext _allphiContext;
 
-    public BusinessRepository()
+    public BusinessRepository(AllphiContext allphiContext)
     {
-        _allphiContext = new();
+        _allphiContext = allphiContext;
     }
 
     #region GET

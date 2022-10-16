@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Domain
 {
-    public class Domaincontroller
+    public class DomainController
     {
         #region Decleration
 
@@ -22,7 +24,7 @@ namespace Domain
 
         #region CTOR
 
-        public Domaincontroller(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingSpotRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
+        public DomainController(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingSpotRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
         {
             this._businessRepo = businessRepo;
             this._contractRepo = contractRepo;

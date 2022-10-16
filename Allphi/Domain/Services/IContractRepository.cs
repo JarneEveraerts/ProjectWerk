@@ -10,7 +10,7 @@ public interface IContractRepository
 
     Contract GetContractByBusiness(Business business);
 
-    Contract GetContractByEndDate(DateOnly date);
+    Contract GetContractByEndDate(DateTime date);
 
     #endregion GET
 

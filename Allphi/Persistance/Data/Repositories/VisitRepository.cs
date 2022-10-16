@@ -7,9 +7,9 @@ public class VisitRepository : IVisitRepository
 {
     private readonly AllphiContext _allphiContext;
 
-    public VisitRepository()
+    public VisitRepository(AllphiContext allphiContext)
     {
-        _allphiContext = new();
+        _allphiContext = allphiContext;
     }
 
     #region GET

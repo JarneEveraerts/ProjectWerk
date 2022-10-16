@@ -4,7 +4,7 @@ namespace Domain.Models
 {
     public class Contract : Entity
     {
-        public Contract(Business business, DateOnly startDate, DateOnly endDate, int totalSpaces)
+        public Contract(Business business, DateTime startDate, DateTime endDate, int totalSpaces)
         {
             Business = business;
             StartDate = startDate;
@@ -17,8 +17,8 @@ namespace Domain.Models
         }
 
         public Business Business { get; set; }
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public int TotalSpaces { get; set; }
     }
 }
