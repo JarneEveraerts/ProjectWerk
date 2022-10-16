@@ -2,13 +2,13 @@
 
 namespace Domain.Services
 {
-    public interface IParkingSpotsRepository
+    public interface IParkingSpotRepository
     {
         #region GET
 
         List<ParkingSpot> GetParkingSpots();
 
-        List<ParkingSpot> GetParkingSpotsByReserved(string reserved);
+        List<ParkingSpot> GetParkingSpotsByReserved(Business reserved);
 
         ParkingSpot GetParkingSpotByLicense(string licensePlate);
 

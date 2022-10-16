@@ -10,9 +10,9 @@ public interface IEmployeeRepository
 
     List<Employee> GetEmployeesByBusiness(Business business);
 
-    Employee GetEmployeeById(int id);
+    List<Employee> GetEmployeesByName(string name);
 
-    Employee GetEmployeeByName(string name);
+    Employee GetEmployeeById(int id);
 
     #endregion GET
 

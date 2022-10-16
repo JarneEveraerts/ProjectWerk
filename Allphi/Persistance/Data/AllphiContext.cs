@@ -20,7 +20,7 @@ namespace Persistance.Data
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Visit> Visit { get; set; }
         public DbSet<Visitor> Visitor { get; set; }
-        public DbSet<Parking> Parking { get; set; }
+        public DbSet<ParkingSpot> ParkingSpot { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

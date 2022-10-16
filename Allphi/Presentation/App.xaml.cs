@@ -26,7 +26,7 @@ namespace Presentation
             IBusinessRepository businessRepo = new BusinessRepository();
             IContractRepository contractRepo = new ContractRepository();
             IEmployeeRepository employeeRepo = new EmployeeRepository();
-            IParkingRepository parkingRepo = new ParkingRepository();
+            IParkingSpotRepository parkingRepo = new ParkingSpotRepository();
             IVisitorRepository visitorRepo = new VisitorRepository();
             IVisitRepository visitRepo = new VisitRepository();
 

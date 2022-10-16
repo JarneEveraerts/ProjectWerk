@@ -2,7 +2,7 @@
 {
     public class ParkingSpot : Entity
     {
-        public ParkingSpot(Employee? employee, Visitor? visitor, string? plate, string? reserved)
+        public ParkingSpot(Employee? employee, Visitor? visitor, string? plate, Business? reserved)
         {
             Employee = employee;
             Visitor = visitor;
@@ -17,6 +17,6 @@
         public Visitor? Visitor { get; set; }
         public Employee? Employee { get; set; }
         public string? Plate { get; set; }
-        public string? Reserved { get; set; }
+        public Business? Reserved { get; set; }
     }
 }

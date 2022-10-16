@@ -14,7 +14,7 @@ namespace Domain
         private IBusinessRepository _businessRepo;
         private IContractRepository _contractRepo;
         private IEmployeeRepository _employeeRepo;
-        private IParkingRepository _parkingRepo;
+        private IParkingSpotRepository _parkingRepo;
         private IVisitorRepository _visitorRepo;
         private IVisitRepository _visitRepo;
 
@@ -22,7 +22,7 @@ namespace Domain
 
         #region CTOR
 
-        public Domaincontroller(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
+        public Domaincontroller(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingSpotRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
         {
             this._businessRepo = businessRepo;
             this._contractRepo = contractRepo;

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistance.Data.Mappers
 {
-    internal class ParkingConfiguration : IEntityTypeConfiguration<ParkingSpot>
+    internal class ParkingSpotConfiguration : IEntityTypeConfiguration<ParkingSpot>
     {
         public void Configure(EntityTypeBuilder<ParkingSpot> builder)
         {
@@ -12,6 +12,7 @@ namespace Persistance.Data.Mappers
             builder.ToTable("ParkingSpot");
             builder.HasOne(e => e.Visitor).WithMany().OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(e => e.Employee).WithMany().OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(e => e.Reserved).WithMany().OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
