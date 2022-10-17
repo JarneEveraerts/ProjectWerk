@@ -70,10 +70,10 @@ namespace Domain.View
             Btn_SubmitENG.Visibility = Visibility.Collapsed;
         }
 
-        private void RBtn_Allphi_Checked(object sender, RoutedEventArgs e)
-        {
-            Bussines = Rbtn_AllPhi.Content.ToString();
-        }
+        //private void RBtn_Allphi_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    Bussines = Rbtn_AllPhi.Content.ToString();
+        //}
 
         private void Btn_Submit_Click(object sender, RoutedEventArgs e)
         {

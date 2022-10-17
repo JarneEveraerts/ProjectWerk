@@ -5,12 +5,180 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Presentation.BalieApp"
         mc:Ignorable="d"
-        Title="BalieApp" Height="800" Width="900">
-    <Grid Margin="0,0,0,0">
-        <DataGrid HorizontalAlignment="Left" Height="533" Margin="46,46,0,0" VerticalAlignment="Top" Width="523" d:ItemsSource="{d:SampleData ItemCount=5}"/>
-        <Button Content="Button" HorizontalAlignment="Left" Height="32" Margin="591,547,0,0" VerticalAlignment="Top" Width="79"/>
-        <Button Content="Button" HorizontalAlignment="Left" Height="32" Margin="702,547,0,0" VerticalAlignment="Top" Width="76"/>
-        <Button Content="Button" HorizontalAlignment="Left" Height="32" Margin="808,547,0,0" VerticalAlignment="Top" Width="82"/>
+        Title="BalieApp" Height="800" Width="1204"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}">
+    <DockPanel>
+        <materialDesign:Card>
+            <TabControl
+    HorizontalContentAlignment="Center"
+    materialDesign:ColorZoneAssist.Mode="SecondaryDark"
+    materialDesign:NavigationRailAssist.SelectionCornerRadius="50"
+    materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
+    Style="{StaticResource MaterialDesignNavigationRailTabControl}"
+    TabStripPlacement="Top">
+                <TabItem Margin="10">
+                    <TabItem.Header>
+                        <StackPanel Width="auto" Height="auto">
+                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="ClockOutline" />
+                            <TextBlock
+            HorizontalAlignment="Center"
+            Text="Bezoekers" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <DockPanel>
+                            <DataGrid Width="550" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Margin="50,50,0,50" Height="603" />
+                        </DockPanel>
+                        <StackPanel VerticalAlignment="Center" Height="610" Width="553" Margin="50,50,0,0">
+                            <DockPanel Margin="0,0,0,50" HorizontalAlignment="Left">
+                                <StackPanel Width="533" Orientation="Vertical" Margin="0,0,0,20" HorizontalAlignment="Left">
+                                    <TextBox Text="Naam" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16"/>
+                                    <TextBox  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16"/>
+                                    <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16"/>
+                                    <TextBox  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16"/>
 
-    </Grid>
+                                </StackPanel>
+                            </DockPanel>
+                            <Button Margin="0,0,0,30" Width="382" Content="Zoeken"></Button>
+                            <DockPanel HorizontalAlignment="Center">
+                                <Button Width="150" Margin="0,0,20,0" Content="Toevoegen"></Button>
+                                <Button Width="150" Margin="0,0,20,0" Content="Bewerken"></Button>
+                                <Button Width="150" Background="#FFB73A68" Content="Verwijderen"></Button>
+
+                            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel
+          Width="auto"
+          Height="auto">
+                            <materialDesign:PackIcon
+            Width="24"
+            Height="24"
+            HorizontalAlignment="Center"
+            Kind="Images" />
+                            <TextBlock
+            HorizontalAlignment="Center"
+            Text="Contracten" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <DockPanel>
+                            <DataGrid Width="550" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Margin="50,50,0,50" Height="603" />
+                        </DockPanel>
+                        <StackPanel VerticalAlignment="Center" Height="610" Width="553" Margin="50,50,0,0">
+                            <DockPanel Margin="0,0,0,50">
+                                <StackPanel Width="552" Orientation="Vertical" Margin="0,0,0,20" HorizontalAlignment="Left">
+                                    <DockPanel>
+                                        <Label Content="Duurtijd contract" Margin="0,0,40,0" FontSize="16"></Label>
+                                        <Label Content="Van" Margin="0,0,10,0" FontSize="16"></Label>
+                                        <DatePicker Width="140"/>
+                                        <Label Content="Tot" Margin="10,0,10,0" FontSize="16"></Label>
+                                        <DatePicker Width="120" FontSize="16"/>
+                                    </DockPanel>
+                                    <TextBox Text="Organisatie" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16"/>
+                                    <TextBox  Text="Gebruikte parkeerplaatsen" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16"/>
+
+
+                                </StackPanel>
+                            </DockPanel>
+                            <Button x:Name="btn_Search" Margin="0,0,0,30" Width="382" Content="Zoeken"></Button>
+                            <DockPanel HorizontalAlignment="Center">
+                                <Button Width="150" Margin="0,0,20,0" Content="Toevoegen"></Button>
+                                <Button Width="150" Margin="0,0,20,0" Content="Bewerken"></Button>
+                                <Button Width="150" Background="#FFB73A68" Content="Verwijderen"></Button>
+
+                            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel
+          Width="auto"
+          Height="auto">
+                            <materialDesign:PackIcon
+            Width="24"
+            Height="24"
+            HorizontalAlignment="Center"
+            Kind="MusicBoxMultiple" />
+                            <TextBlock
+            HorizontalAlignment="Center"
+            Text="Bedrijven" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <DockPanel>
+                            <DataGrid Width="550" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Margin="50,50,0,50" Height="603" />
+                        </DockPanel>
+                        <StackPanel VerticalAlignment="Center" Height="610" Width="553" Margin="50,50,0,0">
+                            <DockPanel Margin="0,0,0,50">
+                                <StackPanel Width="297" HorizontalAlignment="Left" Orientation="Vertical" Margin="0,0,0,20">
+                                    <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+                                    <TextBox  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+                                    <TextBox Text="GSM" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+                                    <TextBox  Text="Email" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+                                    <TextBox Text="BTW-Nummer" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+
+                                </StackPanel>
+                            </DockPanel>
+                            <Button Margin="0,0,0,30" Width="382" Content="Zoeken"></Button>
+                            <DockPanel HorizontalAlignment="Center">
+                                <Button Width="150" Margin="0,0,20,0" Content="Toevoegen"></Button>
+                                <Button Width="150" Margin="0,0,20,0" Content="Bewerken"></Button>
+                                <Button Width="150" Background="#FFB73A68" Content="Verwijderen"></Button>
+
+                            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel
+          Width="auto"
+          Height="auto">
+                            <materialDesign:PackIcon
+            Width="24"
+            Height="24"
+            HorizontalAlignment="Center"
+            Kind="MusicBoxMultiple" />
+                            <TextBlock
+            HorizontalAlignment="Center"
+            Text="Werknemers" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <DockPanel>
+                            <DataGrid Width="550" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Left" Margin="50,50,0,50" Height="603" />
+                        </DockPanel>
+                        <StackPanel VerticalAlignment="Center" Height="610" Width="553" Margin="50,50,0,0">
+                            <DockPanel Margin="0,0,0,50">
+                                <StackPanel Width="297" HorizontalAlignment="Left" Orientation="Vertical" Margin="0,0,0,20">
+                                    <TextBox Text="Naam" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+                                    <TextBox  Text="Functie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+                                    <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+                                    <TextBox  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" FontSize="16"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Button Margin="0,0,0,30" Width="382" Content="Zoeken"></Button>
+                            <DockPanel HorizontalAlignment="Center">
+                                <Button Width="150" Margin="0,0,20,0" Content="Toevoegen"></Button>
+                                <Button Width="150" Margin="0,0,20,0" Content="Bewerken"></Button>
+                                <Button Width="150" Background="#FFB73A68" Content="Verwijderen"></Button>
+
+                            </DockPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                </TabItem>
+            </TabControl>
+        </materialDesign:Card>
+    </DockPanel>
 </Window>

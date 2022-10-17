@@ -66,10 +66,10 @@ namespace Domain
 
         #region Parking
 
-        public bool CheckAvailableParkingSpots()
-        {
-            return (_parkingRepo.GetParkingSpotsByPlate(null) != null);
-        }
+        //public bool CheckAvailableParkingSpots()
+        //{
+        //    return (_parkingRepo.GetParkingSpotsByPlate(null) != null);
+        //}
 
         #endregion Parking
     }
