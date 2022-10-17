@@ -64,6 +64,7 @@ namespace Persistance.Data.Repositories
         public void UpdateVisitor(Visitor visitor)
         {
             _allphiContext.Visitor.Update(visitor);
+            _allphiContext.SaveChanges();
         }
 
         #endregion UPDATE
@@ -73,6 +74,7 @@ namespace Persistance.Data.Repositories
         public void DeleteVisitor(Visitor visitor)
         {
             _allphiContext.Visitor.Remove(visitor);
+            _allphiContext.SaveChanges();
         }
 
         #endregion DELETE

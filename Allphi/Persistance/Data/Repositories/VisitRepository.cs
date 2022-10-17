@@ -60,6 +60,7 @@ public class VisitRepository : IVisitRepository
     public void UpdateVisit(Visit visit)
     {
         _allphiContext.Visit.Update(visit);
+        _allphiContext.SaveChanges();
     }
 
     #endregion UPDATE
@@ -69,6 +70,7 @@ public class VisitRepository : IVisitRepository
     public void DeleteVisit(Visit visit)
     {
         _allphiContext.Visit.Remove(visit);
+        _allphiContext.SaveChanges();
     }
 
     #endregion DELETE

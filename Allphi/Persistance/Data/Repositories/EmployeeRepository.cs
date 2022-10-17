@@ -61,6 +61,7 @@ public class EmployeeRepository : IEmployeeRepository
     public void UpdateEmployee(Employee employee)
     {
         _allphiContext.Employee.Update(employee);
+        _allphiContext.SaveChanges();
     }
 
     #endregion UPDATE
@@ -70,6 +71,7 @@ public class EmployeeRepository : IEmployeeRepository
     public void DeleteEmployee(Employee employee)
     {
         _allphiContext.Employee.Remove(employee);
+        _allphiContext.SaveChanges();
     }
 
     #endregion DELETE
