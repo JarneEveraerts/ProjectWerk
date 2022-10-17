@@ -4,11 +4,12 @@ using System.Windows;
 using Domain.Services;
 using Domain;
 using Persistance.Data.Repositories;
-using Domain.View;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.Data;
+using Presentation;
+using Presentation.Views;
 
 namespace Presentation
 {
@@ -46,12 +47,15 @@ namespace Presentation
             services.AddScoped<IVisitRepository, VisitRepository>();
             services.AddScoped<DomainController>();
             services.AddSingleton<ParkingApp>();
+            services.AddSingleton<BalieApp>();
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
             ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
+            BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
             parkingApp.Show();
+            balieApp.Show();
         }
     }
 }
