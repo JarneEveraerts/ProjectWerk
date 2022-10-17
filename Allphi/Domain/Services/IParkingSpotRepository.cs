@@ -10,11 +10,15 @@ namespace Domain.Services
 
         List<ParkingSpot> GetParkingSpotsByReserved(Business reserved);
 
-        ParkingSpot GetParkingSpotByLicense(string licensePlate);
+        List<ParkingSpot>? GetAvailableParkingSpotsByReserved(Business reserved);
 
-        ParkingSpot GetParkingSpotByEmployee(Employee employee);
+        List<ParkingSpot>? GetAvailableParkingSpotsByPlate();
 
-        ParkingSpot GetParkingSpotByVisitor(Visitor visitor);
+        ParkingSpot? GetParkingSpotByPlate(string? licensePlate);
+
+        ParkingSpot? GetParkingSpotByEmployee(Employee employee);
+
+        ParkingSpot? GetParkingSpotByVisitor(Visitor visitor);
 
         #endregion GET
 

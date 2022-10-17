@@ -6,13 +6,15 @@ public interface IEmployeeRepository
 {
     #region GET
 
-    List<Employee> GetEmployees();
+    List<Employee>? GetEmployees();
 
-    List<Employee> GetEmployeesByBusiness(Business business);
+    List<Employee>? GetEmployeesByBusiness(Business business);
 
-    List<Employee> GetEmployeesByName(string name);
+    List<Employee>? GetEmployeesByName(string name);
 
-    Employee GetEmployeeById(int id);
+    Employee? GetEmployeeById(int id);
+
+    Employee? GetEmployeeByPlate(string licensePlate);
 
     #endregion GET
 

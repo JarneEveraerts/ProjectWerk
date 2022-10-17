@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,5 +36,41 @@ namespace Domain
         }
 
         #endregion CTOR
+
+        #region Validation
+
+        public bool IsEmailValid(string emailAddress)
+        {
+            Regex regex = new Regex(@"^[\w-.]+@([\w-]+.)+[\w-]{2,4}$");
+            Match match = regex.Match(emailAddress);
+            return match.Success;
+        }
+
+        public bool IsBtwValid(string BtwNumber)
+        {
+            Regex regexBE = new Regex(@"(BE)?0[0-9]{9}");
+            Match match = regexBE.Match(BtwNumber);
+            return match.Success;
+        }
+
+        #endregion Validation
+
+        #region LicensePlate
+
+        public Employee? CheckEmployeePlate(string plate)
+        {
+            return _employeeRepo.GetEmployeeByPlate(plate);
+        }
+
+        #endregion LicensePlate
+
+        #region Parking
+
+        public bool CheckAvailableParkingSpots()
+        {
+            return (_parkingRepo.GetParkingSpotsByPlate(null) != null);
+        }
+
+        #endregion Parking
     }
 }
