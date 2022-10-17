@@ -88,7 +88,7 @@
                             <DockPanel HorizontalAlignment="Center">
                                 <Button Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="#DDFFFFFF"></Button>
                                 <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="#DDFFFFFF"></Button>
-                                <Button Width="150" Background="#FFB73A68" Content="Verwijderen"></Button>
+                                <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                             </DockPanel>
                         </StackPanel>
                     </StackPanel>
