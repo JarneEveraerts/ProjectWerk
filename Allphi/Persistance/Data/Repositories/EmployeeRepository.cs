@@ -38,6 +38,12 @@ public class EmployeeRepository : IEmployeeRepository
         return employee;
     }
 
+    public Employee GetEmployeeByPlate(string licensePlate)
+    {
+        Employee employee = _allphiContext.Employee.First(e => e.Plate == licensePlate);
+        return employee;
+    }
+
     #endregion GET
 
     #region CREATE
