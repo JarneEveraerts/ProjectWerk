@@ -17,7 +17,7 @@
     <DockPanel>
         <Grid Background="#DDDDDDDD">
             <Label x:Name="lbl_LicensePlateNL" Content="Nummerplaat" HorizontalAlignment="Left" Margin="297,37,0,0" VerticalAlignment="Top" Height="56" Width="158" FontSize="24" />
-            <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Left" Margin="173,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="443" Height="56" FontSize="24" Background="White" />
+            <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Left" Margin="173,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="443" Height="56" FontSize="24" Background="Black" />
             <Label x:Name="lbl_BedrijfNL" Content="Registreer / Login als" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Width="235" />
             <Button x:Name="Btn_FR" Content="FR" HorizontalAlignment="Left" Margin="29,364,0,0" VerticalAlignment="Top" Height="44" Width="60" FontSize="24" Click="Btn_FR_Click" />
             <Button x:Name="Btn_ENG" Content="ENG" HorizontalAlignment="Left" Margin="101,364,0,0" VerticalAlignment="Top" FontSize="24" Width="60" Height="44" Click="Btn_ENG_Click" />
