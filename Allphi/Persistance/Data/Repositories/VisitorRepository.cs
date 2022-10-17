@@ -1,8 +1,5 @@
 ﻿using Domain.Models;
 using Domain.Services;
-using Persistance.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Persistance.Data.Repositories
 {

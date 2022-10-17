@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Domain.Models;
+﻿using System.Windows;
+using Ardalis.GuardClauses;
+using Domain;
 
-namespace Domain.View
+namespace Presentation.Views
 {
     /// <summary>
     /// Interaction logic for ParkingEntrance.xaml
@@ -22,6 +11,8 @@ namespace Domain.View
     {
         // mag niet  public IParkingRepository parkingRepository;
         private DomainController _dc;
+
+        private string _licensePlate;
 
         public ParkingApp(DomainController dc)
         {
@@ -39,9 +30,9 @@ namespace Domain.View
             lbl_LicensePlateNL.Visibility = Visibility.Collapsed;
             lbl_LicensePlateFR.Visibility = Visibility.Collapsed;
             lbl_LicensePlateENG.Visibility = Visibility.Visible;
-            Btn_SubmitNL.Visibility = Visibility.Collapsed;
-            Btn_SubmitFR.Visibility = Visibility.Collapsed;
-            Btn_SubmitENG.Visibility = Visibility.Visible;
+            Btn_SubmitEmployeeNL.Visibility = Visibility.Collapsed;
+            Btn_SubmitEmployeeFR.Visibility = Visibility.Collapsed;
+            Btn_SubmitEmployeeENG.Visibility = Visibility.Visible;
         }
 
         private void Btn_FR_Click(object sender, RoutedEventArgs e)
@@ -52,9 +43,9 @@ namespace Domain.View
             lbl_LicensePlateNL.Visibility = Visibility.Collapsed;
             lbl_LicensePlateFR.Visibility = Visibility.Visible;
             lbl_LicensePlateENG.Visibility = Visibility.Collapsed;
-            Btn_SubmitNL.Visibility = Visibility.Collapsed;
-            Btn_SubmitFR.Visibility = Visibility.Visible;
-            Btn_SubmitENG.Visibility = Visibility.Collapsed;
+            Btn_SubmitEmployeeNL.Visibility = Visibility.Collapsed;
+            Btn_SubmitEmployeeFR.Visibility = Visibility.Visible;
+            Btn_SubmitEmployeeENG.Visibility = Visibility.Collapsed;
         }
 
         private void Btn_NL_Click(object sender, RoutedEventArgs e)
@@ -65,9 +56,9 @@ namespace Domain.View
             lbl_LicensePlateNL.Visibility = Visibility.Visible;
             lbl_LicensePlateFR.Visibility = Visibility.Collapsed;
             lbl_LicensePlateENG.Visibility = Visibility.Collapsed;
-            Btn_SubmitNL.Visibility = Visibility.Visible;
-            Btn_SubmitFR.Visibility = Visibility.Collapsed;
-            Btn_SubmitENG.Visibility = Visibility.Collapsed;
+            Btn_SubmitEmployeeNL.Visibility = Visibility.Visible;
+            Btn_SubmitEmployeeFR.Visibility = Visibility.Collapsed;
+            Btn_SubmitEmployeeENG.Visibility = Visibility.Collapsed;
         }
 
         //private void RBtn_Allphi_Checked(object sender, RoutedEventArgs e)
@@ -75,8 +66,14 @@ namespace Domain.View
         //    Bussines = Rbtn_AllPhi.Content.ToString();
         //}
 
-        private void Btn_Submit_Click(object sender, RoutedEventArgs e)
+        private void Btn_Submit_Employee_Click(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void Btn_Submit_Visitor_Click(object sender, RoutedEventArgs e)
+        {
+            _licensePlate = txtBox_LicensePlate.Text;
+            _dc.SubmitVisitor(_licensePlate);
         }
     }
 }
