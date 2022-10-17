@@ -1,12 +1,7 @@
-﻿using Domain.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using Ardalis.GuardClauses;
 using Domain.Models;
-using Microsoft.Extensions.DependencyInjection;
+using Domain.Services;
+using System.Text.RegularExpressions;
 
 namespace Domain
 {
@@ -46,10 +41,17 @@ namespace Domain
             return match.Success;
         }
 
-        public bool IsBtwValid(string BtwNumber)
+        public bool IsBtwValid(string btwNumber)
         {
             Regex regexBE = new Regex(@"(BE)?0[0-9]{9}");
-            Match match = regexBE.Match(BtwNumber);
+            Match match = regexBE.Match(btwNumber);
+            return match.Success;
+        }
+
+        public bool IsLicensePlateValid(string licensePlate)
+        {
+            Regex regex = new Regex(@"^[0-9]?([A-Z]{3}[0-9]{3}|[0-9]{3}[A-Z]{3})$");
+            Match match = regex.Match(licensePlate);
             return match.Success;
         }
 
@@ -66,11 +68,22 @@ namespace Domain
 
         #region Parking
 
-        //public bool CheckAvailableParkingSpots()
-        //{
-        //    return (_parkingRepo.GetParkingSpotsByPlate(null) != null);
-        //}
+        public ParkingSpot GetAvailableParkingSpotVisitor()
+        {
+            return (_parkingRepo.GetAvailableParkingSpotUnreserved());
+        }
 
         #endregion Parking
+
+        public void SubmitVisitor(string licensePlate)
+        {
+            string license = Guard.Against.NullOrEmpty(licensePlate, nameof(licensePlate));
+            ParkingSpot parkingSpot = GetAvailableParkingSpotVisitor();
+            if (IsLicensePlateValid(license) && parkingSpot != null && _parkingRepo.CountParkingSpotByPlate(license) == 0)
+            {
+                parkingSpot.Plate = license;
+                _parkingRepo.UpdateParkingSpot(parkingSpot);
+            };
+        }
     }
 }
