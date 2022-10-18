@@ -27,24 +27,24 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label x:Name="lbl_LicensePlateNL" Content="Login" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Grid.ColumnSpan="5"  Grid.Row="0" />
+        <Label Foreground ="#303030" x:Name="lbl_LicensePlateNL" Content="Login" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Grid.ColumnSpan="5"  Grid.Row="0" />
         <TextBox Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="1"
   x:Name="NameTextBox"
-  materialDesign:HintAssist.Hint="Gebruikernaam" Margin="50,20,50,50">
+  materialDesign:HintAssist.Hint="Gebruikernaam" Margin="50,20,50,50" Foreground ="#303030">
             <TextBox.Text>
-    <Binding
+                <Binding
       Path="Name"
       UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
                     </Binding.ValidationRules>
-    </Binding>
-  </TextBox.Text>
-</TextBox >
-        <PasswordBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2"
-  x:Name="PasswordBox"
-  materialDesign:HintAssist.Hint="Password"
-  materialDesign:TextFieldAssist.HasClearButton="True" Margin="50,20,50,50"/>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        <PasswordBox Foreground ="#303030" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="2"
+                     x:Name="PasswordBox"
+                     materialDesign:HintAssist.Hint="Password"
+                     materialDesign:TextFieldAssist.HasClearButton="True" Margin="50,20,50,50" />
 
-        <Button x:Name="btn_login" Content="Login" HorizontalAlignment="Center" FontSize="30" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="7" Grid.Column="1" Margin="0,10,0,10" Height="50" Width="400"/>
+        <Button x:Name="btn_login" Content="Login" HorizontalAlignment="Center" FontSize="30" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="7" Grid.Column="1" Margin="0,10,0,10" Height="50" Width="400" />
     </Grid>
 </Window>
