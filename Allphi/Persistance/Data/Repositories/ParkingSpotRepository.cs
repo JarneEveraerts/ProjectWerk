@@ -26,10 +26,16 @@ namespace Persistance.Data.Repositories
             return parkingSpots;
         }
 
-        public List<ParkingSpot>? GetAvailableParkingSpotsByReserved(Business reserved)
+        public List<ParkingSpot>? GetAvailableParkingSpotsReserved(Business reserved)
         {
             List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.Reserved == reserved && p.Plate == null).ToList();
             return parkingSpots;
+        }
+
+        public ParkingSpot GetAvailableParkingSpotReserved(Business reserved)
+        {
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Reserved == reserved && p.Plate == null);
+            return parkingSpot;
         }
 
         public List<ParkingSpot>? GetAvailableParkingSpotsByPlate()
