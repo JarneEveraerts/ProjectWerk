@@ -66,17 +66,6 @@ namespace Persistance.Data.Repositories
 
         #region CREATE
 
-        public void CreateParkingSpots()
-        {
-            ParkingSpot parkingSpot;
-            for (int i = 0; i < 50; i++)
-            {
-                parkingSpot = new(null, null, null, null);
-                _allphiContext.ParkingSpot.Add(parkingSpot);
-                _allphiContext.SaveChanges();
-            }
-        }
-
         public void CreateParkingSpot(ParkingSpot parkingSpot)
         {
             _allphiContext.ParkingSpot.Add(parkingSpot);

@@ -26,8 +26,6 @@ namespace Domain.Services
 
         #region CREATE
 
-        void CreateParkingSpots();
-
         void CreateParkingSpot(ParkingSpot parkingSpot);
 
         #endregion CREATE
