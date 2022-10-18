@@ -1,8 +1,5 @@
 ﻿using Domain.Models;
 using Domain.Services;
-using Persistance.Data;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Persistance.Data.Repositories
 {
@@ -64,6 +61,7 @@ namespace Persistance.Data.Repositories
         public void UpdateVisitor(Visitor visitor)
         {
             _allphiContext.Visitor.Update(visitor);
+            _allphiContext.SaveChanges();
         }
 
         #endregion UPDATE
@@ -73,6 +71,7 @@ namespace Persistance.Data.Repositories
         public void DeleteVisitor(Visitor visitor)
         {
             _allphiContext.Visitor.Remove(visitor);
+            _allphiContext.SaveChanges();
         }
 
         #endregion DELETE

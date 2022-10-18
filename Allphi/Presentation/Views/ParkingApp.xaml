@@ -1,33 +1,33 @@
-﻿<Window x:Class="Domain.View.ParkingApp"
+﻿<Window x:Class="Presentation.Views.ParkingApp"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Domain.View"
+        xmlns:local="clr-namespace:Presentation.Views"
         mc:Ignorable="d"
         Title="ParkingSpot" Height="450" Width="800"
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal" 
-        TextOptions.TextRenderingMode="Auto"        
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
         Background="#dddddd"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <DockPanel>
         <Grid Background="#DDDDDDDD">
             <Label x:Name="lbl_LicensePlateNL" Content="Nummerplaat" HorizontalAlignment="Left" Margin="297,37,0,0" VerticalAlignment="Top" Height="56" Width="158" FontSize="24" />
-            <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Left" Margin="173,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="443" Height="56" FontSize="24" Background="White" />
+            <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Left" Margin="173,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="443" Height="56" FontSize="24" Background="Black" />
             <Label x:Name="lbl_BedrijfNL" Content="Registreer / Login als" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Width="235" />
             <Button x:Name="Btn_FR" Content="FR" HorizontalAlignment="Left" Margin="29,364,0,0" VerticalAlignment="Top" Height="44" Width="60" FontSize="24" Click="Btn_FR_Click" />
             <Button x:Name="Btn_ENG" Content="ENG" HorizontalAlignment="Left" Margin="101,364,0,0" VerticalAlignment="Top" FontSize="24" Width="60" Height="44" Click="Btn_ENG_Click" />
-            <Button x:Name="Btn_SubmitNL" Content="Werknemer" HorizontalAlignment="Left" Margin="88,280,0,0" VerticalAlignment="Top" FontSize="30" Width="262" Height="54" Click="Btn_Submit_Click" />
-            <Button x:Name="Btn_Visitor" Content="Visitor" HorizontalAlignment="Left" Margin="411,280,0,0" VerticalAlignment="Top" FontSize="30" Width="262" Height="54" Click="Btn_Submit_Click" />
+            <Button x:Name="Btn_SubmitEmployeeNL" Content="Werknemer" HorizontalAlignment="Left" Margin="88,280,0,0" VerticalAlignment="Top" FontSize="30" Width="262" Height="54" Click="Btn_Submit_Employee_Click" />
+            <Button x:Name="Btn_Visitor" Content="Bezoeker" HorizontalAlignment="Left" Margin="411,280,0,0" VerticalAlignment="Top" FontSize="30" Width="262" Height="54" Click="Btn_Submit_Visitor_Click" />
             <Label x:Name="lbl_NummerplaatFR" Content="Plaque de numéro" HorizontalAlignment="Left" Margin="29,47,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
             <Label x:Name="lbl_BedrijfFR" Content="Entreprise" HorizontalAlignment="Left" Margin="58,169,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
             <Button x:Name="Btn_NL" Content="NL" HorizontalAlignment="Left" Margin="173,364,0,0" VerticalAlignment="Top" FontSize="24" Width="60" Height="44" Visibility="Hidden" Click="Btn_NL_Click" />
-            <Button x:Name="Btn_SubmitENG" Content="Submit" HorizontalAlignment="Left" Margin="274,361,0,28" FontSize="30" Width="442" Height="44" Visibility="Hidden" Click="Btn_Submit_Click" />
-            <Button x:Name="Btn_SubmitFR" Content="Soumettre" HorizontalAlignment="Left" Margin="274,364,0,0" VerticalAlignment="Top" Height="44" FontSize="30" Width="442" Visibility="Hidden" Click="Btn_Submit_Click" />
+            <Button x:Name="Btn_SubmitEmployeeENG" Content="Submit" HorizontalAlignment="Left" Margin="274,361,0,28" FontSize="30" Width="442" Height="44" Visibility="Hidden" Click="Btn_Submit_Employee_Click" />
+            <Button x:Name="Btn_SubmitEmployeeFR" Content="Soumettre" HorizontalAlignment="Left" Margin="274,364,0,0" VerticalAlignment="Top" Height="44" FontSize="30" Width="442" Visibility="Hidden" Click="Btn_Submit_Employee_Click" />
             <Label x:Name="lbl_NummerplaatENG" Content="License plate" HorizontalAlignment="Left" Margin="59,47,0,0" VerticalAlignment="Top" FontSize="24" Width="174" Visibility="Hidden" />
             <Label x:Name="lbl_BedrijfENG" Content="Company" HorizontalAlignment="Left" Margin="58,169,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
             <Label x:Name="lbl_LicensePlateFR" Content="Plaque D'Immatriculation" HorizontalAlignment="Left" Margin="58,47,0,0" VerticalAlignment="Top" Height="56" Width="175" FontSize="24" Visibility="Collapsed" />

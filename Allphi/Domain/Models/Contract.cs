@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Domain.Models
+﻿namespace Domain.Models
 {
     public class Contract : Entity
     {

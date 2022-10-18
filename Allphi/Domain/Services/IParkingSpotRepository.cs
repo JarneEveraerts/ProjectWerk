@@ -20,6 +20,8 @@ namespace Domain.Services
 
         ParkingSpot? GetParkingSpotByVisitor(Visitor visitor);
 
+        ParkingSpot? GetAvailableParkingSpotUnreserved();
+
         #endregion GET
 
         #region CREATE
@@ -39,5 +41,11 @@ namespace Domain.Services
         void DeleteParkingSpot(ParkingSpot parkingSpot);
 
         #endregion DELETE
+
+        #region COUNT
+
+        int CountParkingSpotByPlate(string plate);
+
+        #endregion COUNT
     }
 }

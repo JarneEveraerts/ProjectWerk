@@ -56,6 +56,12 @@ namespace Persistance.Data.Repositories
             return parkingSpot;
         }
 
+        public ParkingSpot? GetAvailableParkingSpotUnreserved()
+        {
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Reserved == null && p.Plate == null);
+            return parkingSpot;
+        }
+
         #endregion GET
 
         #region CREATE
@@ -73,6 +79,7 @@ namespace Persistance.Data.Repositories
         public void UpdateParkingSpot(ParkingSpot parkingSpot)
         {
             _allphiContext.ParkingSpot.Update(parkingSpot);
+            _allphiContext.SaveChanges();
         }
 
         #endregion UPDATE
@@ -82,8 +89,18 @@ namespace Persistance.Data.Repositories
         public void DeleteParkingSpot(ParkingSpot parkingSpot)
         {
             _allphiContext.ParkingSpot.Remove(parkingSpot);
+            _allphiContext.SaveChanges();
         }
 
         #endregion DELETE
+
+        #region COUNT
+
+        public int CountParkingSpotByPlate(string plate)
+        {
+            return _allphiContext.ParkingSpot.Count(p => p.Plate == plate);
+        }
+
+        #endregion COUNT
     }
 }
