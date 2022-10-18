@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Presentation.Views"
         mc:Ignorable="d"
-        Title="ParkingSpot" Height="450" Width="800"
+        Title="ParkingSpot" Height="600" Width="800"
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -15,23 +15,42 @@
         Background="#dddddd"
         FontFamily="{DynamicResource MaterialDesignFont}">
     <DockPanel>
-        <Grid Background="#DDDDDDDD">
-            <Label x:Name="lbl_LicensePlateNL" Content="Nummerplaat" HorizontalAlignment="Left" Margin="297,37,0,0" VerticalAlignment="Top" Height="56" Width="158" FontSize="24" />
-            <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Left" Margin="173,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="443" Height="56" FontSize="24" Background="Black" />
-            <Label x:Name="lbl_BedrijfNL" Content="Registreer / Login als" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Width="235" />
-            <Button x:Name="Btn_FR" Content="FR" HorizontalAlignment="Left" Margin="29,364,0,0" VerticalAlignment="Top" Height="44" Width="60" FontSize="24" Click="Btn_FR_Click" />
-            <Button x:Name="Btn_ENG" Content="ENG" HorizontalAlignment="Left" Margin="101,364,0,0" VerticalAlignment="Top" FontSize="24" Width="60" Height="44" Click="Btn_ENG_Click" />
-            <Button x:Name="Btn_SubmitEmployeeNL" Content="Werknemer" HorizontalAlignment="Left" Margin="88,280,0,0" VerticalAlignment="Top" FontSize="30" Width="262" Height="54" Click="Btn_Submit_Employee_Click" />
-            <Button x:Name="Btn_Visitor" Content="Bezoeker" HorizontalAlignment="Left" Margin="411,280,0,0" VerticalAlignment="Top" FontSize="30" Width="262" Height="54" Click="Btn_Submit_Visitor_Click" />
-            <Label x:Name="lbl_NummerplaatFR" Content="Plaque de numéro" HorizontalAlignment="Left" Margin="29,47,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
-            <Label x:Name="lbl_BedrijfFR" Content="Entreprise" HorizontalAlignment="Left" Margin="58,169,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
-            <Button x:Name="Btn_NL" Content="NL" HorizontalAlignment="Left" Margin="173,364,0,0" VerticalAlignment="Top" FontSize="24" Width="60" Height="44" Visibility="Hidden" Click="Btn_NL_Click" />
-            <Button x:Name="Btn_SubmitEmployeeENG" Content="Submit" HorizontalAlignment="Left" Margin="274,361,0,28" FontSize="30" Width="442" Height="44" Visibility="Hidden" Click="Btn_Submit_Employee_Click" />
-            <Button x:Name="Btn_SubmitEmployeeFR" Content="Soumettre" HorizontalAlignment="Left" Margin="274,364,0,0" VerticalAlignment="Top" Height="44" FontSize="30" Width="442" Visibility="Hidden" Click="Btn_Submit_Employee_Click" />
-            <Label x:Name="lbl_NummerplaatENG" Content="License plate" HorizontalAlignment="Left" Margin="59,47,0,0" VerticalAlignment="Top" FontSize="24" Width="174" Visibility="Hidden" />
-            <Label x:Name="lbl_BedrijfENG" Content="Company" HorizontalAlignment="Left" Margin="58,169,0,0" VerticalAlignment="Top" FontSize="24" Visibility="Hidden" />
-            <Label x:Name="lbl_LicensePlateFR" Content="Plaque D'Immatriculation" HorizontalAlignment="Left" Margin="58,47,0,0" VerticalAlignment="Top" Height="56" Width="175" FontSize="24" Visibility="Collapsed" />
-            <Label x:Name="lbl_LicensePlateENG" Content="License Plate" HorizontalAlignment="Left" Margin="58,47,0,0" VerticalAlignment="Top" Height="56" Width="175" FontSize="24" Visibility="Collapsed" />
+        <Grid Background="#DDDDDDDD" ShowGridLines="False">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label x:Name="lbl_LicensePlateNL" Content="Nummerplaat" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Grid.Column="2"  Grid.Row="0" />
+
+
+            <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Center"  TextWrapping="Wrap" Width="450" Height="56" FontSize="24" Background="#ffff" Grid.ColumnSpan="3"  Grid.Column="1" Grid.Row="1"/>
+
+            <ComboBox
+  Style="{StaticResource MaterialDesignFilledComboBox}"
+  materialDesign:HintAssist.Hint="Kies uw bedrijf" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3">
+            </ComboBox>
+            <Label x:Name="lbl_BedrijfNL" Content="Registreer / Login als" FontSize="24"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button x:Name="Btn_Visitor" Content="Bezoeker" HorizontalAlignment="Center" FontSize="30" Click="Btn_Submit_Visitor_Click" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="7" Grid.Column="1" Margin="0,10,0,10" Height="50" Width="400"/>
+
+            <DockPanel Grid.Row="8" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="0,0,10,0">
+                <Button x:Name="Btn_NL" Content="NL" HorizontalAlignment="Left" FontSize="24" Width="60" Height="44" Click="Btn_NL_Click" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="#DDFFFFFF" Margin="10,0,30,0" />
+                <Button x:Name="Btn_FR" Content="FR"  FontSize="24" Click="Btn_FR_Click" Width="60" Height="44" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Margin="0,0,30,0" />
+                <Button x:Name="Btn_ENG" Content="ENG" FontSize="24" Click="Btn_ENG_Click" Width="60" Height="44" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Margin="0,0,10,0"/>
+            </DockPanel>
         </Grid>
     </DockPanel>
 </Window>
