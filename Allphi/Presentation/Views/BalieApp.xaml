@@ -11,7 +11,7 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}">
-    <DockPanel >
+    <DockPanel>
         <materialDesign:Card>
             <TabControl
     HorizontalContentAlignment="Center"
@@ -38,14 +38,14 @@
 
                         <DataGrid materialDesign:ColorZoneAssist.Mode="SecondaryDark" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" />
 
-                        <StackPanel Grid.Column="1" Margin="0,100,0,0" >
-                            <StackPanel Orientation="Vertical" >
-                                <TextBox Text="Naam" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" />
-                                <TextBox  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" />
-                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" />
-                                <TextBox  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" />
+                        <StackPanel Grid.Column="1" Margin="0,100,0,0">
+                            <StackPanel Orientation="Vertical">
+                                <TextBox Text="Naam" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                             </StackPanel>
-                            <StackPanel >
+                            <StackPanel>
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
                                     <Button Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
@@ -54,7 +54,6 @@
                                 </DockPanel>
                             </StackPanel>
                         </StackPanel>
-
                     </Grid>
                 </TabItem>
                 <TabItem Height="80" Width="80" Margin="0,0,30,0">
@@ -77,21 +76,21 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50"/>
+                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" />
                         <StackPanel Grid.Column="1">
 
-                            <StackPanel Margin="0,100,0,0" >
+                            <StackPanel Margin="0,100,0,0">
                                 <DockPanel>
-                                    <Label Content="Duurtijd contract" Margin="0,0,40,0" FontSize="16" Width="132" />
-                                    <Label Content="Van" Margin="0,0,10,0" FontSize="16"></Label>
-                                    <DatePicker Width="140" />
-                                    <Label Content="Tot" Margin="10,0,10,0" FontSize="16"></Label>
-                                    <DatePicker Width="120" FontSize="16" />
+                                    <Label Content="Duurtijd contract" Margin="0,0,40,0" FontSize="16" Width="132" Foreground ="#303030" />
+                                    <Label Content="Van" Margin="0,0,10,0" FontSize="16" Foreground ="#303030"></Label>
+                                    <DatePicker Width="140" Foreground ="#303030" />
+                                    <Label Content="Tot" Margin="10,0,10,0" FontSize="16" Foreground ="#303030"></Label>
+                                    <DatePicker Width="120" FontSize="16" Foreground ="#303030" />
                                 </DockPanel>
-                                <TextBox Text="Organisatie" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" />
-                                <TextBox  Text="Gebruikte parkeerplaatsen" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" />
+                                <TextBox Text="Organisatie" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox  Text="Gebruikte parkeerplaatsen" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                             </StackPanel>
-                            <StackPanel Margin="0,100,0,0" >
+                            <StackPanel Margin="0,100,0,0">
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
                                     <Button Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
@@ -127,12 +126,12 @@
 
                         <StackPanel Grid.Column="1">
 
-                            <StackPanel Margin="0,99,0,0" >
-                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
-                                <TextBox  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
-                                <TextBox Text="GSM" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
-                                <TextBox  Text="Email" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
-                                <TextBox Text="BTW-Nummer" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
+                            <StackPanel Margin="0,99,0,0">
+                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox Text="GSM" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox  Text="Email" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox Text="BTW-Nummer" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
 
                             <StackPanel>
@@ -167,15 +166,15 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50"/>
+                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" />
 
                         <StackPanel Grid.Column="1">
 
-                            <StackPanel Margin="0,100,0,0" >
-                                <TextBox Text="Naam" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
-                                <TextBox  Text="Functie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
-                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
-                                <TextBox  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" />
+                            <StackPanel Margin="0,100,0,0">
+                                <TextBox Text="Naam" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox  Text="Functie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
 
                             <StackPanel>
