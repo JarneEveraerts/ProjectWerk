@@ -62,6 +62,8 @@ namespace Presentation.Views
 
         private void Btn_Submit_Employee_Click(object sender, RoutedEventArgs e)
         {
+            _licensePlate = txtBox_LicensePlate.Text;
+            _dc.SubmitVisitor(_licensePlate);
         }
 
         private void Btn_Submit_Visitor_Click(object sender, RoutedEventArgs e)
