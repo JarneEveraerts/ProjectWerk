@@ -48,6 +48,9 @@ namespace Presentation
             services.AddScoped<DomainController>();
             services.AddSingleton<ParkingApp>();
             services.AddSingleton<BalieApp>();
+            services.AddSingleton<LoginAdmin>();
+            services.AddSingleton<VisitorRegistration>();
+            services.AddSingleton<UitgangApp>();
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
@@ -56,6 +59,12 @@ namespace Presentation
             BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
             parkingApp.Show();
             balieApp.Show();
+            LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
+            login.Show();
+            VisitorRegistration visitorRegistration = _serviceProvider.GetRequiredService<VisitorRegistration>();
+            visitorRegistration.Show();
+            UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
+            uitgangApp.Show();
         }
     }
 }

@@ -23,47 +23,27 @@ namespace Presentation.Views
 
         private void Btn_ENG_Click(object sender, RoutedEventArgs e)
         {
-            Btn_NL.Visibility = Visibility.Visible;
-            Btn_FR.Visibility = Visibility.Visible;
-            Btn_ENG.Visibility = Visibility.Collapsed;
-            lbl_LicensePlateNL.Visibility = Visibility.Collapsed;
-            lbl_LicensePlateFR.Visibility = Visibility.Collapsed;
-            lbl_LicensePlateENG.Visibility = Visibility.Visible;
-            Btn_SubmitEmployeeNL.Visibility = Visibility.Collapsed;
-            Btn_SubmitEmployeeFR.Visibility = Visibility.Collapsed;
-            Btn_SubmitEmployeeENG.Visibility = Visibility.Visible;
+            Btn_Visitor.Content = "Visitor";
+            lbl_LicensePlateNL.Content = "License Plate";
+            lbl_LicensePlateNL.Content = "Login/Register as";
         }
 
         private void Btn_FR_Click(object sender, RoutedEventArgs e)
         {
-            Btn_NL.Visibility = Visibility.Visible;
-            Btn_FR.Visibility = Visibility.Collapsed;
-            Btn_ENG.Visibility = Visibility.Visible;
-            lbl_LicensePlateNL.Visibility = Visibility.Collapsed;
-            lbl_LicensePlateFR.Visibility = Visibility.Visible;
-            lbl_LicensePlateENG.Visibility = Visibility.Collapsed;
-            Btn_SubmitEmployeeNL.Visibility = Visibility.Collapsed;
-            Btn_SubmitEmployeeFR.Visibility = Visibility.Visible;
-            Btn_SubmitEmployeeENG.Visibility = Visibility.Collapsed;
+            Btn_Visitor.Content = "Visiteur";
+            lbl_LicensePlateNL.Content = "Plaque d'immatriculation";
+            lbl_BedrijfNL.Content = "Connexion/enregistrement en tant que";
         }
 
         private void Btn_NL_Click(object sender, RoutedEventArgs e)
         {
-            Btn_NL.Visibility = Visibility.Collapsed;
-            Btn_FR.Visibility = Visibility.Visible;
-            Btn_ENG.Visibility = Visibility.Visible;
-            lbl_LicensePlateNL.Visibility = Visibility.Visible;
-            lbl_LicensePlateFR.Visibility = Visibility.Collapsed;
-            lbl_LicensePlateENG.Visibility = Visibility.Collapsed;
-            Btn_SubmitEmployeeNL.Visibility = Visibility.Visible;
-            Btn_SubmitEmployeeFR.Visibility = Visibility.Collapsed;
-            Btn_SubmitEmployeeENG.Visibility = Visibility.Collapsed;
+            Btn_Visitor.Content = "Bezoeker";
+            lbl_LicensePlateNL.Content = "Nummerplaat";
+            lbl_BedrijfNL.Content = "Login/ Register als";
         }
 
         private void Btn_Submit_Employee_Click(object sender, RoutedEventArgs e)
         {
-            _licensePlate = txtBox_LicensePlate.Text;
-            _dc.SubmitVisitor(_licensePlate);
         }
 
         private void Btn_Submit_Visitor_Click(object sender, RoutedEventArgs e)
