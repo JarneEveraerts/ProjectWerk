@@ -9,7 +9,6 @@ namespace Presentation.Views
     /// </summary>
     public partial class ParkingApp : Window
     {
-        // mag niet  public IParkingRepository parkingRepository;
         private DomainController _dc;
 
         private string _licensePlate;
@@ -60,11 +59,6 @@ namespace Presentation.Views
             Btn_SubmitEmployeeFR.Visibility = Visibility.Collapsed;
             Btn_SubmitEmployeeENG.Visibility = Visibility.Collapsed;
         }
-
-        //private void RBtn_Allphi_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    Bussines = Rbtn_AllPhi.Content.ToString();
-        //}
 
         private void Btn_Submit_Employee_Click(object sender, RoutedEventArgs e)
         {
