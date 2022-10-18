@@ -1,0 +1,47 @@
+﻿<Window x:Class="Presentation.Views.VisitorRegistration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Presentation.Views"
+        mc:Ignorable="d"
+        Title="VisitorRegistration" Height="1024" Width="1440"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="#dddddd"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Rectangle Grid.Row="0" Grid.ColumnSpan="5" Fill="#FF0E5600" />
+        <Label Content="Welkom" FontSize="42" Grid.ColumnSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center" Width="167" FontWeight="Bold" Foreground="#DDFFFFFF"/>
+
+        <TextBox Grid.Row="2" Grid.ColumnSpan="5" Text="Naam" Width="400" Height="100" HorizontalAlignment="Center" FontSize="30" />
+        <TextBox Grid.Row="3" Grid.ColumnSpan="5" Text="Adres" Width="400" Height="100" HorizontalAlignment="Center" FontSize="30" />
+        <TextBox Grid.Row="4" Grid.ColumnSpan="5" Text="Organisatie" Width="400"  Height="100" HorizontalAlignment="Center" FontSize="30" />
+        <TextBox Grid.Row="5" Grid.ColumnSpan="5" Text="Nummerplaat" Width="400"  Height="100" HorizontalAlignment="Center" FontSize="30" />
+
+        <Button x:Name="btn_Registreren" Content="Registreren" HorizontalAlignment="Center" FontSize="46" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="7" Grid.Column="1" Margin="0,10,0,10" Height="100" Width="800"/>
+
+    </Grid>
+</Window>
