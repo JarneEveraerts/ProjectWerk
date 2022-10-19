@@ -25,10 +25,4 @@ public interface IContractRepository
     void UpdateContract(Contract contract);
 
     #endregion UPDATE
-
-    #region DELETE
-
-    void DeleteContract(Contract contract);
-
-    #endregion DELETE
 }

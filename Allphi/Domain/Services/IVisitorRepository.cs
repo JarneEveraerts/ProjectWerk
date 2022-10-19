@@ -29,10 +29,4 @@ public interface IVisitorRepository
     void UpdateVisitor(Visitor visitor);
 
     #endregion UPDATE
-
-    #region DELETE
-
-    void DeleteVisitor(Visitor visitor);
-
-    #endregion DELETE
 }
