@@ -131,26 +131,24 @@ namespace Domain
             return _employeeRepo.GetEmployees();
         }
 
-        public List<string> ConvertBusinessToStringList(object input)
+        public List<string> ConvertBusinessToStringList(Business selectedItem)
         {
-            Business selected = (Business)input;
             List<string> business = new List<string>();
-            business.Add(selected.Name);
-            business.Add(selected.Address);
-            business.Add(selected.Phone);
-            business.Add(selected.Email);
-            business.Add(selected.Btw);
+            business.Add(selectedItem.Name);
+            business.Add(selectedItem.Address);
+            business.Add(selectedItem.Phone);
+            business.Add(selectedItem.Email);
+            business.Add(selectedItem.Btw);
             return business;
         }
 
-        public List<string> ConvertVisitorToStringList(object input)
+        public List<string> ConvertVisitorToStringList(Visitor selectedItem)
         {
-            Visitor selected = (Visitor)input;
             List<string> visitor = new List<string>();
-            visitor.Add(selected.Name);
-            visitor.Add(selected.Email);
-            visitor.Add(selected.Plate);
-            visitor.Add(selected.Business);
+            visitor.Add(selectedItem.Name);
+            visitor.Add(selectedItem.Email);
+            visitor.Add(selectedItem.Plate);
+            visitor.Add(selectedItem.Business);
             return visitor;
         }
 
@@ -159,14 +157,13 @@ namespace Domain
             _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
         }
 
-        public List<string> ConvertContractToStringList(object selectedItem)
+        public List<string> ConvertContractToStringList(Contract selectedItem)
         {
-            Contract selected = (Contract)selectedItem;
             List<string> contract = new List<string>();
-            contract.Add(selected.Business.Name);
-            contract.Add(selected.TotalSpaces.ToString());
-            contract.Add(selected.StartDate.ToString());
-            contract.Add(selected.EndDate.ToString());
+            contract.Add(selectedItem.Business.Name);
+            contract.Add(selectedItem.TotalSpaces.ToString());
+            contract.Add(selectedItem.StartDate.ToString());
+            contract.Add(selectedItem.EndDate.ToString());
             return contract;
         }
 
@@ -177,15 +174,14 @@ namespace Domain
             _contractRepo.CreateContract(new Contract(selectedBusiness, start, end, totalSpots));
         }
 
-        public List<string> ConvertEmployeeToStringList(object selectedItem)
+        public List<string> ConvertEmployeeToStringList(Employee selectedItem)
         {
-            Employee selected = (Employee)selectedItem;
             List<string>? employee = new List<string>();
-            employee.Add(selected.Name);
-            employee.Add(selected.Email);
-            employee.Add(selected.Business.Name);
-            employee.Add(selected.Function);
-            employee.Add(selected.Plate);
+            employee.Add(selectedItem.Name);
+            employee.Add(selectedItem.Email);
+            employee.Add(selectedItem.Business.Name);
+            employee.Add(selectedItem.Function);
+            employee.Add(selectedItem.Plate);
 
             return employee;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Domain;
 using System.Windows;
+using Domain.Models;
 
 namespace Presentation.Views
 {
@@ -62,7 +63,7 @@ namespace Presentation.Views
 
         private void dtg_businesses_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            List<string> selected = _dc.ConvertBusinessToStringList(dtg_businesses.SelectedItem);
+            List<string> selected = _dc.ConvertBusinessToStringList((Business)dtg_businesses.SelectedItem);
             txt_business_name.Text = selected[0];
             txt_business_address.Text = selected[1];
             txt_business_phone.Text = selected[2];
@@ -72,7 +73,7 @@ namespace Presentation.Views
 
         private void dtg_visitors_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            List<string> selected = _dc.ConvertVisitorToStringList(dtg_visitors.SelectedItem);
+            List<string> selected = _dc.ConvertVisitorToStringList((Visitor)dtg_visitors.SelectedItem);
             txt_visitor_name.Text = selected[0];
             txt_visitor_email.Text = selected[1];
             txt_visitor_plate.Text = selected[2];
@@ -81,7 +82,7 @@ namespace Presentation.Views
 
         private void dtg_contracts_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            List<string> selected = _dc.ConvertContractToStringList(dtg_contracts.SelectedItem);
+            List<string> selected = _dc.ConvertContractToStringList((Contract)dtg_contracts.SelectedItem);
             txt_contract_business.Text = selected[0];
             txt_contract_spots.Text = selected[1];
             dtp_start.SelectedDate = Convert.ToDateTime(selected[2]);
@@ -90,7 +91,7 @@ namespace Presentation.Views
 
         private void dtg_employees_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            List<string> selected = _dc.ConvertEmployeeToStringList(dtg_employees.SelectedItem);
+            List<string> selected = _dc.ConvertEmployeeToStringList((Employee)dtg_employees.SelectedItem);
             txt_employee_name.Text = selected[0];
             txt_employee_email.Text = selected[1];
             txt_employee_business.Text = selected[2];
