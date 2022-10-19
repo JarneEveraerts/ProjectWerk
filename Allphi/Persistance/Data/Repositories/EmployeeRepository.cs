@@ -16,7 +16,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public List<Employee> GetEmployees()
     {
-        List<Employee> employees = _allphiContext.Employee.ToList();
+        List<Employee> employees = _allphiContext.Employee.Where(e => e.IsDeleted == false).ToList();
         return employees;
     }
 
@@ -65,14 +65,4 @@ public class EmployeeRepository : IEmployeeRepository
     }
 
     #endregion UPDATE
-
-    #region DELETE
-
-    public void DeleteEmployee(Employee employee)
-    {
-        _allphiContext.Employee.Remove(employee);
-        _allphiContext.SaveChanges();
-    }
-
-    #endregion DELETE
 }

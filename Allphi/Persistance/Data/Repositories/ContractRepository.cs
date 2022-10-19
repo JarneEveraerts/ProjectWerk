@@ -16,7 +16,7 @@ public class ContractRepository : IContractRepository
 
     public List<Contract> GetContracts()
     {
-        List<Contract> contracts = _allphiContext.Contract.ToList();
+        List<Contract> contracts = _allphiContext.Contract.Where(c => c.IsDeleted == false).ToList();
         return contracts;
     }
 
@@ -53,14 +53,4 @@ public class ContractRepository : IContractRepository
     }
 
     #endregion Update
-
-    #region Delete
-
-    public void DeleteContract(Contract contract)
-    {
-        _allphiContext.Contract.Remove(contract);
-        _allphiContext.SaveChanges();
-    }
-
-    #endregion Delete
 }

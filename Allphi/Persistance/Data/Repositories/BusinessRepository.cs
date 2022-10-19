@@ -16,7 +16,7 @@ public class BusinessRepository : IBusinessRepository
 
     public List<Business> GetBusinesses()
     {
-        List<Business> businesses = _allphiContext.Business.ToList();
+        List<Business> businesses = _allphiContext.Business.Where(b => b.IsDeleted == false).ToList();
         return businesses;
     }
 
@@ -65,14 +65,4 @@ public class BusinessRepository : IBusinessRepository
     }
 
     #endregion UPDATE
-
-    #region DELETE
-
-    public void DeleteBusiness(Business business)
-
-    {
-        _allphiContext.Remove(business);
-    }
-
-    #endregion DELETE
 }
