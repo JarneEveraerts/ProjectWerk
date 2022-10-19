@@ -21,7 +21,9 @@ namespace Domain
 
         #region CTOR
 
-        public DomainController(IBusinessRepository businessRepo, IContractRepository contractRepo, IEmployeeRepository employeeRepo, IParkingSpotRepository parkingRepo, IVisitorRepository visitorRepo, IVisitRepository visitRepo)
+        public DomainController(IBusinessRepository businessRepo, IContractRepository contractRepo,
+            IEmployeeRepository employeeRepo, IParkingSpotRepository parkingRepo, IVisitorRepository visitorRepo,
+            IVisitRepository visitRepo)
         {
             this._businessRepo = businessRepo;
             this._contractRepo = contractRepo;
@@ -78,11 +80,14 @@ namespace Domain
         {
             string license = Guard.Against.NullOrEmpty(licensePlate, nameof(licensePlate));
             ParkingSpot parkingSpot = _parkingRepo.GetAvailableParkingSpotUnreserved();
-            if (IsLicensePlateValid(license) && parkingSpot != null && _parkingRepo.CountParkingSpotByPlate(license) == 0)
+            if (IsLicensePlateValid(license) && parkingSpot != null &&
+                _parkingRepo.CountParkingSpotByPlate(license) == 0)
             {
                 parkingSpot.Plate = license;
                 _parkingRepo.UpdateParkingSpot(parkingSpot);
-            };
+            }
+
+            ;
         }
 
         public void SubmitEmployeeParking(string licensePlate)
@@ -101,19 +106,12 @@ namespace Domain
 
         #endregion Parking
 
-        #region Business
-
-        public void CreateBusiness(string name, string? address, string? phone, string email, string btw)
-        {
-            _businessRepo.CreateBusiness(new Business(name, btw, email, address, phone));
-        }
+        #region GET
 
         public List<Business> GetBusinesses()
         {
             return _businessRepo.GetBusinesses();
         }
-
-        #endregion Business
 
         public List<Visitor> GetVisitors()
         {
@@ -130,6 +128,110 @@ namespace Domain
         {
             return _employeeRepo.GetEmployees();
         }
+
+        #endregion GET
+
+        #region UPDATE
+
+        public void UpdateEmployee(string name, string email, string function, string business, string plate,
+            Employee selectedItem)
+        {
+            selectedItem.Name = name;
+            selectedItem.Email = email;
+            selectedItem.Function = function;
+            selectedItem.Business = _businessRepo.GetBusinessByName(business);
+            selectedItem.Plate = plate;
+            _employeeRepo.UpdateEmployee(selectedItem);
+        }
+
+        public void UpdateContract(string spots, string business, DateTime start, DateTime end, Contract selectedItem)
+        {
+            selectedItem.TotalSpaces = int.Parse(spots);
+            selectedItem.Business = _businessRepo.GetBusinessByName(business);
+            selectedItem.StartDate = start;
+            selectedItem.EndDate = end;
+            _contractRepo.UpdateContract(selectedItem);
+        }
+
+        public void UpdateVisitor(string name, string email, string plate, string business, Visitor selectedItem)
+        {
+            selectedItem.Name = name;
+            selectedItem.Email = email;
+            selectedItem.Plate = plate;
+            selectedItem.Business = business;
+            _visitorRepo.UpdateVisitor(selectedItem);
+        }
+
+        public void UpdateBusiness(string name, string address, string phone, string email, string btw,
+            Business selectedItem)
+        {
+            selectedItem.Name = name;
+            selectedItem.Address = address;
+            selectedItem.Phone = phone;
+            selectedItem.Email = email;
+            selectedItem.Btw = btw;
+            _businessRepo.UpdateBusiness(selectedItem);
+        }
+
+        #endregion UPDATE
+
+        #region DELETE
+
+        public void DeleteVisitor(Visitor selectedItem)
+        {
+            selectedItem.IsDeleted = true;
+            _visitorRepo.UpdateVisitor(selectedItem);
+        }
+
+        public void DeleteContract(Contract selectedItem)
+        {
+            selectedItem.IsDeleted = true;
+            _contractRepo.UpdateContract(selectedItem);
+        }
+
+        public void DeleteBusiness(Business selectedItem)
+        {
+            selectedItem.IsDeleted = true;
+            _businessRepo.UpdateBusiness(selectedItem);
+        }
+
+        public void DeleteEmployee(Employee selectedItem)
+        {
+            selectedItem.IsDeleted = true;
+            _employeeRepo.UpdateEmployee(selectedItem);
+        }
+
+        #endregion DELETE
+
+        #region CREATE
+
+        public void CreateEmployee(string name, string? email, string function, string business, string? plate)
+        {
+            Business selectedBusiness = _businessRepo.GetBusinessByName(business);
+            List<string> names = name.Split(' ').ToList();
+            _employeeRepo.CreateEmployee(new Employee(names[0], names[1], function, selectedBusiness, email, plate));
+        }
+
+        public void CreateVisitor(string name, string email, string? plate, string business)
+        {
+            _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
+        }
+
+        public void CreateContract(string spots, string business, DateTime start, DateTime end)
+        {
+            int totalSpots = int.Parse(spots);
+            Business selectedBusiness = _businessRepo.GetBusinessByName(business);
+            _contractRepo.CreateContract(new Contract(selectedBusiness, start, end, totalSpots));
+        }
+
+        public void CreateBusiness(string name, string address, string phone, string email, string btw)
+        {
+            _businessRepo.CreateBusiness(new Business(name, address, phone, email, btw));
+        }
+
+        #endregion CREATE
+
+        #region Convert
 
         public List<string> ConvertBusinessToStringList(Business selectedItem)
         {
@@ -152,11 +254,6 @@ namespace Domain
             return visitor;
         }
 
-        public void CreateVisitor(string name, string email, string? plate, string business)
-        {
-            _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
-        }
-
         public List<string> ConvertContractToStringList(Contract selectedItem)
         {
             List<string> contract = new List<string>();
@@ -167,13 +264,6 @@ namespace Domain
             return contract;
         }
 
-        public void CreateContract(string spots, string business, DateTime start, DateTime end)
-        {
-            int totalSpots = int.Parse(spots);
-            Business selectedBusiness = _businessRepo.GetBusinessByName(business);
-            _contractRepo.CreateContract(new Contract(selectedBusiness, start, end, totalSpots));
-        }
-
         public List<string> ConvertEmployeeToStringList(Employee selectedItem)
         {
             List<string>? employee = new List<string>();
@@ -182,15 +272,9 @@ namespace Domain
             employee.Add(selectedItem.Business.Name);
             employee.Add(selectedItem.Function);
             employee.Add(selectedItem.Plate);
-
             return employee;
         }
 
-        public void CreateEmployee(string name, string? email, string function, string business, string? plate)
-        {
-            Business selectedBusiness = _businessRepo.GetBusinessByName(business);
-            List<string> names = name.Split(' ').ToList();
-            _employeeRepo.CreateEmployee(new Employee(names[0], names[1], function, selectedBusiness, email, plate));
-        }
+        #endregion Convert
     }
 }
