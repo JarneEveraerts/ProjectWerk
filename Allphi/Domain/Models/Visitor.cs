@@ -18,5 +18,6 @@
         public string Email { get; set; }
         public string Business { get; set; }
         public string? Plate { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
