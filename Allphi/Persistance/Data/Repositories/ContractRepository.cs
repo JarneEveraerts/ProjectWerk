@@ -14,7 +14,7 @@ public class ContractRepository : IContractRepository
 
     #region GET
 
-    public List<Contract> GetContract()
+    public List<Contract> GetContracts()
     {
         List<Contract> contracts = _allphiContext.Contract.ToList();
         return contracts;

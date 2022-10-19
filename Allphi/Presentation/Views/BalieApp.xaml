@@ -36,19 +36,19 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid materialDesign:ColorZoneAssist.Mode="SecondaryDark" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" />
+                        <DataGrid x:Name="dtg_visitors" materialDesign:ColorZoneAssist.Mode="SecondaryDark" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" SelectionChanged="dtg_visitors_SelectionChanged" />
 
                         <StackPanel Grid.Column="1" Margin="0,100,0,0">
                             <StackPanel Orientation="Vertical">
-                                <TextBox Text="Naam" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_name" Text="Naam" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_email"  Text="Email" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_business" Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_plate"  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                             </StackPanel>
                             <StackPanel>
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
-                                    <Button Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                    <Button x:Name="btn_addVisitor" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addVisitor_Click"></Button>
                                     <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                     <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 </DockPanel>
@@ -76,24 +76,24 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" />
+                        <DataGrid x:Name="dtg_contracts" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" SelectionChanged="dtg_contracts_SelectionChanged" />
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,100,0,0">
                                 <DockPanel>
                                     <Label Content="Duurtijd contract" Margin="0,0,40,0" FontSize="16" Width="132" Foreground ="#303030" />
                                     <Label Content="Van" Margin="0,0,10,0" FontSize="16" Foreground ="#303030"></Label>
-                                    <DatePicker Width="140" Foreground ="#303030" />
+                                    <DatePicker x:Name="dtp_start" Width="140" Foreground ="#303030" />
                                     <Label Content="Tot" Margin="10,0,10,0" FontSize="16" Foreground ="#303030"></Label>
-                                    <DatePicker Width="120" FontSize="16" Foreground ="#303030" />
+                                    <DatePicker x:Name="dtp_end" Width="120" FontSize="16" Foreground ="#303030" />
                                 </DockPanel>
-                                <TextBox Text="Organisatie" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox  Text="Gebruikte parkeerplaatsen" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_contract_business" Text="Organisatie" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_contract_spots"  Text="Gebruikte parkeerplaatsen" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                             </StackPanel>
                             <StackPanel Margin="0,100,0,0">
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
-                                    <Button Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                    <Button x:Name="btn_addContract" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addContract_Click"></Button>
                                     <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                     <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 </DockPanel>
@@ -122,22 +122,22 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" />
+                        <DataGrid x:Name="dtg_businesses" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" SelectionChanged="dtg_businesses_SelectionChanged" />
 
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,99,0,0">
-                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox Text="GSM" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox  Text="Email" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox Text="BTW-Nummer" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_name" Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_address"  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_phone" Text="GSM" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_email"  Text="Email" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_btw" Text="BTW-Nummer" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
 
                             <StackPanel>
                                 <Button Margin="0,60,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
-                                    <Button Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                    <Button x:Name="btn_AddBusiness" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addBusiness_Click"></Button>
                                     <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                     <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 </DockPanel>
@@ -166,21 +166,22 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" />
+                        <DataGrid x:Name="dtg_employees" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" SelectionChanged="dtg_employees_SelectionChanged" />
 
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,100,0,0">
-                                <TextBox Text="Naam" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox  Text="Functie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_name" Text="Naam" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_email" Text="Email" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_function"  Text="Functie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_business" Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_plate"  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
 
                             <StackPanel>
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
-                                    <Button Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                    <Button x:Name="btn_addEmployee" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addEmployee_Click"></Button>
                                     <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                     <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 </DockPanel>

@@ -10,7 +10,9 @@ namespace Domain.Services
 
         List<ParkingSpot> GetParkingSpotsByReserved(Business reserved);
 
-        List<ParkingSpot>? GetAvailableParkingSpotsByReserved(Business reserved);
+        List<ParkingSpot>? GetAvailableParkingSpotsReserved(Business reserved);
+
+        ParkingSpot GetAvailableParkingSpotReserved(Business reserved);
 
         List<ParkingSpot>? GetAvailableParkingSpotsByPlate();
 

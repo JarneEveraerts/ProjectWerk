@@ -9,19 +9,19 @@
             Email = email;
         }
 
-        public Business(string name, string btw, string email, string adress, string phone)
+        public Business(string name, string btw, string email, string? address, string? phone)
         {
             Name = name;
             Btw = btw;
             Email = email;
-            Adress = adress;
+            Address = address;
             Phone = phone;
         }
 
         public string Name { get; set; }
         public string Btw { get; set; }
         public string Email { get; set; }
-        public string? Adress { get; set; }
+        public string? Address { get; set; }
         public string? Phone { get; set; }
     }
 }

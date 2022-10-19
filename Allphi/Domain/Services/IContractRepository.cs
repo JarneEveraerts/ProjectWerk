@@ -6,7 +6,7 @@ public interface IContractRepository
 {
     #region GET
 
-    List<Contract> GetContract();
+    List<Contract> GetContracts();
 
     Contract GetContractByBusiness(Business business);
 

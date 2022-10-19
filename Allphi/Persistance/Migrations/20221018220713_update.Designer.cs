@@ -12,8 +12,8 @@ using Persistance.Data;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(AllphiContext))]
-    [Migration("20221016173328_update-bug")]
-    partial class updatebug
+    [Migration("20221018220713_update")]
+    partial class update
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
