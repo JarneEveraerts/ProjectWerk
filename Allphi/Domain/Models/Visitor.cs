@@ -8,6 +8,7 @@
             Email = email;
             Business = business;
             Plate = plate;
+            IsDeleted = false;
         }
 
         public Visitor()

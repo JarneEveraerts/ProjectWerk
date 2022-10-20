@@ -9,6 +9,7 @@
             Employee = employee;
             StartDate = startDate;
             EndDate = endDate;
+            IsDeleted = false;
         }
 
         public Visit()

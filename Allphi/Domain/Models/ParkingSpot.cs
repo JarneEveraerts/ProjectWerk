@@ -8,6 +8,7 @@
             Visitor = visitor;
             Plate = plate;
             Reserved = reserved;
+            IsDeleted = false;
         }
 
         public ParkingSpot()
