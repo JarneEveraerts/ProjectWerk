@@ -36,14 +36,22 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid x:Name="dtg_visitors" materialDesign:ColorZoneAssist.Mode="SecondaryDark" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" SelectionChanged="dtg_visitors_SelectionChanged" />
+                        <DataGrid x:Name="dtg_visitors" Margin="50,50,50,50" materialDesign:ColorZoneAssist.Mode="SecondaryDark" IsReadOnly="True"
+                                  AutoGenerateColumns="False" CanUserResizeColumns="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Naam" Binding="{Binding Path=Name }" />
+                                <DataGridTextColumn Header="E-mail" Binding="{Binding Path= Email}" />
+                                <DataGridTextColumn Header="Organisatie" Binding="{Binding Path=Business}" />
+                                <DataGridTextColumn Header="Nummerplaat" Binding="{Binding Path=Plate}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
 
                         <StackPanel Grid.Column="1" Margin="0,100,0,0">
                             <StackPanel Orientation="Vertical">
-                                <TextBox x:Name="txt_visitor_name" Text="Naam" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_visitor_email"  Text="Email" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_visitor_business" Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_visitor_plate"  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_name" Text="{Binding SelectedItem.Name,ElementName=dtg_visitors}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_email"  Text="{Binding SelectedItem.Email,ElementName=dtg_visitors}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_business" Text="{Binding SelectedItem.Business,ElementName=dtg_visitors}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_plate"  Text="{Binding SelectedItem.Plate,ElementName=dtg_visitors}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                             </StackPanel>
                             <StackPanel>
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
@@ -76,19 +84,26 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <DataGrid x:Name="dtg_contracts" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" SelectionChanged="dtg_contracts_SelectionChanged" />
+                        <DataGrid x:Name="dtg_contracts"  Margin="50,50,50,50" materialDesign:ColorZoneAssist.Mode="SecondaryDark" IsReadOnly="True" AutoGenerateColumns="False" CanUserResizeColumns="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Bedrijf" Binding="{Binding Path = Business.Name}" />
+                                <DataGridTextColumn Header="Totaal plaatsen" Binding="{Binding Path=TotalSpaces}" />
+                                <DataGridTextColumn Header="Start datum" Binding="{Binding Path=StartDate}" />
+                                <DataGridTextColumn Header="Eind datum" Binding="{Binding Path=EndDate}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,100,0,0">
                                 <DockPanel>
                                     <Label Content="Duurtijd contract" Margin="0,0,40,0" FontSize="16" Width="132" Foreground ="#303030" />
                                     <Label Content="Van" Margin="0,0,10,0" FontSize="16" Foreground ="#303030"></Label>
-                                    <DatePicker x:Name="dtp_start" Width="140" Foreground ="#303030" />
+                                    <DatePicker x:Name="dtp_start" SelectedDate="{Binding SelectedItem.StartDate,ElementName=dtg_contracts}" Width="140" Foreground ="#303030" />
                                     <Label Content="Tot" Margin="10,0,10,0" FontSize="16" Foreground ="#303030"></Label>
-                                    <DatePicker x:Name="dtp_end" Width="120" FontSize="16" Foreground ="#303030" />
+                                    <DatePicker x:Name="dtp_end" SelectedDate="{Binding SelectedItem.EndDate,ElementName=dtg_contracts}" Width="120" FontSize="16" Foreground ="#303030" />
                                 </DockPanel>
-                                <TextBox x:Name="txt_contract_business" Text="Organisatie" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_contract_spots"  Text="Gebruikte parkeerplaatsen" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_contract_business" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_contracts}" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_contract_spots"  Text="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts}" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                             </StackPanel>
                             <StackPanel Margin="0,100,0,0">
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
@@ -122,16 +137,24 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid x:Name="dtg_businesses" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" SelectionChanged="dtg_businesses_SelectionChanged" />
+                        <DataGrid x:Name="dtg_businesses" Margin="50,50,50,50"  materialDesign:ColorZoneAssist.Mode="SecondaryDark" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Naam" Binding="{Binding Path =Name}" />
+                                <DataGridTextColumn Header="Adres" Binding="{Binding Path =Address}" />
+                                <DataGridTextColumn Header="Telefoon nummer" Binding="{Binding Path =Phone}" />
+                                <DataGridTextColumn Header="Email" Binding="{Binding Path =Email}" />
+                                <DataGridTextColumn Header="Btw" Binding="{Binding Path =Btw}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
 
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,99,0,0">
-                                <TextBox x:Name="txt_business_name" Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_business_address"  Text="Adres" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_business_phone" Text="GSM" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_business_email"  Text="Email" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_business_btw" Text="BTW-Nummer" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_name" Text="{Binding SelectedItem.Name ,ElementName=dtg_businesses}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_address"  Text="{Binding SelectedItem.Address ,ElementName=dtg_businesses}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_phone" Text="{Binding SelectedItem.Phone ,ElementName=dtg_businesses}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_email"  Text="{Binding SelectedItem.Email ,ElementName=dtg_businesses}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_btw" Text="{Binding SelectedItem.Btw ,ElementName=dtg_businesses}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
 
                             <StackPanel>
@@ -166,16 +189,24 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <DataGrid x:Name="dtg_employees" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="50,50,50,50" SelectionChanged="dtg_employees_SelectionChanged" />
+                        <DataGrid x:Name="dtg_employees" Margin="50,50,50,50" materialDesign:ColorZoneAssist.Mode="SecondaryDark" IsReadOnly="True" AutoGenerateColumns="False" CanUserResizeColumns="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Naam" Binding="{Binding Path=Name}" />
+                                <DataGridTextColumn Header="E-mail" Binding="{Binding Path=Email}" />
+                                <DataGridTextColumn Header="Functie" Binding="{Binding Path=Function}" />
+                                <DataGridTextColumn Header="Bedrijf" Binding="{Binding Path=Business.Name}" />
+                                <DataGridTextColumn Header="Nummerplaat" Binding="{Binding Path=Plate}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
 
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,100,0,0">
-                                <TextBox x:Name="txt_employee_name" Text="Naam" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_email" Text="Email" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_function"  Text="Functie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_business" Text="Organisatie" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_plate"  Text="Nummerplaat" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_name" Text="{Binding SelectedItem.Name ,ElementName=dtg_employees}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_email" Text="{Binding SelectedItem.Email ,ElementName=dtg_employees}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_function"  Text="{Binding SelectedItem.Function ,ElementName=dtg_employees}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_business" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_employees}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_plate"  Text="{Binding SelectedItem.Plate ,ElementName=dtg_employees}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
 
                             <StackPanel>
