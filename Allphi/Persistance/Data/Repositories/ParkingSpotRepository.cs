@@ -16,7 +16,7 @@ namespace Persistance.Data.Repositories
 
         public List<ParkingSpot> GetParkingSpots()
         {
-            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.ToList();
+            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.IsDeleted == false).ToList();
             return parkingSpots;
         }
 
@@ -89,16 +89,6 @@ namespace Persistance.Data.Repositories
         }
 
         #endregion UPDATE
-
-        #region DELETE
-
-        public void DeleteParkingSpot(ParkingSpot parkingSpot)
-        {
-            _allphiContext.ParkingSpot.Remove(parkingSpot);
-            _allphiContext.SaveChanges();
-        }
-
-        #endregion DELETE
 
         #region COUNT
 

@@ -38,12 +38,6 @@ namespace Domain.Services
 
         #endregion UPDATE
 
-        #region DELETE
-
-        void DeleteParkingSpot(ParkingSpot parkingSpot);
-
-        #endregion DELETE
-
         #region COUNT
 
         int CountParkingSpotByPlate(string plate);

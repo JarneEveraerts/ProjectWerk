@@ -18,7 +18,8 @@ namespace Persistance.Migrations
                     Btw = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Removed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,7 +35,8 @@ namespace Persistance.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Business = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Plate = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Plate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Removed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,7 +52,8 @@ namespace Persistance.Migrations
                     BusinessId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalSpaces = table.Column<int>(type: "int", nullable: false)
+                    TotalSpaces = table.Column<int>(type: "int", nullable: false),
+                    Removed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +77,8 @@ namespace Persistance.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Function = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Plate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BusinessId = table.Column<int>(type: "int", nullable: false)
+                    BusinessId = table.Column<int>(type: "int", nullable: false),
+                    Removed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,7 +100,8 @@ namespace Persistance.Migrations
                     VisitorId = table.Column<int>(type: "int", nullable: true),
                     EmployeeId = table.Column<int>(type: "int", nullable: true),
                     Plate = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReservedId = table.Column<int>(type: "int", nullable: true)
+                    ReservedId = table.Column<int>(type: "int", nullable: true),
+                    Removed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,7 +134,8 @@ namespace Persistance.Migrations
                     BusinessId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Removed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

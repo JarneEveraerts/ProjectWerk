@@ -16,7 +16,7 @@ public class VisitRepository : IVisitRepository
 
     public List<Visit> GetVisits()
     {
-        List<Visit> visits = _allphiContext.Visit.ToList();
+        List<Visit> visits = _allphiContext.Visit.Where(v => v.IsDeleted == false).ToList();
         return visits;
     }
 
@@ -64,14 +64,4 @@ public class VisitRepository : IVisitRepository
     }
 
     #endregion UPDATE
-
-    #region DELETE
-
-    public void DeleteVisit(Visit visit)
-    {
-        _allphiContext.Visit.Remove(visit);
-        _allphiContext.SaveChanges();
-    }
-
-    #endregion DELETE
 }

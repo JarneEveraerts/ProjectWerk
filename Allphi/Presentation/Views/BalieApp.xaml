@@ -49,8 +49,8 @@
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
                                     <Button x:Name="btn_addVisitor" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addVisitor_Click"></Button>
-                                    <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
-                                    <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                    <Button x:Name="btn_updateVisitor" Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_updateVisitor_Click"></Button>
+                                    <Button x:Name="btn_deleteVisitor" Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_deleteVisitor_Click"></Button>
                                 </DockPanel>
                             </StackPanel>
                         </StackPanel>
@@ -94,8 +94,8 @@
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
                                     <Button x:Name="btn_addContract" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addContract_Click"></Button>
-                                    <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
-                                    <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                    <Button x:Name="btn_updateContract" Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_updateContract_Click"></Button>
+                                    <Button x:Name="btn_deleteContract" Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_deleteContract_Click"></Button>
                                 </DockPanel>
                             </StackPanel>
                         </StackPanel>
@@ -138,8 +138,8 @@
                                 <Button Margin="0,60,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
                                     <Button x:Name="btn_AddBusiness" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addBusiness_Click"></Button>
-                                    <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
-                                    <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                    <Button x:Name="btn_updateBusiness" Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_updateBusiness_Click"></Button>
+                                    <Button x:Name="btn_deleteBusiness" Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_deleteBusiness_Click"></Button>
                                 </DockPanel>
                             </StackPanel>
                         </StackPanel>
@@ -182,8 +182,8 @@
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
                                     <Button x:Name="btn_addEmployee" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addEmployee_Click"></Button>
-                                    <Button Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
-                                    <Button Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                    <Button x:Name="btn_updateEmployee" Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_updateEmployee_Click"></Button>
+                                    <Button x:Name="btn_deleteEmployee" Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_deleteEmployee_Click"></Button>
                                 </DockPanel>
                             </StackPanel>
                         </StackPanel>

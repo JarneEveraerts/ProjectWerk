@@ -18,5 +18,6 @@
         public Employee? Employee { get; set; }
         public string? Plate { get; set; }
         public Business? Reserved { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

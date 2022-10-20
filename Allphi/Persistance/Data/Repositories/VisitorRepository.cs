@@ -16,7 +16,7 @@ namespace Persistance.Data.Repositories
 
         public List<Visitor> GetVisitors()
         {
-            List<Visitor> visitors = _allphiContext.Visitor.ToList();
+            List<Visitor> visitors = _allphiContext.Visitor.Where(v => v.IsDeleted == false).ToList();
             return visitors;
         }
 
@@ -65,15 +65,5 @@ namespace Persistance.Data.Repositories
         }
 
         #endregion UPDATE
-
-        #region DELETE
-
-        public void DeleteVisitor(Visitor visitor)
-        {
-            _allphiContext.Visitor.Remove(visitor);
-            _allphiContext.SaveChanges();
-        }
-
-        #endregion DELETE
     }
 }

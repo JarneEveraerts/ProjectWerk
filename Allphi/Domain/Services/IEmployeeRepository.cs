@@ -29,10 +29,4 @@ public interface IEmployeeRepository
     void UpdateEmployee(Employee employee);
 
     #endregion UPDATE
-
-    #region DELETE
-
-    void DeleteEmployee(Employee employee);
-
-    #endregion DELETE
 }

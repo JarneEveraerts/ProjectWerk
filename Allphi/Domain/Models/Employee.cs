@@ -22,5 +22,6 @@
         public string Function { get; set; }
         public string? Plate { get; set; }
         public Business Business { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

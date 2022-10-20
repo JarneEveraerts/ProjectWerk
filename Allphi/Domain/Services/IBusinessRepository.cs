@@ -29,10 +29,4 @@ public interface IBusinessRepository
     void UpdateBusiness(Business business);
 
     #endregion UPDATE
-
-    #region DELETE
-
-    void DeleteBusiness(Business business);
-
-    #endregion DELETE
 }
