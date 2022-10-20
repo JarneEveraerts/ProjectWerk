@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Domain;
 using System.Windows;
 using Domain.Models;
+using Persistance;
+using Presentation.ViewModels;
 
 namespace Presentation.Views
 {
@@ -12,6 +14,12 @@ namespace Presentation.Views
     public partial class BalieApp : Window
     {
         private DomainController _dc;
+        private List<BusinessView>? _businessViews = new();
+        private List<ContractView>? _contractViews = new();
+        private List<EmployeeView>? _employeeViews = new();
+        private List<ParkingSpotView>? _parkingSpotViews = new();
+        private List<VisitorView>?  _visitorViews = new();
+        private List<VisitView>? _visitViews = new();
 
         public BalieApp(DomainController dc)
         {
