@@ -1,16 +1,28 @@
 ﻿using Domain.Models;
-using Persistance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.ViewModels
 {
     public class ParkingSpotView : ViewModelBase
     {
+        private int _id;
         private Employee? _employee;
+        private Visitor? _visitor;
+        private Business? _reserved;
+        private string? _plate;
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public Employee? Employee
         {
             get { return _employee; }
@@ -23,7 +35,7 @@ namespace Presentation.ViewModels
                 }
             }
         }
-        private Visitor? _visitor;
+
         public Visitor? Visitor
         {
             get { return _visitor; }
@@ -37,7 +49,6 @@ namespace Presentation.ViewModels
             }
         }
 
-        private Business? _reserved;
         public Business? Reserved
         {
             get { return _reserved; }
@@ -51,7 +62,6 @@ namespace Presentation.ViewModels
             }
         }
 
-        private string? _plate;
         public string? Plate
         {
             get { return _plate; }
@@ -65,12 +75,13 @@ namespace Presentation.ViewModels
             }
         }
 
-        public ParkingSpotView(Employee? employee, Visitor? visitor, string? plate, Business? reserved)
+        public ParkingSpotView(ParkingSpot parkingSpot)
         {
-            Employee = employee;
-            Visitor = visitor;
-            Plate = plate;
-            Reserved = reserved;
+            Id = parkingSpot.Id;
+            Employee = parkingSpot.Employee;
+            Visitor = parkingSpot.Visitor;
+            Plate = parkingSpot.Plate;
+            Reserved = parkingSpot.Reserved;
         }
     }
 }

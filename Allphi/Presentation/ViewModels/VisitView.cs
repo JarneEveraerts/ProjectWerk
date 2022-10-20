@@ -1,17 +1,31 @@
 ﻿using Domain.Models;
-using Persistance;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.ViewModels
 {
-    public class VisitView:ViewModelBase
+    public class VisitView : ViewModelBase
     {
-
+        private int _id;
         private Visitor _visitor;
+        private DateTime _startDate;
+        private DateTime? _endDate;
+        private Employee _employee;
+        private Business _business;
+        private bool _isDeleted;
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public Visitor Visitor
         {
             get { return _visitor; }
@@ -24,8 +38,7 @@ namespace Presentation.ViewModels
                 }
             }
         }
-        
-        private DateTime _startDate;
+
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -39,7 +52,6 @@ namespace Presentation.ViewModels
             }
         }
 
-        private DateTime? _endDate;
         public DateTime? EndDate
         {
             get { return _endDate; }
@@ -53,7 +65,6 @@ namespace Presentation.ViewModels
             }
         }
 
-        private Employee _employee;
         public Employee Employee
         {
             get { return _employee; }
@@ -67,8 +78,6 @@ namespace Presentation.ViewModels
             }
         }
 
-
-        private Business _business;
         public Business Business
         {
             get { return _business; }
@@ -82,14 +91,28 @@ namespace Presentation.ViewModels
             }
         }
 
-
-        public VisitView(Visitor visitor, Business business, Employee employee, DateTime startDate, DateTime? endDate)
+        public bool IsDeleted
         {
-            Visitor = visitor;
-            Business = business;
-            Employee = employee;
-            StartDate = startDate;
-            EndDate = endDate;
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public VisitView(Visit visit)
+        {
+            Id = visit.Id;
+            Visitor = visit.Visitor;
+            StartDate = visit.StartDate;
+            EndDate = visit.EndDate;
+            Employee = visit.Employee;
+            Business = visit.Business;
+            IsDeleted = visit.IsDeleted;
         }
     }
 }

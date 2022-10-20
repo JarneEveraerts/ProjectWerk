@@ -1,17 +1,29 @@
 ﻿using Domain.Models;
-using Persistance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace Presentation.ViewModels
 {
-    public class VisitorView:ViewModelBase
+    public class VisitorView : ViewModelBase
     {
+        private int _id;
         private string _name;
+        private string _email;
+        private string? _plate;
+        private string _business;
+        private bool _isDeleted;
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public string Name
         {
             get { return _name; }
@@ -24,7 +36,7 @@ namespace Presentation.ViewModels
                 }
             }
         }
-        private string _email;
+
         public string Email
         {
             get { return _email; }
@@ -37,7 +49,7 @@ namespace Presentation.ViewModels
                 }
             }
         }
-        private string? _plate;
+
         public string? Plate
         {
             get { return _plate; }
@@ -51,8 +63,6 @@ namespace Presentation.ViewModels
             }
         }
 
-
-        private string _business;
         public string Business
         {
             get { return _business; }
@@ -66,12 +76,27 @@ namespace Presentation.ViewModels
             }
         }
 
-        public VisitorView(string name, string email, string business, string? plate)
+        public bool IsDeleted
         {
-            Name = name;
-            Email = email;
-            Business = business;
-            Plate = plate;
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public VisitorView(Visitor visitor)
+        {
+            Id = visitor.Id;
+            Name = visitor.Name;
+            Email = visitor.Email;
+            Business = visitor.Business;
+            Plate = visitor.Plate;
+            IsDeleted = visitor.IsDeleted;
         }
     }
 }
