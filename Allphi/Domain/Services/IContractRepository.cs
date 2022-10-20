@@ -25,4 +25,6 @@ public interface IContractRepository
     void UpdateContract(Contract contract);
 
     #endregion UPDATE
+
+    Contract GetContractById(int id);
 }
