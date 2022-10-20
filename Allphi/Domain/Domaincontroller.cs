@@ -129,81 +129,97 @@ namespace Domain
             return _employeeRepo.GetEmployees();
         }
 
+        public List<ParkingSpot> GetParkingSpots()
+        {
+            return _parkingRepo.GetParkingSpots();
+        }
+
         public List<List<string>> GiveBusinesses()
         {
-            return GetBusinesses().Select(business => new List<string>() { business.Name, business.Btw, business.Email, business.Address, business.Phone, business.IsDeleted.ToString()}).ToList();
+            return GetBusinesses().Select(business => new List<string>() { business.Name, business.Btw, business.Email, business.Address, business.Phone, business.IsDeleted.ToString() }).ToList();
+        }
+
+        public List<Visit> GetVisits()
+        {
+            return _visitRepo.GetVisits();
         }
 
         #endregion GET
 
         #region UPDATE
 
-        public void UpdateEmployee(string name, string email, string function, string business, string plate,
-            Employee selectedItem)
+        public void UpdateEmployee(string name, string email, string function, string business, string plate, int id)
         {
-            selectedItem.Name = name;
-            selectedItem.Email = email;
-            selectedItem.Function = function;
-            selectedItem.Business = _businessRepo.GetBusinessByName(business);
-            selectedItem.Plate = plate;
-            _employeeRepo.UpdateEmployee(selectedItem);
+            Employee employee = _employeeRepo.GetEmployeeById(id);
+            employee.Name = name;
+            employee.Email = email;
+            employee.Function = function;
+            employee.Business = _businessRepo.GetBusinessByName(business);
+            employee.Plate = plate;
+            _employeeRepo.UpdateEmployee(employee);
         }
 
-        public void UpdateContract(string spots, string business, DateTime start, DateTime end, Contract selectedItem)
+        public void UpdateContract(string spots, string business, DateTime start, DateTime end, int id)
         {
-            selectedItem.TotalSpaces = int.Parse(spots);
-            selectedItem.Business = _businessRepo.GetBusinessByName(business);
-            selectedItem.StartDate = start;
-            selectedItem.EndDate = end;
-            _contractRepo.UpdateContract(selectedItem);
+            Contract contract = _contractRepo.GetContractById(id);
+            contract.Business = _businessRepo.GetBusinessByName(business);
+            contract.TotalSpaces = Convert.ToInt16(spots);
+            contract.StartDate = start;
+            contract.EndDate = end;
+            _contractRepo.UpdateContract(contract);
         }
 
-        public void UpdateVisitor(string name, string email, string plate, string business, Visitor selectedItem)
+        public void UpdateVisitor(string name, string email, string plate, string business, int id)
         {
-            selectedItem.Name = name;
-            selectedItem.Email = email;
-            selectedItem.Plate = plate;
-            selectedItem.Business = business;
-            _visitorRepo.UpdateVisitor(selectedItem);
+            Visitor visitor = _visitorRepo.GetVisitorById(id);
+            visitor.Name = name;
+            visitor.Email = email;
+            visitor.Plate = plate;
+            visitor.Business = business;
+            _visitorRepo.UpdateVisitor(visitor);
         }
 
-        public void UpdateBusiness(string name, string address, string phone, string email, string btw,
-            Business selectedItem)
+        public void UpdateBusiness(string name, string address, string phone, string email, string btw, int id)
         {
-            selectedItem.Name = name;
-            selectedItem.Address = address;
-            selectedItem.Phone = phone;
-            selectedItem.Email = email;
-            selectedItem.Btw = btw;
-            _businessRepo.UpdateBusiness(selectedItem);
+            Business business = _businessRepo.GetBusinessById(id);
+            business.Name = name;
+            business.Address = address;
+            business.Phone = phone;
+            business.Email = email;
+            business.Btw = btw;
+            _businessRepo.UpdateBusiness(business);
         }
 
         #endregion UPDATE
 
         #region DELETE
 
-        public void DeleteVisitor(Visitor selectedItem)
+        public void DeleteVisitor(int id)
         {
-            selectedItem.IsDeleted = true;
-            _visitorRepo.UpdateVisitor(selectedItem);
+            Visitor visitor = _visitorRepo.GetVisitorById(id);
+            visitor.IsDeleted = true;
+            _visitorRepo.UpdateVisitor(visitor);
         }
 
-        public void DeleteContract(Contract selectedItem)
+        public void DeleteContract(int id)
         {
-            selectedItem.IsDeleted = true;
-            _contractRepo.UpdateContract(selectedItem);
+            Contract contract = _contractRepo.GetContractById(id);
+            contract.IsDeleted = true;
+            _contractRepo.UpdateContract(contract);
         }
 
-        public void DeleteBusiness(Business selectedItem)
+        public void DeleteBusiness(int id)
         {
-            selectedItem.IsDeleted = true;
-            _businessRepo.UpdateBusiness(selectedItem);
+            Business business = _businessRepo.GetBusinessById(id);
+            business.IsDeleted = true;
+            _businessRepo.UpdateBusiness(business);
         }
 
-        public void DeleteEmployee(Employee selectedItem)
+        public void DeleteEmployee(int id)
         {
-            selectedItem.IsDeleted = true;
-            _employeeRepo.UpdateEmployee(selectedItem);
+            Employee employee = _employeeRepo.GetEmployeeById(id);
+            employee.IsDeleted = true;
+            _employeeRepo.UpdateEmployee(employee);
         }
 
         #endregion DELETE
@@ -235,51 +251,5 @@ namespace Domain
         }
 
         #endregion CREATE
-
-        #region Convert
-
-        public List<string> ConvertBusinessToStringList(Business selectedItem)
-        {
-            List<string> business = new List<string>();
-            business.Add(selectedItem.Name);
-            business.Add(selectedItem.Address);
-            business.Add(selectedItem.Phone);
-            business.Add(selectedItem.Email);
-            business.Add(selectedItem.Btw);
-            return business;
-        }
-
-        public List<string> ConvertVisitorToStringList(Visitor selectedItem)
-        {
-            List<string> visitor = new List<string>();
-            visitor.Add(selectedItem.Name);
-            visitor.Add(selectedItem.Email);
-            visitor.Add(selectedItem.Plate);
-            visitor.Add(selectedItem.Business);
-            return visitor;
-        }
-
-        public List<string> ConvertContractToStringList(Contract selectedItem)
-        {
-            List<string> contract = new List<string>();
-            contract.Add(selectedItem.Business.Name);
-            contract.Add(selectedItem.TotalSpaces.ToString());
-            contract.Add(selectedItem.StartDate.ToString());
-            contract.Add(selectedItem.EndDate.ToString());
-            return contract;
-        }
-
-        public List<string> ConvertEmployeeToStringList(Employee selectedItem)
-        {
-            List<string>? employee = new List<string>();
-            employee.Add(selectedItem.Name);
-            employee.Add(selectedItem.Email);
-            employee.Add(selectedItem.Business.Name);
-            employee.Add(selectedItem.Function);
-            employee.Add(selectedItem.Plate);
-            return employee;
-        }
-
-        #endregion Convert
     }
 }
