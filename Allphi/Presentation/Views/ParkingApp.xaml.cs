@@ -4,6 +4,7 @@ using System.Windows.Documents;
 using Ardalis.GuardClauses;
 using Domain;
 using Persistance;
+using Presentation.ViewModels;
 
 namespace Presentation.Views
 {
@@ -25,15 +26,12 @@ namespace Presentation.Views
             businesses = _dc.GiveBusinesses();
             if (businesses.Count != 0)
             {
-
                 foreach (var item in _dc.GetBusinesses())
                 {
                     businessViews.Add(new BusinessView(item));
                     cmb_business.Items.Add(item.Name);
                 }
-               
             }
-          
         }
 
         private string Bussines { get; set; }
