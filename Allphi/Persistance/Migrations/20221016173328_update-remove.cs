@@ -17,7 +17,7 @@ namespace Persistance.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Btw = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Removed = table.Column<bool>(type: "bit", nullable: false)
                 },
