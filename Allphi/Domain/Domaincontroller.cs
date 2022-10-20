@@ -129,6 +129,11 @@ namespace Domain
             return _employeeRepo.GetEmployees();
         }
 
+        public List<List<string>> GiveBusinesses()
+        {
+            return GetBusinesses().Select(business => new List<string>() { business.Name, business.Btw, business.Email, business.Address, business.Phone, business.IsDeleted.ToString()}).ToList();
+        }
+
         #endregion GET
 
         #region UPDATE

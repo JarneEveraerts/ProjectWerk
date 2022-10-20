@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Documents;
 using Ardalis.GuardClauses;
 using Domain;
+using Persistance;
 
 namespace Presentation.Views
 {
@@ -10,13 +13,27 @@ namespace Presentation.Views
     public partial class ParkingApp : Window
     {
         private DomainController _dc;
-
+        private List<List<string>> businesses;
+        private List<BusinessView>? businessViews = new();
         private string _licensePlate;
 
         public ParkingApp(DomainController dc)
         {
-            _dc = dc;
             InitializeComponent();
+            _dc = dc;
+
+            businesses = _dc.GiveBusinesses();
+            if (businesses.Count != 0)
+            {
+
+                foreach (var item in _dc.GetBusinesses())
+                {
+                    businessViews.Add(new BusinessView(item));
+                    cmb_business.Items.Add(item.Name);
+                }
+               
+            }
+          
         }
 
         private string Bussines { get; set; }

@@ -38,7 +38,7 @@
 
             <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Center"  TextWrapping="Wrap" Width="450" Height="56" FontSize="24" Background="#ffff" Grid.ColumnSpan="3"  Grid.Column="1" Grid.Row="1" Foreground ="#303030" />
 
-            <ComboBox
+            <ComboBox x:Name="cmb_business"
   Style="{StaticResource MaterialDesignFilledComboBox}"
   materialDesign:HintAssist.Hint="Kies uw bedrijf" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Foreground ="#303030">
             </ComboBox>
