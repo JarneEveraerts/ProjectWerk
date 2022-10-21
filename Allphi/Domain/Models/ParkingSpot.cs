@@ -11,6 +11,15 @@
             IsDeleted = false;
         }
 
+        public ParkingSpot(Business? reserved)
+        {
+            Employee = null;
+            Visitor = null;
+            Plate = null;
+            Reserved = reserved;
+            IsDeleted = false;
+        }
+
         public ParkingSpot()
         {
         }

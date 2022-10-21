@@ -251,5 +251,16 @@ namespace Domain
         }
 
         #endregion CREATE
+
+        public void ExitParking(string input)
+        {
+            ParkingSpot parkingSpot = _parkingRepo.GetParkingSpotByPlate(input);
+            if (parkingSpot != null)
+            {
+                _parkingRepo.CreateParkingSpot(new(parkingSpot.Reserved));
+                parkingSpot.IsDeleted = true;
+                _parkingRepo.UpdateParkingSpot(parkingSpot);
+            }
+        }
     }
 }
