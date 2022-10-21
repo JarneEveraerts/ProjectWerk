@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Domain;
 
 namespace Presentation.Views
 {
@@ -19,9 +20,18 @@ namespace Presentation.Views
     /// </summary>
     public partial class UitgangApp : Window
     {
-        public UitgangApp()
+        private DomainController _dc;
+
+        public UitgangApp(DomainController dc)
         {
+            _dc = dc;
             InitializeComponent();
+        }
+
+        private void Btn_ExitParking_Click(object sender, RoutedEventArgs e)
+        {
+            string input = txt_LicensePlate.Text;
+            _dc.ExitParking(input);
         }
     }
 }
