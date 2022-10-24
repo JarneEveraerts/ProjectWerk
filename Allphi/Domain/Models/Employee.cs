@@ -10,6 +10,7 @@
             Business = business;
             Email = email;
             Plate = plate;
+            IsDeleted = false;
         }
 
         public Employee()

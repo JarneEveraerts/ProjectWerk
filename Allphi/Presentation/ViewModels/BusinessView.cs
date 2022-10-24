@@ -1,16 +1,30 @@
 ﻿using Domain.Models;
-using Persistance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Persistance
+namespace Presentation.ViewModels
 {
     public class BusinessView : ViewModelBase
     {
+        private int _id;
         private string _name;
+        private string _btw;
+        private string _email;
+        private string? _address;
+        private string? _phone;
+        private bool _isDeleted;
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public string Name
         {
             get { return _name; }
@@ -23,7 +37,7 @@ namespace Persistance
                 }
             }
         }
-        private string _btw;
+
         public string Btw
         {
             get { return _btw; }
@@ -37,7 +51,6 @@ namespace Persistance
             }
         }
 
-        private string _email;
         public string Email
         {
             get { return _email; }
@@ -51,7 +64,6 @@ namespace Persistance
             }
         }
 
-        private string _address;
         public string Address
         {
             get { return _address; }
@@ -65,8 +77,6 @@ namespace Persistance
             }
         }
 
-
-        private string _phone;
         public string Phone
         {
             get { return _phone; }
@@ -80,8 +90,6 @@ namespace Persistance
             }
         }
 
-
-        private bool _isDeleted;
         public bool IsDeleted
         {
             get { return _isDeleted; }
@@ -95,8 +103,8 @@ namespace Persistance
             }
         }
 
+        private Business _business;
 
-        private Business _business ;
         public Business Business
         {
             get { return _business; }
@@ -110,20 +118,15 @@ namespace Persistance
             }
         }
 
-
-        public BusinessView(string name, string btw, string email, string? address, string? phone, bool isDeleted)
-        {
-            Name = name;
-            Btw = btw;
-            Email = email;
-            Address = address;
-            Phone = phone;
-            IsDeleted = isDeleted;
-        }
         public BusinessView(Business business)
         {
-            Business = business;
-
+            Id = business.Id;
+            Name = business.Name;
+            Btw = business.Btw;
+            Email = business.Email;
+            Address = business.Address;
+            Phone = business.Phone;
+            IsDeleted = business.IsDeleted;
         }
     }
 }

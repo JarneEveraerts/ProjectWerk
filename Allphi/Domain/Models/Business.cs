@@ -16,6 +16,7 @@
             Email = email;
             Address = address;
             Phone = phone;
+            IsDeleted = false;
         }
 
         public string Name { get; set; }

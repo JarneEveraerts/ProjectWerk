@@ -1,17 +1,31 @@
 ﻿using Domain.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Persistance;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Persistance
+namespace Presentation.ViewModels
 {
     public class EmployeeView : ViewModelBase
     {
+        private int _id;
         private string _name;
+        private string _firstName;
+        private string _function;
+        private Business _business;
+        private string _email;
+        private string _plate;
+        private bool _isDeleted;
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public string Name
         {
             get { return _name; }
@@ -24,7 +38,7 @@ namespace Persistance
                 }
             }
         }
-        private string _firstName;
+
         public string FirstName
         {
             get { return _firstName; }
@@ -38,8 +52,7 @@ namespace Persistance
             }
         }
 
-        private string _email;
-        public string Email
+        public string? Email
         {
             get { return _email; }
             set
@@ -52,7 +65,6 @@ namespace Persistance
             }
         }
 
-        private string _function;
         public string Function
         {
             get { return _function; }
@@ -66,9 +78,7 @@ namespace Persistance
             }
         }
 
-
-        private string _plate;
-        public string Plate
+        public string? Plate
         {
             get { return _plate; }
             set
@@ -81,8 +91,6 @@ namespace Persistance
             }
         }
 
-
-        private Business _business;
         public Business Business
         {
             get { return _business; }
@@ -96,16 +104,29 @@ namespace Persistance
             }
         }
 
-
-        public EmployeeView(string name, string firstname, string function, Business business, string? email, string? plate)
+        public bool IsDeleted
         {
-            Name = name;
-            FirstName = firstname;
-            Function = function;
-            Business = business;
-            Email = email;
-            Plate = plate;
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged();
+                }
+            }
         }
 
+        public EmployeeView(Employee employee)
+        {
+            Id = employee.Id;
+            Name = employee.Name;
+            FirstName = employee.FirstName;
+            Function = employee.Function;
+            Business = employee.Business;
+            Email = employee.Email;
+            Plate = employee.Plate;
+            IsDeleted = employee.IsDeleted;
+        }
     }
 }

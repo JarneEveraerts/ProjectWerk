@@ -8,6 +8,7 @@
             StartDate = startDate;
             EndDate = endDate;
             TotalSpaces = totalSpaces;
+            IsDeleted = false;
         }
 
         public Contract()

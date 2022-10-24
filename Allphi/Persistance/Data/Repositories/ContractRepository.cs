@@ -26,6 +26,11 @@ public class ContractRepository : IContractRepository
         return contract;
     }
 
+    public Contract GetContractById(int id)
+    {
+        return _allphiContext.Contract.First(c => c.Id == id);
+    }
+
     public Contract GetContractByEndDate(DateTime date)
     {
         Contract contract = _allphiContext.Contract.First(c => c.EndDate == date);

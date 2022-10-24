@@ -1,16 +1,30 @@
 ﻿using Domain.Models;
-using Persistance;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Persistance
+namespace Presentation.ViewModels
 {
     public class ContractView : ViewModelBase
     {
+        private int _id;
         private Business _business;
+        private DateTime _startDate;
+        private DateTime _endDate;
+        private int _totalSpaces;
+        private bool _isDeleted;
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public Business Business
         {
             get { return _business; }
@@ -23,7 +37,7 @@ namespace Persistance
                 }
             }
         }
-        private DateTime _startDate;
+
         public DateTime StartDate
         {
             get { return _startDate; }
@@ -37,7 +51,6 @@ namespace Persistance
             }
         }
 
-        private DateTime _endDate;
         public DateTime EndDate
         {
             get { return _endDate; }
@@ -50,21 +63,7 @@ namespace Persistance
                 }
             }
         }
-        private string _email;
-        public string Email
-        {
-            get { return _email; }
-            set
-            {
-                if (_email != value)
-                {
-                    _email = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
 
-        private int _totalSpaces;
         public int TotalSpaces
         {
             get { return _totalSpaces; }
@@ -78,7 +77,6 @@ namespace Persistance
             }
         }
 
-        private bool _isDeleted;
         public bool IsDeleted
         {
             get { return _isDeleted; }
@@ -92,12 +90,14 @@ namespace Persistance
             }
         }
 
-        public ContractView(Business business, DateTime startDate, DateTime endDate, int totalSpaces)
+        public ContractView(Contract contract)
         {
-            Business = business;
-            StartDate = startDate;
-            EndDate = endDate;
-            TotalSpaces = totalSpaces;
+            Id = contract.Id;
+            Business = contract.Business;
+            StartDate = contract.StartDate;
+            EndDate = contract.EndDate;
+            TotalSpaces = contract.TotalSpaces;
+            IsDeleted = contract.IsDeleted;
         }
     }
 }
