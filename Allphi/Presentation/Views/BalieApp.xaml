@@ -48,10 +48,10 @@
 
                         <StackPanel Grid.Column="1" Margin="0,100,0,0">
                             <StackPanel Orientation="Vertical">
-                                <TextBox x:Name="txt_visitor_name" Text="{Binding SelectedItem.Name,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_visitor_email"  Text="{Binding SelectedItem.Email,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_visitor_business" Text="{Binding SelectedItem.Business,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_visitor_plate"  Text="{Binding SelectedItem.Plate,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_name" materialDesign:HintAssist.Hint="Naam" Text="{Binding SelectedItem.Name,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_email" materialDesign:HintAssist.Hint="Email"  Text="{Binding SelectedItem.Email,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_business" materialDesign:HintAssist.Hint="Business" Text="{Binding SelectedItem.Business,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_visitor_plate" materialDesign:HintAssist.Hint="Nummerplaat" Text="{Binding SelectedItem.Plate,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                             </StackPanel>
                             <StackPanel>
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
@@ -59,6 +59,53 @@
                                     <Button x:Name="btn_addVisitor" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addVisitor_Click"></Button>
                                     <Button x:Name="btn_updateVisitor" Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_updateVisitor_Click"></Button>
                                     <Button x:Name="btn_deleteVisitor" Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_deleteVisitor_Click"></Button>
+                                </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Height="80" Width="80" Margin="0,0,30,0">
+                    <TabItem.Header>
+                        <StackPanel Width="auto" Height="auto">
+                            <materialDesign:PackIcon Width="24" Height="24" HorizontalAlignment="Center" Kind="CarHatchback" />
+                            <TextBlock
+            HorizontalAlignment="Center"
+            Text="Visit" FontSize="12" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <Grid Background="#DDDDDD">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <DataGrid x:Name="dtg_visits" materialDesign:ColorZoneAssist.Mode="SecondaryDark" Margin="50,50,50,50" IsReadOnly="True"
+                                  AutoGenerateColumns="False" CanUserResizeColumns="True" >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Naam" Binding="{Binding Path=Name,Mode=OneWay }" />
+                                <DataGridTextColumn Header="Bedrijf" Binding="{Binding Path= Bedrijf,Mode=OneWay}" />
+                                <DataGridTextColumn Header="Werknemer" Binding="{Binding Path=Werknemer,Mode=OneWay}" />
+                                <DataGridTextColumn Header="Start Datum" Binding="{Binding Path=StartDate,Mode=OneWay}" />
+                                <DataGridTextColumn Header="Eind Datum" Binding="{Binding Path=EndDate,Mode=OneWay}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Grid.Column="1" Margin="0,100,0,0">
+                            <StackPanel Orientation="Vertical">
+                                <TextBox Text="{Binding SelectedItem.Name,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Naam van de bezoeker"  Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox Text="{Binding SelectedItem.Bedrijf,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Bedrijf"  Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox Text="{Binding SelectedItem.Werknemer,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Werknemer met wie heeft de bezoeker een afspraak"  Width="400" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <DockPanel>
+                                    <DatePicker SelectedDate="{Binding SelectedItem.StartDate,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="van" FontSize="16"  Width="140" Foreground ="#303030" />
+                                    <DatePicker SelectedDate="{Binding SelectedItem.EndDate,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Tot"  Width="120" FontSize="16" Foreground ="#303030" />
+                                </DockPanel>
+                            </StackPanel>
+                            <StackPanel Margin="0,100,0,0">
+                                <DockPanel HorizontalAlignment="Center">
+                                    <Button x:Name="btn_addVisit" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addVisitor_Click"></Button>
+                                    <Button x:Name="btn_editVisit" Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_updateVisitor_Click"></Button>
+                                    <Button x:Name="btn_removeVisit" Width="150" Background="#FFB73A68" Content="Verwijderen" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_deleteVisitor_Click"></Button>
                                 </DockPanel>
                             </StackPanel>
                         </StackPanel>
@@ -102,8 +149,8 @@
                                     <Label Content="Tot" Margin="10,0,10,0" FontSize="16" Foreground ="#303030"></Label>
                                     <DatePicker x:Name="dtp_end" SelectedDate="{Binding SelectedItem.EndDate,ElementName=dtg_contracts,Mode=OneWay}" Width="120" FontSize="16" Foreground ="#303030" />
                                 </DockPanel>
-                                <TextBox x:Name="txt_contract_business" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_contracts,Mode=OneWay}" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_contract_spots"  Text="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts,Mode=OneWay}" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_contract_business" materialDesign:HintAssist.Hint="Bedrijf" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_contracts,Mode=OneWay}" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <TextBox x:Name="txt_contract_spots" materialDesign:HintAssist.Hint="Totaal parkeer plaatsen" Text="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts,Mode=OneWay}" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                             </StackPanel>
                             <StackPanel Margin="0,100,0,0">
                                 <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
@@ -150,11 +197,11 @@
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,99,0,0">
-                                <TextBox x:Name="txt_business_name" Text="{Binding SelectedItem.Name ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_business_address"  Text="{Binding SelectedItem.Address ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_business_phone" Text="{Binding SelectedItem.Phone ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_business_email"  Text="{Binding SelectedItem.Email ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_business_btw" Text="{Binding SelectedItem.Btw ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_name" materialDesign:HintAssist.Hint="Bedrijfsnaam" Text="{Binding SelectedItem.Name ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_address" materialDesign:HintAssist.Hint="Adres" Text="{Binding SelectedItem.Address ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_phone" materialDesign:HintAssist.Hint="Telefoon" Text="{Binding SelectedItem.Phone ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_email" materialDesign:HintAssist.Hint="Email" Text="{Binding SelectedItem.Email ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_business_btw" materialDesign:HintAssist.Hint="Btw" Text="{Binding SelectedItem.Btw ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
 
                             <StackPanel>
@@ -202,15 +249,15 @@
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,100,0,0">
-                                <TextBox x:Name="txt_employee_name" Text="{Binding SelectedItem.Name ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_email" Text="{Binding SelectedItem.Email ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_function"  Text="{Binding SelectedItem.Function ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_business" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_plate"  Text="{Binding SelectedItem.Plate ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_name" materialDesign:HintAssist.Hint="Naam" Text="{Binding SelectedItem.Name ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_email" materialDesign:HintAssist.Hint="Email" Text="{Binding SelectedItem.Email ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_function" materialDesign:HintAssist.Hint="Functie" Text="{Binding SelectedItem.Function ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_business" materialDesign:HintAssist.Hint="Bedrijf" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_employee_plate" materialDesign:HintAssist.Hint="Nummerplaat"  Text="{Binding SelectedItem.Plate ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
 
                             <StackPanel>
-                                <Button Margin="0,150,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
+                                <Button Margin="0,100,0,30" Width="382" Content="Zoeken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}"></Button>
                                 <DockPanel HorizontalAlignment="Center">
                                     <Button x:Name="btn_addEmployee" Width="150" Margin="0,0,20,0" Content="Toevoegen" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_addEmployee_Click"></Button>
                                     <Button x:Name="btn_updateEmployee" Width="150" Margin="0,0,20,0" Content="Bewerken" Background="#FF0E5600" Foreground="#DDFFFFFF" BorderBrush="{x:Null}" Click="btn_updateEmployee_Click"></Button>

@@ -51,6 +51,7 @@ public class VisitRepository : IVisitRepository
     public void CreateVisit(Visit visit)
     {
         _allphiContext.Visit.Add(visit);
+        _allphiContext.SaveChanges();
     }
 
     #endregion CREATE

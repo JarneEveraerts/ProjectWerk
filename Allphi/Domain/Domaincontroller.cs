@@ -3,6 +3,7 @@ using Ardalis.GuardClauses;
 using Domain.Models;
 using Domain.Services;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 
 namespace Domain
 {
@@ -112,10 +113,18 @@ namespace Domain
         {
             return _businessRepo.GetBusinesses();
         }
+        private Business GetBusinessById(int id)
+        {
+            return _businessRepo.GetBusinessById(id);
+        }
 
         public List<Visitor> GetVisitors()
         {
             return _visitorRepo.GetVisitors();
+        }
+        private Visitor GetVisitorById(int id)
+        {
+            return _visitorRepo.GetVisitorById(id);
         }
 
         public List<Contract> GetContracts()
@@ -127,6 +136,10 @@ namespace Domain
 
         {
             return _employeeRepo.GetEmployees();
+        }
+        private Employee GetEmployeeById(int id)
+        {
+            return _employeeRepo.GetEmployeeById(id);
         }
 
         public List<ParkingSpot> GetParkingSpots()
@@ -233,9 +246,9 @@ namespace Domain
             _employeeRepo.CreateEmployee(new Employee(names[0], names[1], function, selectedBusiness, email, plate));
         }
 
-        public void CreateVisitor(string name, string email, string? plate, string business)
+        public int CreateVisitor(string name, string email, string? plate, string business)
         {
-            _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
+           return _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
         }
 
         public void CreateContract(string spots, string business, DateTime start, DateTime end)
@@ -248,6 +261,11 @@ namespace Domain
         public void CreateBusiness(string name, string address, string phone, string email, string btw)
         {
             _businessRepo.CreateBusiness(new Business(name, address, phone, email, btw));
+        }
+
+        public void CreateVisit(string visitorName, string businessName, string employeeName, DateTime startDate, DateTime? endDate)
+        {
+            _visitRepo.CreateVisit(new Visit(_visitorRepo.GetVisitorByName(visitorName),_businessRepo.GetBusinessByName(businessName),_employeeRepo.GetEmployeesByName(employeeName).First(), startDate, endDate));
         }
 
         #endregion CREATE
