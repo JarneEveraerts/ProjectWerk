@@ -20,7 +20,7 @@ public interface IVisitorRepository
 
     #region CREATE
 
-    void CreateVisitor(Visitor visitor);
+    int CreateVisitor(Visitor visitor);
 
     #endregion CREATE
 

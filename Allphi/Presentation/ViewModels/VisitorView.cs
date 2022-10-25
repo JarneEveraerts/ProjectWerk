@@ -89,6 +89,17 @@ namespace Presentation.ViewModels
             }
         }
 
+        public VisitorView(int id, string name, string email, string? plate, string business, bool isDeleted)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            Plate = plate;
+            Business = business;
+            IsDeleted = isDeleted;
+  
+        }
+
         public VisitorView(Visitor visitor)
         {
             Id = visitor.Id;

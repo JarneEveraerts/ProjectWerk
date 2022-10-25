@@ -48,10 +48,12 @@ namespace Persistance.Data.Repositories
 
         #region CREATE
 
-        public void CreateVisitor(Visitor visitor)
+        public int CreateVisitor(Visitor visitor)
         {
             _allphiContext.Visitor.Add(visitor);
             _allphiContext.SaveChanges();
+
+            return _allphiContext.Visitor.First(v => v.Id == visitor.Id).Id;
         }
 
         #endregion CREATE
