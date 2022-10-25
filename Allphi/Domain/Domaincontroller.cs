@@ -241,31 +241,70 @@ namespace Domain
 
         public void CreateEmployee(string name, string? email, string function, string business, string? plate)
         {
-            Business selectedBusiness = _businessRepo.GetBusinessByName(business);
-            List<string> names = name.Split(' ').ToList();
-            _employeeRepo.CreateEmployee(new Employee(names[0], names[1], function, selectedBusiness, email, plate));
+
+            if (IsLicensePlateValid(plate) && IsEmailValid(email) && !string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(function) && !string.IsNullOrEmpty(business))
+            {
+                throw new Exception("Invalid input");
+            }
+            else
+            {
+                Business selectedBusiness = _businessRepo.GetBusinessByName(business);
+                List<string> names = name.Split(' ').ToList();
+                _employeeRepo.CreateEmployee(new Employee(names[0], names[1], function, selectedBusiness, email, plate));
+            }
         }
 
         public int CreateVisitor(string name, string email, string? plate, string business)
         {
-           return _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
+            if (!string.IsNullOrEmpty(name) && IsEmailValid(email) && IsLicensePlateValid(plate) && !string.IsNullOrEmpty(business))
+            {
+                throw new Exception("Invalid input");
+            }
+            else
+            {
+                return _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
+            }
         }
 
         public void CreateContract(string spots, string business, DateTime start, DateTime end)
         {
-            int totalSpots = int.Parse(spots);
-            Business selectedBusiness = _businessRepo.GetBusinessByName(business);
-            _contractRepo.CreateContract(new Contract(selectedBusiness, start, end, totalSpots));
+            if (!string.IsNullOrEmpty(spots) && !string.IsNullOrEmpty(business))
+            {
+                throw new Exception("Invalid input");
+            }
+            else
+            {
+                int totalSpots = int.Parse(spots);
+                Business selectedBusiness = _businessRepo.GetBusinessByName(business);
+                _contractRepo.CreateContract(new Contract(selectedBusiness, start, end, totalSpots));
+
+            }
         }
 
         public void CreateBusiness(string name, string address, string phone, string email, string btw)
         {
-            _businessRepo.CreateBusiness(new Business(name, address, phone, email, btw));
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(address) && !string.IsNullOrEmpty(phone) && IsBtwValid(btw) && IsEmailValid(email))
+            {
+                throw new Exception("invalid input");
+            }
+            else
+            {
+                _businessRepo.CreateBusiness(new Business(name, address, phone, email, btw));
+
+            }
         }
 
         public void CreateVisit(string visitorName, string businessName, string employeeName, DateTime startDate, DateTime? endDate)
         {
-            _visitRepo.CreateVisit(new Visit(_visitorRepo.GetVisitorByName(visitorName),_businessRepo.GetBusinessByName(businessName),_employeeRepo.GetEmployeesByName(employeeName).First(), startDate, endDate));
+            if (!string.IsNullOrEmpty(visitorName) && !string.IsNullOrEmpty(businessName) && !string.IsNullOrEmpty(employeeName))
+            {
+                throw new Exception("Invalid Input");
+            }
+            else
+            {
+            _visitRepo.CreateVisit(new Visit(_visitorRepo.GetVisitorByName(visitorName), _businessRepo.GetBusinessByName(businessName), _employeeRepo.GetEmployeesByName(employeeName).First(), startDate, endDate));
+
+            }
         }
 
         #endregion CREATE
