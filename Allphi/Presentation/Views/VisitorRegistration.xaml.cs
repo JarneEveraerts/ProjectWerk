@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Models;
+using MaterialDesignThemes.Wpf;
 using Presentation.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MaterialDesignThemes.Wpf;
+using MaterialDesignColors.Recommended;
 
 namespace Presentation.Views
 {
@@ -75,12 +78,13 @@ namespace Presentation.Views
             string _visitorName = txt_name.Text;
             string _visitorEmail = txt_email.Text;
             string _visitorPlate = txt_plate.Text;
+            string _organisation = txt_organisation.Text;
             DateTime _startDate = DateTime.Now;
             List<VisitorView> doesVisitorExist = visitorViews.Where(x => x.Name == txt_name.Text).ToList();
             if (doesVisitorExist.Count == 0)
             {
-               int id = _dc.CreateVisitor(_visitorName, _visitorEmail, _visitorPlate, _businessName);
-                visitorViews.Add(new VisitorView(id, _visitorName, _visitorEmail, _visitorPlate, _businessName, false));
+               int id = _dc.CreateVisitor(_visitorName, _visitorEmail, _visitorPlate, _organisation);
+                visitorViews.Add(new VisitorView(id, _visitorName, _visitorEmail, _visitorPlate, _organisation, false));
 
 
                 _dc.CreateVisit(_visitorName, _businessName, _employeeName, _startDate, null);
@@ -91,6 +95,67 @@ namespace Presentation.Views
                 _dc.CreateVisit(_visitorName, _businessName, _employeeName, _startDate, null);
 
             }
+        }
+
+        private void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmb_employees.SelectedIndex==-1 || cmb_business.SelectedIndex !=0)
+            {
+               var employeesBySelectedBusiness =  _dc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
+                cmb_employees.Items.Clear();
+                foreach (var item in employeesBySelectedBusiness)
+                {
+                    cmb_employees.Items.Add(item.Name);
+                }
+            }
+        }
+
+        private void cmb_employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmb_business.SelectedIndex == -1 || cmb_employees.SelectedIndex != -1)
+            {
+                var businessBySelectedEmployees = _dc.GetBusinessIdByEmployeeName(cmb_employees.SelectedItem.ToString());
+                cmb_business.SelectedItem = businessBySelectedEmployees.Name;
+            }
+        }
+
+        private void Btn_NL_Click(object sender, RoutedEventArgs e)
+        {
+
+            lbl_Header.Content = "Welkom";
+            HintAssist.SetHint(txt_name, "Naam");
+            HintAssist.SetHint(txt_email, "Email");
+            HintAssist.SetHint(txt_organisation, "Organisatie");
+            HintAssist.SetHint(txt_plate, "Nummerplaat");
+            HintAssist.SetHint(cmb_employees, "Contactpersoon");
+            HintAssist.SetHint(cmb_business, "Bedrijf");
+            btn_Registreren.Content = "Registreren";
+        }
+
+        private void Btn_FR_Click(object sender, RoutedEventArgs e)
+        {
+
+            lbl_Header.Content = "Bonjour";
+            HintAssist.SetHint(txt_name, "Nom");
+            HintAssist.SetHint(txt_email, "E-mail");
+            HintAssist.SetHint(txt_organisation, "Organisation");
+            HintAssist.SetHint(txt_plate, "Plaque d'immatriculation");
+            HintAssist.SetHint(cmb_employees, "Contact");
+            HintAssist.SetHint(cmb_business, "Compagnie");
+            btn_Registreren.Content = "Régistré";
+        }
+
+        private void Btn_ENG_Click(object sender, RoutedEventArgs e)
+        {
+
+            lbl_Header.Content = "Welcome";
+            HintAssist.SetHint(txt_name, "Name");
+            HintAssist.SetHint(txt_email, "Email");
+            HintAssist.SetHint(txt_organisation, "Organisation");
+            HintAssist.SetHint(txt_plate, "License plate");
+            HintAssist.SetHint(cmb_employees, "Contact person");
+            HintAssist.SetHint(cmb_business, "Business");
+            btn_Registreren.Content = "Register";
         }
     }
 }
