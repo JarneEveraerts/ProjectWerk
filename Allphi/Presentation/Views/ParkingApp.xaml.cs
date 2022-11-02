@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media.Animation;
 using Ardalis.GuardClauses;
 using Domain;
 using Persistance;
@@ -56,15 +59,9 @@ namespace Presentation.Views
             lbl_LicensePlateNL.Content = "Nummerplaat";
             lbl_BedrijfNL.Content = "Login/ Register als";
         }
-
-        private void Btn_Submit_Employee_Click(object sender, RoutedEventArgs e)
+        private void Btn_Submit_Click(object sender, RoutedEventArgs e)
         {
-            _licensePlate = txtBox_LicensePlate.Text;
-            _dc.SubmitEmployeeParking(_licensePlate);
-        }
-
-        private void Btn_Submit_Visitor_Click(object sender, RoutedEventArgs e)
-        {
+            _dc.CreateParkingSpot();
             _licensePlate = txtBox_LicensePlate.Text;
             _dc.SubmitVisitorParking(_licensePlate);
         }
