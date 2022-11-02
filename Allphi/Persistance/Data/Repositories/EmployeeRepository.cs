@@ -31,6 +31,11 @@ public class EmployeeRepository : IEmployeeRepository
         List<Employee> employees = _allphiContext.Employee.Where(e => e.Name.Contains(name) || e.FirstName.Contains(name)).ToList();
         return employees;
     }
+    public Employee GetEmployeeByName(string name)
+    {
+        Employee employee = _allphiContext.Employee.First(e => e.Name.Contains(name));
+        return employee;
+    }
 
     public Employee GetEmployeeById(int id)
     {

@@ -113,7 +113,7 @@ namespace Domain
         {
             return _businessRepo.GetBusinesses();
         }
-        private Business GetBusinessById(int id)
+        public Business GetBusinessById(int id)
         {
             return _businessRepo.GetBusinessById(id);
         }
@@ -260,12 +260,19 @@ namespace Domain
 
         public void CreateBusiness(string name, string address, string phone, string email, string btw)
         {
-            _businessRepo.CreateBusiness(new Business(name, address, phone, email, btw));
+            _businessRepo.CreateBusiness(new Business(name, btw,email, address, phone));
         }
 
         public void CreateVisit(string visitorName, string businessName, string employeeName, DateTime startDate, DateTime? endDate)
         {
             _visitRepo.CreateVisit(new Visit(_visitorRepo.GetVisitorByName(visitorName),_businessRepo.GetBusinessByName(businessName),_employeeRepo.GetEmployeesByName(employeeName).First(), startDate, endDate));
+        }
+        public void CreateParkingSpot()
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                _parkingRepo.CreateParkingSpot(new ParkingSpot());
+            }
         }
 
         #endregion CREATE
@@ -279,6 +286,28 @@ namespace Domain
                 parkingSpot.IsDeleted = true;
                 _parkingRepo.UpdateParkingSpot(parkingSpot);
             }
+        }
+
+        public int GetEmployeeIdByName(string name)
+        {
+            Employee employee = _employeeRepo.GetEmployeeByName(name);
+            return employee.Business.Id;
+
+        }
+
+        public Business GetBusinessIdByEmployeeName(string name)
+        {
+            return _businessRepo.GetBusinessById(GetEmployeeIdByName(name));
+        }
+
+        public List<Employee> GetEmployeesByBusiness(string business)
+        {
+            return _employeeRepo.GetEmployeesByBusiness(GetBusinessByName(business));
+        }
+
+        private Business GetBusinessByName(string business)
+        {
+            return _businessRepo.GetBusinessByName(business);
         }
     }
 }
