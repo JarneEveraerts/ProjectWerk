@@ -26,15 +26,13 @@ public class DbInitializer
             };
             var employees = new Employee[]
             {
-                new Employee("Everaerts", "Jarne", "Project Manager", businesses[1],
-                    "jarne.everaerts@student.hogent.be", "1-ABC-123"),
-                new Employee("De Croock", "Robin", "Senior Designer", businesses[1], "robin.decroock@student.hogent.be",
-                    "2-DEF-456"),
+                new Employee("Everaerts", "Jarne", "Project Manager", businesses[1], "jarne.everaerts@student.hogent.be", "1ABC123"),
+                new Employee("De Croock", "Robin", "Senior Designer", businesses[1], "robin.decroock@student.hogent.be", "2DEF456"),
                 new Employee("De Meersman", "Lucas", "Senior Developer", businesses[1],
                     "lucas.demeersman@student.hogent.be", null),
                 new Employee("De Moor", "Iwein", "Junior Developer", businesses[1], null, null),
                 new Employee("De Smet", "Bart", "Junior Developer", businesses[0], null, null),
-                new Employee("De Vos", "Marijke", "Junior Developer", businesses[0], null, "1-ABB-123"),
+                new Employee("De Vos", "Marijke", "Junior Developer", businesses[0], null, "1ABB123"),
             };
             var contract = new Contract(businesses[1], DateTime.Now, DateTime.Now.AddYears(1), 10);
             foreach (var busines in businesses)

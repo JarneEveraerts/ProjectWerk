@@ -31,7 +31,19 @@ namespace Presentation.Views
         private void Btn_ExitParking_Click(object sender, RoutedEventArgs e)
         {
             string input = txt_LicensePlate.Text;
-            _dc.ExitParking(input);
+            if (input == "" || !_dc.IsLicensePlateValid(input))
+            {
+                MessageBox.Show("License plate is not valid");
+                return;
+            }
+            if (_dc.ExitParking(input))
+            {
+                MessageBox.Show("Have A Nice Trip");
+            }
+            else
+            {
+                MessageBox.Show("License plate is not valid");
+            }
         }
     }
 }

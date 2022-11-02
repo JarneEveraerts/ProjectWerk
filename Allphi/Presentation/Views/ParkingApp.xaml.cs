@@ -59,11 +59,30 @@ namespace Presentation.Views
             lbl_LicensePlateNL.Content = "Nummerplaat";
             lbl_BedrijfNL.Content = "Login/ Register als";
         }
+
         private void Btn_Submit_Click(object sender, RoutedEventArgs e)
         {
-            _dc.CreateParkingSpot();
             _licensePlate = txtBox_LicensePlate.Text;
-            _dc.SubmitVisitorParking(_licensePlate);
+            string business = cmb_business.Text;
+
+            if (_licensePlate == "" || !_dc.IsLicensePlateValid(_licensePlate))
+            {
+                MessageBox.Show("License plate is not valid");
+                return;
+            }
+            if (cmb_business.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a business");
+                return;
+            }
+            if (_dc.EnterParking(_licensePlate, business))
+            {
+                MessageBox.Show("Welcome");
+            }
+            else
+            {
+                MessageBox.Show("No Free Spots");
+            }
         }
     }
 }
