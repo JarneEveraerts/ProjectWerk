@@ -26,7 +26,7 @@ namespace AllphiTests.MockClasses
 
         public Business GetBusinessById(int id)
         {
-            throw new NotImplementedException();
+            return businessesList[id];
         }
 
         public Business GetBusinessByName(string name)
@@ -46,7 +46,7 @@ namespace AllphiTests.MockClasses
 
         public void UpdateBusiness(Business business)
         {
-            throw new NotImplementedException();
+            businessesList[business.Id] = business;
         }
     }
 }

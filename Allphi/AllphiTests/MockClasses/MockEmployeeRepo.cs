@@ -54,7 +54,7 @@ namespace AllphiTests.MockClasses
 
         public void UpdateEmployee(Employee employee)
         {
-            
+            employeeslist[employee.Id] = employee;
         }
     }
 }
