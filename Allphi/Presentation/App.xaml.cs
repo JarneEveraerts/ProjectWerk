@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using Domain.Services;
 using Domain;
@@ -46,6 +47,7 @@ namespace Presentation
             services.AddScoped<IVisitorRepository, VisitorRepository>();
             services.AddScoped<IVisitRepository, VisitRepository>();
             services.AddScoped<DomainController>();
+            services.AddScoped<DbInitializer>();
             services.AddSingleton<ParkingApp>();
             services.AddSingleton<BalieApp>();
             services.AddSingleton<LoginAdmin>();
@@ -55,6 +57,8 @@ namespace Presentation
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            DbInitializer dbInitializer = _serviceProvider.GetService<DbInitializer>();
+            dbInitializer.Initialize();
             ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
             BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
             parkingApp.Show();
