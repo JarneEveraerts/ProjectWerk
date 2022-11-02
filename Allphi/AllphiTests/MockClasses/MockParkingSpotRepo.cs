@@ -3,7 +3,7 @@ using Domain.Services;
 
 namespace AllphiTests.MockClasses
 {
-    internal class MockParkingSpotRepo : IParkingSpotRepository
+     class MockParkingSpotRepo : IParkingSpotRepository
     {
         public int CountParkingSpotByPlate(string plate)
         {
