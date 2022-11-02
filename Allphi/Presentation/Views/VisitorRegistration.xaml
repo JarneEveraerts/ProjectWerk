@@ -36,21 +36,27 @@
         </Grid.RowDefinitions>
 
         <Rectangle Grid.Row="0" Grid.ColumnSpan="7" Fill="#FF0E5600" />
-        <Label Content="Welkom" FontSize="42" Grid.ColumnSpan="7" HorizontalAlignment="Center" VerticalAlignment="Center" Width="167" FontWeight="Bold" Foreground="#DDFFFFFF" />
+        <Label x:Name="lbl_Header" Content="Welkom" FontSize="42" Grid.ColumnSpan="7" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" Foreground="#DDFFFFFF" />
 
         <TextBox x:Name="txt_name" Grid.Row="2" Grid.ColumnSpan="3"  materialDesign:HintAssist.Hint="Naam" Width="400" Height="100" HorizontalAlignment="Center" FontSize="30" Foreground ="#303030" />
         <TextBox x:Name="txt_email" Grid.Row="3" Grid.ColumnSpan="3" materialDesign:HintAssist.Hint="Email" Width="400" Height="100" HorizontalAlignment="Center" FontSize="30" Foreground ="#303030" />
+        <TextBox x:Name="txt_organisation" Grid.Row="4" Grid.ColumnSpan="3" materialDesign:HintAssist.Hint="Organisatie" Width="400" Height="100" HorizontalAlignment="Center" FontSize="30" Foreground ="#303030" />
         <TextBox x:Name="txt_plate" Grid.Row="5" Grid.ColumnSpan="3" materialDesign:HintAssist.Hint="Nummerplaat" Width="400"  Height="100" HorizontalAlignment="Center" FontSize="30" Foreground ="#303030" />
 
 
         <ComboBox x:Name="cmb_business"
   Style="{StaticResource MaterialDesignFilledComboBox}"
-  materialDesign:HintAssist.Hint="Kies uw bedrijf" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="3" Foreground ="#303030" FontSize="30" Margin="10,10,10,10">
+  materialDesign:HintAssist.Hint="Kies uw bedrijf" Grid.Column="3" Grid.Row="2" Grid.ColumnSpan="3" Foreground ="#303030" FontSize="30" Margin="10,10,10,10" SelectionChanged="cmb_business_SelectionChanged">
         </ComboBox>
         <ComboBox x:Name="cmb_employees"
   Style="{StaticResource MaterialDesignFilledComboBox}"
-  materialDesign:HintAssist.Hint="Kies een werknemer" Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="3" Foreground ="#303030" FontSize="30" Margin="10,10,10,10">
+  materialDesign:HintAssist.Hint="Kies een werknemer" Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="3" Foreground ="#303030" FontSize="30" Margin="10,10,10,10" SelectionChanged="cmb_employees_SelectionChanged">
         </ComboBox>
-        <Button x:Name="btn_Registreren" Content="Registreren" HorizontalAlignment="Center" FontSize="46" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="7" Grid.Column="2" Margin="0,10,0,10" Height="100" Width="800" Click="btn_Registreren_Click" />
+        <Button x:Name="btn_Registreren" Content="Registreren" HorizontalAlignment="Center" FontSize="46" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="6" Grid.Column="2" Margin="0,10,0,10" Height="100" Width="800" Click="btn_Registreren_Click" />
+        <DockPanel Grid.Row="8" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="0,0,10,0">
+            <Button x:Name="Btn_NL" Content="NL" HorizontalAlignment="Left" FontSize="24" Width="60" Height="44" Click="Btn_NL_Click" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="#DDFFFFFF" Margin="10,0,30,0" />
+            <Button x:Name="Btn_FR" Content="FR"  FontSize="24" Click="Btn_FR_Click" Width="60" Height="44" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Margin="0,0,30,0" />
+            <Button x:Name="Btn_ENG" Content="ENG" FontSize="24" Click="Btn_ENG_Click" Width="60" Height="44" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Margin="0,0,10,0" />
+        </DockPanel>
     </Grid>
 </Window>
