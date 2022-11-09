@@ -96,6 +96,17 @@ namespace Persistance.Data.Repositories
         {
             return _allphiContext.ParkingSpot.Count(p => p.Plate == plate);
         }
+        public bool ParkingSpotExist(ParkingSpot? parkingSpot)
+        {
+            if (_allphiContext.ParkingSpot.Count(p => p.Plate == parkingSpot.Plate) != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         #endregion COUNT
     }
