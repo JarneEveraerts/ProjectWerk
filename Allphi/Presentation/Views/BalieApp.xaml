@@ -12,7 +12,9 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}">
     <DockPanel>
+        
         <materialDesign:Card>
+            
             <TabControl
     HorizontalContentAlignment="Center"
     materialDesign:ColorZoneAssist.Mode="SecondaryDark"
@@ -20,6 +22,7 @@
     materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
     Style="{StaticResource MaterialDesignNavigationRailTabControl}"
     TabStripPlacement="Top">
+                
                 <TabItem Height="80" Width="80" Margin="0,0,30,0">
                     <TabItem.Header>
                         <StackPanel Width="auto" Height="auto">
@@ -48,10 +51,20 @@
 
                         <StackPanel Grid.Column="1" Margin="0,100,0,0">
                             <StackPanel Orientation="Vertical">
-                                <TextBox x:Name="txt_visitor_name" materialDesign:HintAssist.Hint="Naam" Text="{Binding SelectedItem.Name,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <DockPanel>
+                                <TextBox x:Name="txt_visitor_name" materialDesign:HintAssist.Hint="Voornaam" Text="{Binding SelectedItem.Name,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                </DockPanel>
                                 <TextBox x:Name="txt_visitor_email" materialDesign:HintAssist.Hint="Email"  Text="{Binding SelectedItem.Email,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                                 <TextBox x:Name="txt_visitor_business" materialDesign:HintAssist.Hint="Business" Text="{Binding SelectedItem.Business,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                                 <TextBox x:Name="txt_visitor_plate" materialDesign:HintAssist.Hint="Nummerplaat" Text="{Binding SelectedItem.Plate,ElementName=dtg_visitors,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <Border Background="White"
+            BorderBrush="Gray"
+            Height="50"
+            CornerRadius="50"
+            Width="50"
+                                        HorizontalAlignment="Left">
+                                    <Label x:Name="lbl_contract_spots" Content="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts,Mode=OneWay}" Margin="0,0,0,30" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                </Border>
                             </StackPanel>
                             <StackPanel>
                                 <DockPanel HorizontalAlignment="Center">
@@ -92,13 +105,23 @@
 
                         <StackPanel Grid.Column="1" Margin="0,100,0,0">
                             <StackPanel Orientation="Vertical">
-                                <TextBox Text="{Binding SelectedItem.Name,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Naam van de bezoeker"  Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox Text="{Binding SelectedItem.Bedrijf,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Bedrijf"  Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <DockPanel>
+                                    <TextBox Text="{Binding SelectedItem.Name,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Naam van de bezoeker"  Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                </DockPanel>
+                                    <TextBox Text="{Binding SelectedItem.Bedrijf,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Bedrijf"  Width="200" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                                 <TextBox Text="{Binding SelectedItem.Werknemer,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Contactpersoon"  Width="400" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
                                 <DockPanel>
                                     <DatePicker SelectedDate="{Binding SelectedItem.StartDate,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="van" FontSize="16"  Width="140" Foreground ="#303030" />
                                     <DatePicker SelectedDate="{Binding SelectedItem.EndDate,ElementName=dtg_visitors,Mode=OneWay}" materialDesign:HintAssist.Hint="Tot"  Width="120" FontSize="16" Foreground ="#303030" />
                                 </DockPanel>
+                                <Border Background="White"
+            BorderBrush="Gray"
+            Height="50"
+            CornerRadius="50"
+            Width="50"
+                                        HorizontalAlignment="Left">
+                                    <Label Content="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts,Mode=OneWay}" Margin="0,0,0,30" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                </Border>
                             </StackPanel>
                             <StackPanel Margin="0,100,0,0">
                                 <DockPanel HorizontalAlignment="Center">
@@ -149,7 +172,14 @@
                                     <DatePicker x:Name="dtp_end" SelectedDate="{Binding SelectedItem.EndDate,ElementName=dtg_contracts,Mode=OneWay}" Width="120" FontSize="16" Foreground ="#303030" />
                                 </DockPanel>
                                 <TextBox x:Name="txt_contract_business" materialDesign:HintAssist.Hint="Bedrijf" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_contracts,Mode=OneWay}" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_contract_spots" materialDesign:HintAssist.Hint="Totaal parkeer plaatsen" Text="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts,Mode=OneWay}" Width="320" Margin="0,0,0,30" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                <Border Background="White"
+            BorderBrush="Gray"
+            Height="50"
+            CornerRadius="50"
+            Width="50"
+                                        HorizontalAlignment="Left">
+                                    <Label Content="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts,Mode=OneWay}" Margin="0,0,0,30" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                </Border>
                             </StackPanel>
                             <StackPanel Margin="0,100,0,0">
                                 <DockPanel HorizontalAlignment="Center">
@@ -200,6 +230,15 @@
                                 <TextBox x:Name="txt_business_phone" materialDesign:HintAssist.Hint="Telefoon" Text="{Binding SelectedItem.Phone ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                                 <TextBox x:Name="txt_business_email" materialDesign:HintAssist.Hint="Email" Text="{Binding SelectedItem.Email ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                                 <TextBox x:Name="txt_business_btw" materialDesign:HintAssist.Hint="Btw" Text="{Binding SelectedItem.Btw ,ElementName=dtg_businesses,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+
+                                <Border Background="White"
+            BorderBrush="Gray"
+            Height="50"
+            CornerRadius="50"
+            Width="50"
+                                        HorizontalAlignment="Left">
+                                    <Label Content="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts,Mode=OneWay}" Margin="0,0,0,30" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                </Border>
                             </StackPanel>
 
                             <StackPanel>
@@ -235,7 +274,7 @@
 
                         <DataGrid x:Name="dtg_employees" Margin="50,50,50,50" materialDesign:ColorZoneAssist.Mode="SecondaryDark" IsReadOnly="True" AutoGenerateColumns="False" CanUserResizeColumns="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Naam" Binding="{Binding Path=Name,Mode=OneWay}" />
+                                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name,Mode=OneWay}" />
                                 <DataGridTextColumn Header="E-mail" Binding="{Binding Path=Email,Mode=OneWay}" />
                                 <DataGridTextColumn Header="Functie" Binding="{Binding Path=Function,Mode=OneWay}" />
                                 <DataGridTextColumn Header="Bedrijf" Binding="{Binding Path=Business.Name,Mode=OneWay}" />
@@ -246,11 +285,21 @@
                         <StackPanel Grid.Column="1">
 
                             <StackPanel Margin="0,100,0,0">
-                                <TextBox x:Name="txt_employee_name" materialDesign:HintAssist.Hint="Naam" Text="{Binding SelectedItem.Name ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
-                                <TextBox x:Name="txt_employee_email" materialDesign:HintAssist.Hint="Email" Text="{Binding SelectedItem.Email ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <DockPanel>
+                                    <TextBox x:Name="txt_employee_name" materialDesign:HintAssist.Hint="Naam" Text="{Binding SelectedItem.Name ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                </DockPanel>
+                                    <TextBox x:Name="txt_employee_email" materialDesign:HintAssist.Hint="Email" Text="{Binding SelectedItem.Email ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                                 <TextBox x:Name="txt_employee_function" materialDesign:HintAssist.Hint="Functie" Text="{Binding SelectedItem.Function ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                                 <TextBox x:Name="txt_employee_business" materialDesign:HintAssist.Hint="Bedrijf" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                                 <TextBox x:Name="txt_employee_plate" materialDesign:HintAssist.Hint="Nummerplaat"  Text="{Binding SelectedItem.Plate ,ElementName=dtg_employees,Mode=OneWay}" Width="200" Margin="0,0,0,30" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <Border Background="White"
+            BorderBrush="Gray"
+            Height="50"
+            CornerRadius="50"
+            Width="50"
+                                        HorizontalAlignment="Left">
+                                    <Label Content="{Binding SelectedItem.TotalSpaces ,ElementName=dtg_contracts,Mode=OneWay}" Margin="0,0,0,30" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
+                                </Border>
                             </StackPanel>
 
                             <StackPanel>
