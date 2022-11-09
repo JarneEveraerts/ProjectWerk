@@ -134,7 +134,7 @@ namespace Presentation.Views
         {
             DateTime _start = dtp_start.SelectedDate.Value;
             DateTime _end = dtp_end.SelectedDate.Value;
-            string _spots = txt_contract_spots.Text;
+            string _spots = lbl_contract_spots.Content.ToString();
             string _business = txt_contract_business.Text;
             ContractView contractView = (ContractView)dtg_contracts.SelectedItem;
             _dc.UpdateContract(_spots, _business, _start, _end, (int)contractView.Id);
@@ -182,7 +182,7 @@ namespace Presentation.Views
         {
             DateTime _start = dtp_start.SelectedDate.Value;
             DateTime _end = dtp_end.SelectedDate.Value;
-            string _spots = txt_contract_spots.Text;
+            string _spots = lbl_contract_spots.Content.ToString();
             string _business = txt_contract_business.Text;
             _dc.CreateContract(_spots, _business, _start, _end);
             SetupView();

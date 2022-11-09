@@ -300,9 +300,40 @@ namespace Domain
             Contract? contract = _contractRepo.GetContractByBusiness(business);
             Employee? employee = _employeeRepo.GetEmployeeByPlate(licensePlate);
             if (_parkingRepo.GetParkingSpotByPlate(licensePlate) != null) return false;
-            if (contract != null && contract.TotalSpaces <= _parkingRepo.GetParkingSpotsByReserved(business).Count) return false;
-            _parkingRepo.CreateParkingSpot(new ParkingSpot(employee, null, licensePlate, business));
+            if (contract != null && contract.TotalSpaces <= _parkingRepo.GetParkingSpotsByReserved(business).Count)
+            {
+                _parkingRepo.CreateParkingSpot(new ParkingSpot(employee, null, licensePlate, business));
+                return true;
+            }
+            _parkingRepo.CreateParkingSpot(new ParkingSpot(employee, null, licensePlate, null));
             return true;
+        }
+
+
+
+        public ParkingSpot? GetParkingSpotByVisitor(string visitorName)
+        {
+            return _parkingRepo.GetParkingSpotByVisitor(_visitorRepo.GetVisitorByName(visitorName));
+        }
+
+        public bool ParkingSpotExists(string visitorPlate)
+        {
+            return _parkingRepo.ParkingSpotExist(_parkingRepo.GetParkingSpotByPlate(visitorPlate));
+           
+
+            
+        }
+
+        public void CreateVisitorWithPlate(string visitorName, string visitorEmail, string visitorPlate, string organisation)
+        {
+            ParkingSpot? parkingSpot = _parkingRepo.GetParkingSpotByPlate(visitorPlate);
+            Visitor? visitor = new Visitor(visitorName, visitorEmail, visitorPlate, organisation);
+            if (ParkingSpotExists(visitorPlate))
+            {
+                _visitorRepo.CreateVisitor(visitor);
+                parkingSpot.Visitor = visitor;
+                _parkingRepo.UpdateParkingSpot(parkingSpot);
+            }
         }
     }
 }

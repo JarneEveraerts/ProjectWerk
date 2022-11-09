@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
 using MaterialDesignColors.Recommended;
+using System.ComponentModel;
 
 namespace Presentation.Views
 {
@@ -31,6 +32,7 @@ namespace Presentation.Views
         private List<VisitView>? visitViews = new();
         private List<VisitorView>? visitorViews = new();
         private List<EmployeeView>? employeeViews = new();
+        private List<ParkingSpotView>? parkingSpotViews = new();
         private VisitorView Visitor;
         public VisitorRegistration(DomainController dc)
         {
@@ -68,6 +70,13 @@ namespace Presentation.Views
                     cmb_employees.Items.Add(item.Name);
                 }
             }
+            if (_dc.GetParkingSpots().Count !=0)
+            {
+                foreach (var item in _dc.GetParkingSpots())
+                {
+                    parkingSpotViews.Add(new ParkingSpotView(item));
+                }
+            }
         }
 
         private void btn_Registreren_Click(object sender, RoutedEventArgs e)
@@ -79,22 +88,14 @@ namespace Presentation.Views
             string _visitorEmail = txt_email.Text;
             string _visitorPlate = txt_plate.Text;
             string _organisation = txt_organisation.Text;
+            int id;
             DateTime _startDate = DateTime.Now;
-            List<VisitorView> doesVisitorExist = visitorViews.Where(x => x.Name == txt_name.Text).ToList();
-            if (doesVisitorExist.Count == 0)
-            {
-               int id = _dc.CreateVisitor(_visitorName, _visitorEmail, _visitorPlate, _organisation);
-                visitorViews.Add(new VisitorView(id, _visitorName, _visitorEmail, _visitorPlate, _organisation, false));
 
-
-                _dc.CreateVisit(_visitorName, _businessName, _employeeName, _startDate, null);
-            }
-            else
-            {
-
-                _dc.CreateVisit(_visitorName, _businessName, _employeeName, _startDate, null);
-
-            }
+                if (_visitorPlate == "")
+                {
+                    _dc.CreateVisitor(_visitorName, _visitorEmail, _visitorPlate, _organisation);
+                }
+                else _dc.CreateVisitorWithPlate(_visitorName, _visitorEmail, _visitorPlate, _organisation);   
         }
 
         private void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
