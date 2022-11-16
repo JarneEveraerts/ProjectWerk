@@ -39,6 +39,7 @@ namespace Presentation.Views
             dtg_contracts.ItemsSource = _contractViews;
             dtg_employees.ItemsSource = _employeeViews;
             dtg_visitors.ItemsSource = _visitorViews;
+            dtg_visits.ItemsSource = _visitViews;
         }
 
         #region GetViews
