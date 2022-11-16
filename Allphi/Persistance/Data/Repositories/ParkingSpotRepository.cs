@@ -22,20 +22,19 @@ namespace Persistance.Data.Repositories
 
         public List<ParkingSpot> GetParkingSpotsByReserved(Business reserved)
         {
-            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.Reserved == reserved).ToList();
+            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.Reserved == reserved && p.IsDeleted == false).ToList();
             return parkingSpots;
         }
 
         public List<ParkingSpot>? GetAvailableParkingSpotsReserved(Business reserved)
         {
-            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot
-                .Where(p => p.Reserved == reserved && p.Plate == null).ToList();
+            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.Reserved == reserved && p.Plate == null && p.IsDeleted == false).ToList();
             return parkingSpots;
         }
 
         public ParkingSpot GetAvailableParkingSpotReserved(Business reserved)
         {
-            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Reserved == reserved && p.Plate == null);
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.FirstOrDefault(p => p.Reserved == reserved && p.Plate == null && p.IsDeleted == false);
             return parkingSpot;
         }
 
@@ -55,19 +54,19 @@ namespace Persistance.Data.Repositories
 
         public ParkingSpot GetParkingSpotByEmployee(Employee employee)
         {
-            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Employee == employee);
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.FirstOrDefault(p => p.Employee == employee && p.IsDeleted == false);
             return parkingSpot;
         }
 
         public ParkingSpot GetParkingSpotByVisitor(Visitor visitor)
         {
-            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Visitor == visitor);
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.FirstOrDefault(p => p.Visitor == visitor && p.IsDeleted == false);
             return parkingSpot;
         }
 
         public ParkingSpot? GetAvailableParkingSpotUnreserved()
         {
-            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.First(p => p.Reserved == null && p.Plate == null);
+            ParkingSpot parkingSpot = _allphiContext.ParkingSpot.FirstOrDefault(p => p.Reserved == null && p.Plate == null && p.IsDeleted == false);
             return parkingSpot;
         }
 

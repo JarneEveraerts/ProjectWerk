@@ -22,25 +22,25 @@ public class BusinessRepository : IBusinessRepository
 
     public Business GetBusinessByName(string name)
     {
-        Business business = _allphiContext.Business.First(b => b.Name == name);
+        Business business = _allphiContext.Business.FirstOrDefault(b => b.Name == name && b.IsDeleted == false);
         return business;
     }
 
     public Business GetBusinessById(int id)
     {
-        Business business = _allphiContext.Business.First(b => b.Id == id);
+        Business business = _allphiContext.Business.FirstOrDefault(b => b.Id == id && b.IsDeleted == false);
         return business;
     }
 
     public Business GetBusinessByBTW(string btw)
     {
-        Business business = _allphiContext.Business.First(b => b.Btw == btw);
+        Business business = _allphiContext.Business.FirstOrDefault(b => b.Btw == btw && b.IsDeleted == false);
         return business;
     }
 
     public Business GetBusinessByEmail(string email)
     {
-        Business business = _allphiContext.Business.First(b => b.Email == email);
+        Business business = _allphiContext.Business.FirstOrDefault(b => b.Email == email && b.IsDeleted == false);
         return business;
     }
 

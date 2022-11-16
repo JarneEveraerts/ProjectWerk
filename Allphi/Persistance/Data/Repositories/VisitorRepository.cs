@@ -28,13 +28,13 @@ namespace Persistance.Data.Repositories
 
         public Visitor GetVisitorByName(string name)
         {
-            Visitor visitor = _allphiContext.Visitor.First(v => v.Name == name && v.IsDeleted == false);
+            Visitor visitor = _allphiContext.Visitor.FirstOrDefault(v => v.Name == name && v.IsDeleted == false);
             return visitor;
         }
 
         public Visitor GetVisitorById(int id)
         {
-            Visitor visitor = _allphiContext.Visitor.First(v => v.Id == id && v.IsDeleted == false);
+            Visitor visitor = _allphiContext.Visitor.FirstOrDefault(v => v.Id == id && v.IsDeleted == false);
             return visitor;
         }
 

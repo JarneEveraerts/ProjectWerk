@@ -40,7 +40,7 @@ public class VisitRepository : IVisitRepository
 
     public Visit GetVisitByVisitor(Visitor visitor)
     {
-        Visit visit = _allphiContext.Visit.First(v => v.Visitor == visitor);
+        Visit visit = _allphiContext.Visit.FirstOrDefault(v => v.Visitor == visitor);
         return visit;
     }
 
