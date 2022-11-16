@@ -245,9 +245,11 @@ namespace Domain
             _employeeRepo.CreateEmployee(new Employee(names[0], names[1], function, selectedBusiness, email, plate));
         }
 
-        public int CreateVisitor(string name, string email, string? plate, string business)
+        public void CreateVisitor(string name, string email, string organisation, string employee, string business)
         {
-            return _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
+            Visitor visitor = new Visitor(name, email, organisation, null);
+            _visitorRepo.CreateVisitor(visitor);
+            CreateVisit(visitor, employee, business);
         }
 
         public void CreateContract(string spots, string business, DateTime start, DateTime end)
@@ -262,9 +264,14 @@ namespace Domain
             _businessRepo.CreateBusiness(new Business(name, btw, email, address, phone));
         }
 
-        public void CreateVisit(string visitorName, string businessName, string employeeName, DateTime startDate, DateTime? endDate)
+        public void CreateVisit(Visitor visitor, string employee, string business)
         {
-            _visitRepo.CreateVisit(new Visit(_visitorRepo.GetVisitorByName(visitorName), _businessRepo.GetBusinessByName(businessName), _employeeRepo.GetEmployeesByName(employeeName).First(), startDate, endDate));
+            Visit visit = new();
+            visit.Visitor = visitor;
+            visit.StartDate = DateTime.Now;
+            visit.Business = _businessRepo.GetBusinessByName(business);
+            visit.Employee = _employeeRepo.GetEmployeeByName(employee);
+            _visitRepo.CreateVisit(visit);
         }
 
         public void CreateParkingSpot()
@@ -309,8 +316,6 @@ namespace Domain
             return true;
         }
 
-
-
         public ParkingSpot? GetParkingSpotByVisitor(string visitorName)
         {
             return _parkingRepo.GetParkingSpotByVisitor(_visitorRepo.GetVisitorByName(visitorName));
@@ -319,12 +324,9 @@ namespace Domain
         public bool ParkingSpotExists(string visitorPlate)
         {
             return _parkingRepo.ParkingSpotExist(_parkingRepo.GetParkingSpotByPlate(visitorPlate));
-           
-
-            
         }
 
-        public void CreateVisitorWithPlate(string visitorName, string visitorEmail, string visitorPlate, string organisation)
+        public void CreateVisitorWithPlate(string visitorName, string visitorEmail, string visitorPlate, string organisation, string employee, string business)
         {
             ParkingSpot? parkingSpot = _parkingRepo.GetParkingSpotByPlate(visitorPlate);
             Visitor? visitor = new Visitor(visitorName, visitorEmail, visitorPlate, organisation);
@@ -333,6 +335,7 @@ namespace Domain
                 _visitorRepo.CreateVisitor(visitor);
                 parkingSpot.Visitor = visitor;
                 _parkingRepo.UpdateParkingSpot(parkingSpot);
+                CreateVisit(visitor, employee, business);
             }
         }
     }

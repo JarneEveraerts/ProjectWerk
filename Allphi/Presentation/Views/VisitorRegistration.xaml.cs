@@ -15,7 +15,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 using MaterialDesignThemes.Wpf;
+
 using MaterialDesignColors.Recommended;
 using System.ComponentModel;
 
@@ -34,6 +36,7 @@ namespace Presentation.Views
         private List<EmployeeView>? employeeViews = new();
         private List<ParkingSpotView>? parkingSpotViews = new();
         private VisitorView Visitor;
+
         public VisitorRegistration(DomainController dc)
         {
             InitializeComponent();
@@ -70,7 +73,7 @@ namespace Presentation.Views
                     cmb_employees.Items.Add(item.Name);
                 }
             }
-            if (_dc.GetParkingSpots().Count !=0)
+            if (_dc.GetParkingSpots().Count != 0)
             {
                 foreach (var item in _dc.GetParkingSpots())
                 {
@@ -81,7 +84,6 @@ namespace Presentation.Views
 
         private void btn_Registreren_Click(object sender, RoutedEventArgs e)
         {
-
             string _businessName = cmb_business.SelectedItem.ToString();
             string _employeeName = cmb_employees.SelectedItem.ToString();
             string _visitorName = txt_name.Text;
@@ -91,18 +93,18 @@ namespace Presentation.Views
             int id;
             DateTime _startDate = DateTime.Now;
 
-                if (_visitorPlate == "")
-                {
-                    _dc.CreateVisitor(_visitorName, _visitorEmail, _visitorPlate, _organisation);
-                }
-                else _dc.CreateVisitorWithPlate(_visitorName, _visitorEmail, _visitorPlate, _organisation);   
+            if (_visitorPlate == "")
+            {
+                _dc.CreateVisitor(_visitorName, _visitorEmail, _organisation, _employeeName, _businessName);
+            }
+            else _dc.CreateVisitorWithPlate(_visitorName, _visitorEmail, _visitorPlate, _organisation, _employeeName, _businessName);
         }
 
         private void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmb_employees.SelectedIndex==-1 || cmb_business.SelectedIndex !=0)
+            if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
             {
-               var employeesBySelectedBusiness =  _dc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
+                var employeesBySelectedBusiness = _dc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
                 cmb_employees.Items.Clear();
                 foreach (var item in employeesBySelectedBusiness)
                 {
@@ -122,7 +124,6 @@ namespace Presentation.Views
 
         private void Btn_NL_Click(object sender, RoutedEventArgs e)
         {
-
             lbl_Header.Content = "Welkom";
             HintAssist.SetHint(txt_name, "Naam");
             HintAssist.SetHint(txt_email, "Email");
@@ -135,7 +136,6 @@ namespace Presentation.Views
 
         private void Btn_FR_Click(object sender, RoutedEventArgs e)
         {
-
             lbl_Header.Content = "Bonjour";
             HintAssist.SetHint(txt_name, "Nom");
             HintAssist.SetHint(txt_email, "E-mail");
@@ -148,7 +148,6 @@ namespace Presentation.Views
 
         private void Btn_ENG_Click(object sender, RoutedEventArgs e)
         {
-
             lbl_Header.Content = "Welcome";
             HintAssist.SetHint(txt_name, "Name");
             HintAssist.SetHint(txt_email, "Email");
