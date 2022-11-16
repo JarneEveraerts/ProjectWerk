@@ -496,5 +496,10 @@ namespace Presentation.Views
         }
 
         #endregion Validation
+
+        private void TabItemSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SetupView();
+        }
     }
 }

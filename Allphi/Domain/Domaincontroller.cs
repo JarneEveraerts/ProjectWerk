@@ -61,6 +61,7 @@ namespace Domain
 
         public bool IsLicensePlateValid(string licensePlate)
         {
+            if (licensePlate == "") return true;
             Regex regex = new Regex(@"^[0-9]?([A-Z]{3}[0-9]{3}|[0-9]{3}[A-Z]{3})$");
             Match match = regex.Match(licensePlate);
             return match.Success;
@@ -125,6 +126,7 @@ namespace Domain
 
         public bool ParkingSpotExists(string visitorPlate)
         {
+            if (visitorPlate == "") return true;
             return _parkingRepo.ParkingSpotExist(visitorPlate);
         }
 

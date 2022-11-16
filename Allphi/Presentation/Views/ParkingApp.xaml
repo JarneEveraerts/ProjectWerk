@@ -43,7 +43,7 @@
   materialDesign:HintAssist.Hint="Kies uw bedrijf" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Foreground ="#303030">
             </ComboBox>
             <Label x:Name="lbl_BedrijfNL" Content="Registreer / Login als" FontSize="24"  Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground ="#303030" />
-            <Button x:Name="Btn_Visitor" Content="Bezoeker" HorizontalAlignment="Center" FontSize="30" Click="Btn_Submit_Click" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="7" Grid.Column="1" Margin="0,10,0,10" Height="50" Width="400" />
+            <Button x:Name="Btn_Visitor" Content="Registreren" HorizontalAlignment="Center" FontSize="30" Click="Btn_Submit_Click" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="7" Grid.Column="1" Margin="0,10,0,10" Height="50" Width="400" />
 
             <DockPanel Grid.Row="8" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="0,0,10,0">
                 <Button x:Name="Btn_NL" Content="NL" HorizontalAlignment="Left" FontSize="24" Width="60" Height="44" Click="Btn_NL_Click" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="#DDFFFFFF" Margin="10,0,30,0" />
