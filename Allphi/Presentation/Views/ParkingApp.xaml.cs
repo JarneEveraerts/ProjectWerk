@@ -41,14 +41,14 @@ namespace Presentation.Views
 
         private void Btn_ENG_Click(object sender, RoutedEventArgs e)
         {
-            Btn_Visitor.Content = "Visitor";
+            Btn_Visitor.Content = "Register";
             lbl_LicensePlateNL.Content = "License Plate";
             lbl_LicensePlateNL.Content = "Login/Register as";
         }
 
         private void Btn_FR_Click(object sender, RoutedEventArgs e)
         {
-            Btn_Visitor.Content = "Visiteur";
+            Btn_Visitor.Content = "S'enregistrer";
             lbl_LicensePlateNL.Content = "Plaque d'immatriculation";
             lbl_BedrijfNL.Content = "Connexion/enregistrement en tant que";
         }
