@@ -51,33 +51,12 @@ namespace Presentation.Views
                     cmb_business.Items.Add(item.Name);
                 }
             }
-            if (_dc.GetVisits().Count != 0)
-            {
-                foreach (var item in _dc.GetVisits())
-                {
-                    visitViews.Add(new VisitView(item));
-                }
-            }
-            if (_dc.GetVisitors().Count != 0)
-            {
-                foreach (var item in _dc.GetVisitors())
-                {
-                    visitorViews.Add(new VisitorView(item));
-                }
-            }
             if (_dc.GetEmployees().Count != 0)
             {
                 foreach (var item in _dc.GetEmployees())
                 {
                     employeeViews.Add(new EmployeeView(item));
                     cmb_employees.Items.Add(item.Name);
-                }
-            }
-            if (_dc.GetParkingSpots().Count != 0)
-            {
-                foreach (var item in _dc.GetParkingSpots())
-                {
-                    parkingSpotViews.Add(new ParkingSpotView(item));
                 }
             }
         }

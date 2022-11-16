@@ -22,18 +22,18 @@ public class ContractRepository : IContractRepository
 
     public Contract GetContractByBusiness(Business business)
     {
-        Contract contract = _allphiContext.Contract.FirstOrDefault(c => c.Business == business);
+        Contract contract = _allphiContext.Contract.FirstOrDefault(c => c.Business == business && c.IsDeleted == false);
         return contract;
     }
 
     public Contract GetContractById(int id)
     {
-        return _allphiContext.Contract.First(c => c.Id == id);
+        return _allphiContext.Contract.First(c => c.Id == id && c.IsDeleted == false);
     }
 
     public Contract GetContractByEndDate(DateTime date)
     {
-        Contract contract = _allphiContext.Contract.First(c => c.EndDate == date);
+        Contract contract = _allphiContext.Contract.FirstOrDefault(c => c.EndDate == date && c.IsDeleted == false);
         return contract;
     }
 

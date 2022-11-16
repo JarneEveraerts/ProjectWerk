@@ -22,25 +22,25 @@ public class EmployeeRepository : IEmployeeRepository
 
     public List<Employee> GetEmployeesByBusiness(Business business)
     {
-        List<Employee> employees = _allphiContext.Employee.Where(E => E.Business == business).ToList();
+        List<Employee> employees = _allphiContext.Employee.Where(e => e.Business == business && e.IsDeleted == false).ToList();
         return employees;
     }
 
     public List<Employee> GetEmployeesByName(string name)
     {
-        List<Employee> employees = _allphiContext.Employee.Where(e => e.Name.Contains(name) || e.FirstName.Contains(name)).ToList();
+        List<Employee> employees = _allphiContext.Employee.Where(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false).ToList();
         return employees;
     }
 
     public Employee GetEmployeeByName(string name)
     {
-        Employee employee = _allphiContext.Employee.First(e => e.Name.Contains(name));
+        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false);
         return employee;
     }
 
     public Employee GetEmployeeById(int id)
     {
-        Employee employee = _allphiContext.Employee.First(e => e.Id == id);
+        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Id == id && e.IsDeleted == false);
         return employee;
     }
 
