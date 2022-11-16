@@ -22,25 +22,25 @@ namespace Persistance.Data.Repositories
 
         public List<Visitor> GetVisitorsByBusiness(string Business)
         {
-            List<Visitor> visitors = _allphiContext.Visitor.Where(v => v.Business == Business).ToList();
+            List<Visitor> visitors = _allphiContext.Visitor.Where(v => v.Business == Business && v.IsDeleted == false).ToList();
             return visitors;
         }
 
         public Visitor GetVisitorByName(string name)
         {
-            Visitor visitor = _allphiContext.Visitor.First(v => v.Name == name);
+            Visitor visitor = _allphiContext.Visitor.First(v => v.Name == name && v.IsDeleted == false);
             return visitor;
         }
 
         public Visitor GetVisitorById(int id)
         {
-            Visitor visitor = _allphiContext.Visitor.First(v => v.Id == id);
+            Visitor visitor = _allphiContext.Visitor.First(v => v.Id == id && v.IsDeleted == false);
             return visitor;
         }
 
         public Visitor GetVisitorByMail(string email)
         {
-            Visitor visitor = _allphiContext.Visitor.First(v => v.Email == email);
+            Visitor visitor = _allphiContext.Visitor.FirstOrDefault(v => v.Email == email && v.IsDeleted == false);
             return visitor;
         }
 

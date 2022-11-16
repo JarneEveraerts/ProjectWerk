@@ -174,7 +174,7 @@ namespace Presentation.Views
             string _email = txt_visitor_email.Text;
             string? _plate = txt_visitor_plate.Text;
             string _business = txt_visitor_business.Text;
-            _dc.CreateVisitor(_name, _email, _plate, _business);
+            //_dc.CreateVisitor(_name, _email, _plate, _business);
             SetupView();
         }
 

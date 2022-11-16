@@ -28,7 +28,8 @@ namespace Persistance.Data.Repositories
 
         public List<ParkingSpot>? GetAvailableParkingSpotsReserved(Business reserved)
         {
-            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.Reserved == reserved && p.Plate == null).ToList();
+            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot
+                .Where(p => p.Reserved == reserved && p.Plate == null).ToList();
             return parkingSpots;
         }
 
@@ -40,13 +41,15 @@ namespace Persistance.Data.Repositories
 
         public List<ParkingSpot>? GetAvailableParkingSpotsByPlate()
         {
-            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.Plate == null && p.IsDeleted == false).ToList();
+            List<ParkingSpot> parkingSpots =
+                _allphiContext.ParkingSpot.Where(p => p.Plate == null && p.IsDeleted == false).ToList();
             return parkingSpots;
         }
 
         public ParkingSpot? GetParkingSpotByPlate(string? licensePlate)
         {
-            ParkingSpot? parkingSpot = _allphiContext.ParkingSpot.FirstOrDefault(p => p.Plate == licensePlate && p.IsDeleted == false);
+            ParkingSpot? parkingSpot =
+                _allphiContext.ParkingSpot.FirstOrDefault(p => p.Plate == licensePlate && p.IsDeleted == false);
             return parkingSpot;
         }
 
@@ -96,16 +99,11 @@ namespace Persistance.Data.Repositories
         {
             return _allphiContext.ParkingSpot.Count(p => p.Plate == plate);
         }
-        public bool ParkingSpotExist(ParkingSpot? parkingSpot)
+
+        public bool ParkingSpotExist(string plate)
         {
-            if (_allphiContext.ParkingSpot.Count(p => p.Plate == parkingSpot.Plate) != 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            if (_allphiContext.ParkingSpot.FirstOrDefault(p => p.Plate == plate) != null) return true;
+            return false;
         }
 
         #endregion COUNT

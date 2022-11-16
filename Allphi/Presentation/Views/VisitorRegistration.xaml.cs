@@ -84,20 +84,29 @@ namespace Presentation.Views
 
         private void btn_Registreren_Click(object sender, RoutedEventArgs e)
         {
-            string _businessName = cmb_business.SelectedItem.ToString();
-            string _employeeName = cmb_employees.SelectedItem.ToString();
             string _visitorName = txt_name.Text;
             string _visitorEmail = txt_email.Text;
             string _visitorPlate = txt_plate.Text;
             string _organisation = txt_organisation.Text;
-            int id;
-            DateTime _startDate = DateTime.Now;
 
-            if (_visitorPlate == "")
+            if (isVisitorValid(_visitorName, _visitorEmail, _visitorPlate, _organisation))
             {
-                _dc.CreateVisitor(_visitorName, _visitorEmail, _organisation, _employeeName, _businessName);
+                string _businessName = cmb_business.SelectedItem.ToString();
+                string _employeeName = cmb_employees.SelectedItem.ToString();
+                if (_visitorPlate == "") _dc.CreateVisitor(_visitorName, _visitorEmail, _organisation, _employeeName, _businessName);
+                else _dc.CreateVisitorWithPlate(_visitorName, _visitorEmail, _visitorPlate, _organisation, _employeeName, _businessName);
             }
-            else _dc.CreateVisitorWithPlate(_visitorName, _visitorEmail, _visitorPlate, _organisation, _employeeName, _businessName);
+        }
+
+        private bool isVisitorValid(string visitorName, string visitorEmail, string visitorPlate, string organisation)
+        {
+            if (cmb_business.SelectedIndex == -1 || cmb_business.SelectedIndex == -1 || visitorName == "" || visitorEmail == "" || organisation == "") MessageBox.Show("Please fill in all required fields");
+            else if (!_dc.IsEmailValid(visitorEmail)) { MessageBox.Show("Please enter a valid email address"); }
+            else if (_dc.GetVisitorByEmail(visitorEmail) != null) { MessageBox.Show("This visitor is already registered"); }
+            else if (!_dc.IsLicensePlateValid(visitorPlate)) MessageBox.Show("Please enter a valid license plate");
+            else if (!_dc.ParkingSpotExists(visitorPlate)) MessageBox.Show("This license plate is not registered in the ParkingSpot database");
+            else return true;
+            return false;
         }
 
         private void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -125,24 +134,24 @@ namespace Presentation.Views
         private void Btn_NL_Click(object sender, RoutedEventArgs e)
         {
             lbl_Header.Content = "Welkom";
-            HintAssist.SetHint(txt_name, "Naam");
-            HintAssist.SetHint(txt_email, "Email");
-            HintAssist.SetHint(txt_organisation, "Organisatie");
+            HintAssist.SetHint(txt_name, "Naam*");
+            HintAssist.SetHint(txt_email, "Email*");
+            HintAssist.SetHint(txt_organisation, "Organisatie*");
             HintAssist.SetHint(txt_plate, "Nummerplaat");
-            HintAssist.SetHint(cmb_employees, "Contactpersoon");
-            HintAssist.SetHint(cmb_business, "Bedrijf");
+            HintAssist.SetHint(cmb_employees, "Contactpersoon*");
+            HintAssist.SetHint(cmb_business, "Bedrijf*");
             btn_Registreren.Content = "Registreren";
         }
 
         private void Btn_FR_Click(object sender, RoutedEventArgs e)
         {
             lbl_Header.Content = "Bonjour";
-            HintAssist.SetHint(txt_name, "Nom");
-            HintAssist.SetHint(txt_email, "E-mail");
-            HintAssist.SetHint(txt_organisation, "Organisation");
+            HintAssist.SetHint(txt_name, "Nom*");
+            HintAssist.SetHint(txt_email, "E-mail*");
+            HintAssist.SetHint(txt_organisation, "Organisation*");
             HintAssist.SetHint(txt_plate, "Plaque d'immatriculation");
-            HintAssist.SetHint(cmb_employees, "Contact");
-            HintAssist.SetHint(cmb_business, "Compagnie");
+            HintAssist.SetHint(cmb_employees, "Contact*");
+            HintAssist.SetHint(cmb_business, "Compagnie*");
             btn_Registreren.Content = "Régistré";
         }
 
@@ -151,10 +160,10 @@ namespace Presentation.Views
             lbl_Header.Content = "Welcome";
             HintAssist.SetHint(txt_name, "Name");
             HintAssist.SetHint(txt_email, "Email");
-            HintAssist.SetHint(txt_organisation, "Organisation");
+            HintAssist.SetHint(txt_organisation, "Organisation*");
             HintAssist.SetHint(txt_plate, "License plate");
-            HintAssist.SetHint(cmb_employees, "Contact person");
-            HintAssist.SetHint(cmb_business, "Business");
+            HintAssist.SetHint(cmb_employees, "Contact person*");
+            HintAssist.SetHint(cmb_business, "Business*");
             btn_Registreren.Content = "Register";
         }
     }

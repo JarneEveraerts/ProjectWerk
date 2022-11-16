@@ -41,7 +41,8 @@ namespace Domain.Services
         #region COUNT
 
         int CountParkingSpotByPlate(string plate);
-        bool ParkingSpotExist(ParkingSpot? parkingSpot);
+
+        bool ParkingSpotExist(string plate);
 
         #endregion COUNT
     }

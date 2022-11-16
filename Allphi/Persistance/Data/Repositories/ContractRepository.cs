@@ -22,7 +22,7 @@ public class ContractRepository : IContractRepository
 
     public Contract GetContractByBusiness(Business business)
     {
-        Contract contract = _allphiContext.Contract.First(c => c.Business == business);
+        Contract contract = _allphiContext.Contract.FirstOrDefault(c => c.Business == business);
         return contract;
     }
 

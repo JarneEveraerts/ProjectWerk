@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Net.Mail;
 using Ardalis.GuardClauses;
 using Domain.Models;
 using Domain.Services;
@@ -38,11 +39,17 @@ namespace Domain
 
         #region Validation
 
-        public bool IsEmailValid(string emailAddress)
+        public bool IsEmailValid(string email)
         {
-            Regex regex = new Regex(@"^[\w-.]+@([\w-]+.)+[\w-]{2,4}$");
-            Match match = regex.Match(emailAddress);
-            return match.Success;
+            try
+            {
+                MailAddress Email = new MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public bool IsBtwValid(string btwNumber)
@@ -323,13 +330,13 @@ namespace Domain
 
         public bool ParkingSpotExists(string visitorPlate)
         {
-            return _parkingRepo.ParkingSpotExist(_parkingRepo.GetParkingSpotByPlate(visitorPlate));
+            return _parkingRepo.ParkingSpotExist(visitorPlate);
         }
 
         public void CreateVisitorWithPlate(string visitorName, string visitorEmail, string visitorPlate, string organisation, string employee, string business)
         {
             ParkingSpot? parkingSpot = _parkingRepo.GetParkingSpotByPlate(visitorPlate);
-            Visitor? visitor = new Visitor(visitorName, visitorEmail, visitorPlate, organisation);
+            Visitor? visitor = new Visitor(visitorName, visitorEmail, organisation, visitorPlate);
             if (ParkingSpotExists(visitorPlate))
             {
                 _visitorRepo.CreateVisitor(visitor);
@@ -337,6 +344,11 @@ namespace Domain
                 _parkingRepo.UpdateParkingSpot(parkingSpot);
                 CreateVisit(visitor, employee, business);
             }
+        }
+
+        public Visitor GetVisitorByEmail(string visitorEmail)
+        {
+            return _visitorRepo.GetVisitorByMail(visitorEmail);
         }
     }
 }

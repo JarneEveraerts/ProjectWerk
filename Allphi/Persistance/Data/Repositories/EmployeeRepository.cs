@@ -31,6 +31,7 @@ public class EmployeeRepository : IEmployeeRepository
         List<Employee> employees = _allphiContext.Employee.Where(e => e.Name.Contains(name) || e.FirstName.Contains(name)).ToList();
         return employees;
     }
+
     public Employee GetEmployeeByName(string name)
     {
         Employee employee = _allphiContext.Employee.First(e => e.Name.Contains(name));
@@ -45,7 +46,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public Employee GetEmployeeByPlate(string licensePlate)
     {
-        Employee employee = _allphiContext.Employee.First(e => e.Plate == licensePlate);
+        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Plate == licensePlate);
         return employee;
     }
 
