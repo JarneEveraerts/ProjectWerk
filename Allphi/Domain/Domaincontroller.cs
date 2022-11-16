@@ -5,6 +5,7 @@ using Domain.Models;
 using Domain.Services;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
+using Padi.Vies;
 
 namespace Domain
 {
@@ -54,9 +55,8 @@ namespace Domain
 
         public bool IsBtwValid(string btwNumber)
         {
-            Regex regexBE = new Regex(@"(BE)?0[0-9]{9}");
-            Match match = regexBE.Match(btwNumber);
-            return match.Success;
+            var result = ViesManager.IsValid(btwNumber);
+            return result.IsValid;
         }
 
         public bool IsLicensePlateValid(string licensePlate)
@@ -108,6 +108,26 @@ namespace Domain
             return false;
         }
 
+        public bool EnterParking(string licensePlate, string name)
+        {
+            Business business = _businessRepo.GetBusinessByName(name);
+            Contract? contract = _contractRepo.GetContractByBusiness(business);
+            Employee? employee = _employeeRepo.GetEmployeeByPlate(licensePlate);
+            if (_parkingRepo.GetParkingSpotByPlate(licensePlate) != null) return false;
+            if (contract != null && contract.TotalSpaces <= _parkingRepo.GetParkingSpotsByReserved(business).Count)
+            {
+                _parkingRepo.CreateParkingSpot(new ParkingSpot(employee, null, licensePlate, business));
+                return true;
+            }
+            _parkingRepo.CreateParkingSpot(new ParkingSpot(employee, null, licensePlate, null));
+            return true;
+        }
+
+        public bool ParkingSpotExists(string visitorPlate)
+        {
+            return _parkingRepo.ParkingSpotExist(visitorPlate);
+        }
+
         #endregion Parking
 
         #region GET
@@ -143,11 +163,6 @@ namespace Domain
             return _employeeRepo.GetEmployees();
         }
 
-        private Employee GetEmployeeById(int id)
-        {
-            return _employeeRepo.GetEmployeeById(id);
-        }
-
         public List<ParkingSpot> GetParkingSpots()
         {
             return _parkingRepo.GetParkingSpots();
@@ -161,6 +176,57 @@ namespace Domain
         public List<Visit> GetVisits()
         {
             return _visitRepo.GetVisits();
+        }
+
+        public int GetEmployeeIdByName(string name)
+        {
+            Employee employee = _employeeRepo.GetEmployeeByName(name);
+            return employee.Business.Id;
+        }
+
+        public Business GetBusinessIdByEmployeeName(string name)
+        {
+            return _businessRepo.GetBusinessById(GetEmployeeIdByName(name));
+        }
+
+        public List<Employee> GetEmployeesByBusiness(string business)
+        {
+            return _employeeRepo.GetEmployeesByBusiness(GetBusinessByName(business));
+        }
+
+        private Business GetBusinessByName(string business)
+        {
+            return _businessRepo.GetBusinessByName(business);
+        }
+
+        public Visitor GetVisitorByEmail(string visitorEmail)
+        {
+            return _visitorRepo.GetVisitorByMail(visitorEmail);
+        }
+
+        public Visitor GetVisitorByName(string name)
+        {
+            return _visitorRepo.GetVisitorByName(name);
+        }
+
+        public Visit GetVisitByName(string name)
+        {
+            return _visitRepo.GetVisitByVisitor(GetVisitorByName(name));
+        }
+
+        public Employee GetEmployeeByName(string name)
+        {
+            return _employeeRepo.GetEmployeeByName(name);
+        }
+
+        public Business GetBusinessByBtw(string btw)
+        {
+            return _businessRepo.GetBusinessByBTW(btw);
+        }
+
+        public Contract GetContractByBusiness(string business)
+        {
+            return _contractRepo.GetContractByBusiness(GetBusinessByName(business));
         }
 
         #endregion GET
@@ -209,6 +275,17 @@ namespace Domain
             _businessRepo.UpdateBusiness(business);
         }
 
+        public void UpdateVisit(string name, string employee, string business, DateTime start, DateTime end)
+        {
+            Visit visit = _visitRepo.GetVisitByVisitor(GetVisitorByName(name));
+            visit.Visitor = GetVisitorByName(name);
+            visit.Employee = _employeeRepo.GetEmployeeByName(employee);
+            visit.Business = _businessRepo.GetBusinessByName(business);
+            visit.StartDate = start;
+            visit.EndDate = end;
+            _visitRepo.UpdateVisit(visit);
+        }
+
         #endregion UPDATE
 
         #region DELETE
@@ -239,6 +316,13 @@ namespace Domain
             Employee employee = _employeeRepo.GetEmployeeById(id);
             employee.IsDeleted = true;
             _employeeRepo.UpdateEmployee(employee);
+        }
+
+        public void DeleteVisit(string name)
+        {
+            Visit visit = _visitRepo.GetVisitByVisitor(GetVisitorByName(name));
+            visit.IsDeleted = true;
+            _visitRepo.UpdateVisit(visit);
         }
 
         #endregion DELETE
@@ -281,58 +365,6 @@ namespace Domain
             _visitRepo.CreateVisit(visit);
         }
 
-        public void CreateParkingSpot()
-        {
-        }
-
-        #endregion CREATE
-
-        public int GetEmployeeIdByName(string name)
-        {
-            Employee employee = _employeeRepo.GetEmployeeByName(name);
-            return employee.Business.Id;
-        }
-
-        public Business GetBusinessIdByEmployeeName(string name)
-        {
-            return _businessRepo.GetBusinessById(GetEmployeeIdByName(name));
-        }
-
-        public List<Employee> GetEmployeesByBusiness(string business)
-        {
-            return _employeeRepo.GetEmployeesByBusiness(GetBusinessByName(business));
-        }
-
-        private Business GetBusinessByName(string business)
-        {
-            return _businessRepo.GetBusinessByName(business);
-        }
-
-        public bool EnterParking(string licensePlate, string name)
-        {
-            Business business = _businessRepo.GetBusinessByName(name);
-            Contract? contract = _contractRepo.GetContractByBusiness(business);
-            Employee? employee = _employeeRepo.GetEmployeeByPlate(licensePlate);
-            if (_parkingRepo.GetParkingSpotByPlate(licensePlate) != null) return false;
-            if (contract != null && contract.TotalSpaces <= _parkingRepo.GetParkingSpotsByReserved(business).Count)
-            {
-                _parkingRepo.CreateParkingSpot(new ParkingSpot(employee, null, licensePlate, business));
-                return true;
-            }
-            _parkingRepo.CreateParkingSpot(new ParkingSpot(employee, null, licensePlate, null));
-            return true;
-        }
-
-        public ParkingSpot? GetParkingSpotByVisitor(string visitorName)
-        {
-            return _parkingRepo.GetParkingSpotByVisitor(_visitorRepo.GetVisitorByName(visitorName));
-        }
-
-        public bool ParkingSpotExists(string visitorPlate)
-        {
-            return _parkingRepo.ParkingSpotExist(visitorPlate);
-        }
-
         public void CreateVisitorWithPlate(string visitorName, string visitorEmail, string visitorPlate, string organisation, string employee, string business)
         {
             ParkingSpot? parkingSpot = _parkingRepo.GetParkingSpotByPlate(visitorPlate);
@@ -346,9 +378,11 @@ namespace Domain
             }
         }
 
-        public Visitor GetVisitorByEmail(string visitorEmail)
+        public void CreateVisitorBalie(string name, string email, string plate, string business)
         {
-            return _visitorRepo.GetVisitorByMail(visitorEmail);
+            _visitorRepo.CreateVisitor(new Visitor(name, email, business, plate));
         }
+
+        #endregion CREATE
     }
 }
