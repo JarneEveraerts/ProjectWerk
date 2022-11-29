@@ -17,6 +17,11 @@ namespace AllphiTests.MockClasses
                 return employeeslist[id];
         }
 
+        public Employee GetEmployeeByName(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public Employee? GetEmployeeByPlate(string licensePlate)
         {
             List<string> licenseplatelist = new List<string>();

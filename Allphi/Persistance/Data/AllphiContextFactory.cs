@@ -7,8 +7,9 @@ namespace Persistance.Data
     {
         public AllphiContext CreateDbContext(string[] args)
         {
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
             var optionsBuilder = new DbContextOptionsBuilder<AllphiContext>();
-            optionsBuilder.UseSqlServer(@"Data Source=.\sqlexpress;Initial Catalog=Allphi;Integrated Security=True");
+            optionsBuilder.UseMySql("server=localhost;port=3306;user=root;password=root;database=AllPhi", serverVersion);
             return new AllphiContext(optionsBuilder.Options);
         }
     }

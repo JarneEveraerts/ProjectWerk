@@ -60,6 +60,11 @@ namespace AllphiTests.MockClasses
             throw new NotImplementedException();
         }
 
+        public bool ParkingSpotExist(string plate)
+        {
+            throw new NotImplementedException();
+        }
+
         public void UpdateParkingSpot(ParkingSpot parkingSpot)
         {
             throw new NotImplementedException();

@@ -36,9 +36,11 @@ namespace Presentation
 
         private void ConfigureServices(ServiceCollection services)
         {
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
+
             services.AddDbContext<AllphiContext>(options =>
             {
-                options.UseSqlServer(_configuration.GetConnectionString("DbConnection"));
+                options.UseMySql(_configuration.GetConnectionString("DbConnection"),serverVersion);
             });
             services.AddScoped<IBusinessRepository, BusinessRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
