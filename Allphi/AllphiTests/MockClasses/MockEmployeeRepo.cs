@@ -19,7 +19,7 @@ namespace AllphiTests.MockClasses
 
         public Employee GetEmployeeByName(string name)
         {
-            throw new NotImplementedException();
+            return employeeslist.Find(employee => employee.Name == name);
         }
 
         public Employee? GetEmployeeByPlate(string licensePlate)

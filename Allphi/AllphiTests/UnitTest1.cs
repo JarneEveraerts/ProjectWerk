@@ -4,7 +4,7 @@ namespace AllphiTestsm
     public class UnitTest1
     {
         #region Repos
-        private DomainController cd;
+        private DomainController dc;
         private IBusinessRepository businessRepo = new MockBusinessRepo();
         private IContractRepository contractRepo = new MockContractRepo();
         private IEmployeeRepository employeeRepo = new MockEmployeeRepo();
@@ -16,7 +16,7 @@ namespace AllphiTestsm
         #region DCD
         public UnitTest1()
         {
-            cd = new DomainController(businessRepo, contractRepo, employeeRepo, parkingRepo, visitorRepo, visitRepo);
+            dc = new DomainController(businessRepo, contractRepo, employeeRepo, parkingRepo, visitorRepo, visitRepo);
         }
         #endregion DCD
         
@@ -32,7 +32,7 @@ namespace AllphiTestsm
         [InlineData("1000zzz")]
         public void InvalidLicenseplate(string licensceplate)
         {
-            Assert.False(cd.IsLicensePlateValid(licensceplate));
+            Assert.False(dc.IsLicensePlateValid(licensceplate));
         }
         [Theory]
         [InlineData("1ABC213")]
@@ -42,20 +42,20 @@ namespace AllphiTestsm
         [InlineData("987ZZZ")]
         public void correctlicensplatecheck(string licensplate)
         {
-            Assert.True(cd.IsLicensePlateValid(licensplate));
+            Assert.True(dc.IsLicensePlateValid(licensplate));
         }
         #endregion licenseplatecheck testen
 
         #region btwnumbercheck testen
 
         [Theory]
-        [InlineData("BE0999999999")]
-        [InlineData("BE0000000000")]
-        [InlineData("BE0555555555")]
-        [InlineData("BE0123456789")]
+        [InlineData("BE0438764850")]
+        [InlineData("BE0830158563")]
+        [InlineData("BE0824970944")]
+        [InlineData("BE0455498538")]
         public void valideBtwNumber(string btwNumber)
         {
-            Assert.True(cd.IsBtwValid(btwNumber));
+            Assert.True(dc.IsBtwValid(btwNumber));
         }
         //uitlegvragen
         [Theory]
@@ -68,29 +68,37 @@ namespace AllphiTestsm
         [InlineData("0123456789")]
         public void invalideBtwNumber(string btwNumber)
         {
-            Assert.False(cd.IsBtwValid(btwNumber));
+            Assert.False(dc.IsBtwValid(btwNumber));
         }
 
 
         #endregion btwnumbercheck testen
 
+        #region Email validation test
+        [Fact]
+        public void badEmail()
+        {
+            Assert.False(dc.IsEmailValid("slechteemail"));
+        }
+        #endregion Email validation test
+
         #region Employee test
         [Fact]
         public void checkEmployeeLicesenseplatetrue()
         {
-            cd.CreateEmployee("test naam", "test", "test", "test", "1ABC123");
+            dc.CreateEmployee("test naam", "test", "test", "test", "1ABC123");
 
-            Employee testemployee = cd.CheckEmployeePlate("1ABC123");
+            Employee testemployee = dc.CheckEmployeePlate("1ABC123");
             Assert.NotNull(testemployee);
-            //Assert.False(cd.CheckEmployeePlate("1ABC123"));
+            //Assert.False(dc.CheckEmployeePlate("1ABC123"));
         }
 
         [Fact]
         public void checkEmployeeeflase()
         {
-            Employee testemployee = cd.CheckEmployeePlate("2ABC123");
+            Employee testemployee = dc.CheckEmployeePlate("2ABC123");
             Assert.Null(testemployee);
-            //Assert.False(cd.CheckEmployeePlate("1ABC123"));
+            //Assert.False(dc.CheckEmployeePlate("1ABC123"));
         }
 
         [Theory]
@@ -104,10 +112,10 @@ namespace AllphiTestsm
 
             Employee employee = new Employee("test naam", "test", "test", new Business("testbedrijf", "testbtw", "test"), "test", "1ABC123");
             
-            cd.CreateEmployee("test naam", "test", "test", "test", licenseplate);
+            dc.CreateEmployee("test naam", "test", "test", "test", licenseplate);
 
-            Assert.Equal(employee, cd.CheckEmployeePlate(licenseplate));
-            //Assert.Throws<MissingMethodException>(() => cd.DeleteEmployee(testemployee.Id));
+            Assert.Equal(employee, dc.CheckEmployeePlate(licenseplate));
+            //Assert.Throws<MissingMethodException>(() => dc.DeleteEmployee(testemployee.Id));
         }
 
         [Theory]
@@ -119,18 +127,18 @@ namespace AllphiTestsm
         {
             Employee employee = new Employee("test naam", "test", "test", new Business("testbedrijf", "testbtw", "test"), "test", "1ABC123");
 
-            cd.CreateEmployee("test naam", "test", "test", "test", "1aBC123");
-            cd.CreateEmployee("test naam", "test", "test", "test", "2BC123");
-            cd.CreateEmployee("test naam", "test", "test", "test", "aze123");
+            dc.CreateEmployee("test naam", "test", "test", "test", "1aBC123");
+            dc.CreateEmployee("test naam", "test", "test", "test", "2BC123");
+            dc.CreateEmployee("test naam", "test", "test", "test", "aze123");
 
-            Assert.Equal(employee, cd.CheckEmployeePlate(licenseplate));
-            //Assert.Throws<MissingMethodException>(() => cd.DeleteEmployee(testemployee.Id));
+            Assert.Equal(employee, dc.CheckEmployeePlate(licenseplate));
+            //Assert.Throws<MissingMethodException>(() => dc.DeleteEmployee(testemployee.Id));
         }
         [Fact]
         //verandert naar * als input die geparst wordt wa formatexeption geeft cuz tis geen getal tis en ster
         public void DeleteEmployeefailtest()
         {
-            Assert.Throws<FormatException>(() => cd.DeleteEmployee(int.Parse("*")));
+            Assert.Throws<FormatException>(() => dc.DeleteEmployee(int.Parse("*")));
 
         }
 
@@ -138,20 +146,20 @@ namespace AllphiTestsm
 
         public void deleteEmployeetrue()
         {
-            cd.CreateEmployee("test naam", "test", "test", "test", "test");
-            cd.DeleteEmployee(0);
+            dc.CreateEmployee("test naam", "test", "test", "test", "test");
+            dc.DeleteEmployee(0);
 
-            Assert.Contains(cd.GetEmployees(), e => e.IsDeleted == true);
+            Assert.Contains(dc.GetEmployees(), e => e.IsDeleted == true);
         }
         [Fact]
         //fixed
         public void updateEmployeetesttrue()
         {
             Employee employee = new Employee("update naam", "update", "update", new Business("testbedrijf", "testbtw", "test"), "update", "1ABC123");
-            cd.CreateEmployee("test naam", "test", "test", "test", "test");
+            dc.CreateEmployee("test naam", "test", "test", "test", "test");
 
-            cd.UpdateEmployee("update naam", "update", "update", "update", "1ABC123", 0);
-            Assert.True(cd.GetEmployees().Contains(employee));
+            dc.UpdateEmployee("update naam", "update", "update", "update", "1ABC123", 0);
+            Assert.True(dc.GetEmployees().Contains(employee));
 
 
             //weet niet goed hoe correct dees is want u email is update dus da wa raar update ook eigenlijk niks
@@ -163,10 +171,10 @@ namespace AllphiTestsm
         
         {
                 Employee employee = new Employee("update naam", "update", "update", new Business("testbedrijf", "testbtw", "test"), "update", "1aBC123");
-                cd.CreateEmployee("test naam", "test", "test", "test", "test");
+                dc.CreateEmployee("test naam", "test", "test", "test", "test");
 
-                cd.UpdateEmployee("update naam", "update", "update", "update", "1aBC123", 0);
-                Assert.False(cd.GetEmployees().Contains(employee));
+                dc.UpdateEmployee("update naam", "update", "update", "update", "1aBC123", 0);
+                Assert.False(dc.GetEmployees().Contains(employee));
 
         }
 
@@ -175,8 +183,8 @@ namespace AllphiTestsm
 
         public void getEmployeeTest()
         {
-            cd.CreateEmployee("test naam", "test", "test", "test", "test");
-            Assert.NotNull(cd.GetEmployees());
+            dc.CreateEmployee("test naam", "test", "test", "test", "test");
+            Assert.NotNull(dc.GetEmployees());
         }
 
 
@@ -189,8 +197,8 @@ namespace AllphiTestsm
         public void createBusinessTest()
         {
             Business business = new Business("testbedrijf", "testbtw", "test");
-            cd.CreateBusiness("testbedrijf", "testbtw", "testaddress", "test@testing.com", "BE0123456789");
-            Assert.Contains(cd.GetBusinesses(), b => b == business);
+            dc.CreateBusiness("testbedrijf", "testbtw", "testaddress", "test@testing.com", "BE0123456789");
+            Assert.Contains(dc.GetBusinesses(), b => b == business);
         }
 
         [Fact]
@@ -198,15 +206,15 @@ namespace AllphiTestsm
         public void createBusinessfalsetest()
         {
             Business business = new Business("testbedrijf", "testbtw", "test");
-            cd.CreateBusiness("testbedrijf", "testbtw", "testaddress", "test@testing.com", "B123456789");
-            Assert.DoesNotContain(cd.GetBusinesses(), b => b == business);
+            dc.CreateBusiness("testbedrijf", "testbtw", "testaddress", "test@testing.com", "B123456789");
+            Assert.DoesNotContain(dc.GetBusinesses(), b => b == business);
         }
 
         [Fact]
 
         public void getBusinessTest()
         {
-            Assert.Empty(cd.GetBusinesses());
+            Assert.Empty(dc.GetBusinesses());
         }
 
         [Fact]
@@ -214,22 +222,22 @@ namespace AllphiTestsm
         public void deleteBusinessTest()
         {
 
-            cd.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
+            dc.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
 
-            cd.DeleteBusiness(0);
+            dc.DeleteBusiness(0);
 
-            Assert.Contains(cd.GetBusinesses(), b => b.IsDeleted == true);
+            Assert.Contains(dc.GetBusinesses(), b => b.IsDeleted == true);
         }
 
         [Fact]
 
         public void updateBusinessTest()
         {
-            cd.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
+            dc.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
 
-            cd.UpdateBusiness("updatebedrijf", "updateadress", "updatephone", "test@testing.com", "BE0123488789", 0);
+            dc.UpdateBusiness("updatebedrijf", "updateadress", "updatephone", "test@testing.com", "BE0123488789", 0);
 
-            Assert.Contains(cd.GetBusinesses(), b => b.Btw == "BE0123488789");
+            Assert.Contains(dc.GetBusinesses(), b => b.Btw == "BE0123488789");
 
         }
 
@@ -237,12 +245,12 @@ namespace AllphiTestsm
         //missing validation in dc
         public void updateBusinessTestfalse()
         {
-            cd.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
+            dc.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
 
-            cd.UpdateBusiness("updatebedrijf", "updateadress", "updatephone", "test@testing.com", "BE0128789", 0);
+            dc.UpdateBusiness("updatebedrijf", "updateadress", "updatephone", "test@testing.com", "BE0128789", 0);
            
             
-            Assert.DoesNotContain(cd.GetBusinesses(), b => b.Btw == "BE0128789");
+            Assert.DoesNotContain(dc.GetBusinesses(), b => b.Btw == "BE0128789");
 
         }
 
@@ -251,39 +259,241 @@ namespace AllphiTestsm
         public void getBusinessTesttrue()
         {
 
-            cd.CreateBusiness("testbedrijf1", "testadress", "testphone", "test@test.com", "BE0123456789");
-            cd.CreateBusiness("testbedrijf2", "testadress", "testphone", "test@test.com", "BE0123456789");
-            cd.CreateBusiness("testbedrijf3", "testadress", "testphone", "test@test.com", "BE0123456789");
+            dc.CreateBusiness("testbedrijf1", "testadress", "testphone", "test@test.com", "BE0123456789");
+            dc.CreateBusiness("testbedrijf2", "testadress", "testphone", "test@test.com", "BE0123456789");
+            dc.CreateBusiness("testbedrijf3", "testadress", "testphone", "test@test.com", "BE0123456789");
 
 
-            Assert.NotEmpty(cd.GiveBusinesses());
-            //Assert.Contains(cd.GiveBusinesses(), b => b == ["testbedrijf1", "testadress", "testphone", "test@test.com", "BE0123456789","false"]);
+            Assert.NotEmpty(dc.GiveBusinesses());
+            //Assert.Contains(dc.GiveBusinesses(), b => b == ["testbedrijf1", "testadress", "testphone", "test@test.com", "BE0123456789","false"]);
 
 
         }
 
 
-            #endregion business test
-
-        #region Email validation test
-    [Fact]
-        public void badEmail()
-        {
-            Assert.False(cd.IsEmailValid("slechteemail"));
-        }
-        #endregion Email validation test
+        #endregion business test
 
         #region parkingtesten
         [Fact]
         public void ParkingSpotCheckVisitor()
         {
-            ParkingSpot parkingSpot = cd.GetAvailableParkingSpotVisitor();
-            Assert.NotNull(parkingSpot);
+            Assert.NotNull(dc.GetAvailableParkingSpotVisitor());
+        }
+
+        [Fact]
+
+        public void ParkingSpotCheckEmployee()
+        {
+            dc.CreateBusiness("iwein de moor", "testadress", "testphone", "test@testing.com0", "BE0123456789");
+            dc.EnterParking("1ABC123", "iwein de moor");
+            Assert.Contains(dc.GetParkingSpots(), b => b.Plate == "1ABC123");
+        }
+
+
+        [Fact]
+        public void GetParkingSpots()
+        {
+            Assert.Equal(0, dc.GetParkingSpots().Count);
+
+        }
+
+        [Fact]
+        public void ExitParkingTestTrue()
+        {
+            dc.EnterParking("1ABC123", "iwein de moor");
+            dc.ExitParking("1ABC123");
+
+            Assert.Contains(dc.GetParkingSpots(), b => b.Plate == "1ABC123" && b.IsDeleted == true);
+        }
+
+        [Fact]
+        public void exitParkingTestFalsePlate()
+        {
+            Assert.False(dc.ExitParking("1ABC123"));
+        }
+        [Fact]
+        public void ParkingSpotExistFalse()
+        {
+            Assert.False(dc.ParkingSpotExists("1ABC123"));
+        }
+
+        [Fact]
+        public void ParkingSpotExistTrue()
+        {
+            dc.EnterParking("1ABC123", "iwein de moor");
+            Assert.True(dc.ParkingSpotExists("1ABC123"));
+        }
+
+        [Fact]
+        public void SubmitVisitorTestTrue()
+        {
+            dc.SubmitVisitorParking("1ABC123");
+            Assert.True(dc.ParkingSpotExists("1ABC123"));
+        }
+        [Fact]
+        public void SubmitVisitorTestFalse()
+        {
+            dc.SubmitVisitorParking("1ABC123");
+            dc.SubmitVisitorParking("1ABC123");
+            Assert.Contains(dc.GetParkingSpots(), b => b.Plate == null);
+
         }
 
         #endregion parkingtesten
 
-        
+        #region contact testen
+        [Fact]
+
+        public void CreateContractTRUE()
+        {
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@gmail.com", "BE0123456789");
+            dc.CreateContract("5", "Allphi", DateTime.Parse("Jan 1 2022"), DateTime.Parse("Jan 1 2023"));
+
+            Assert.NotNull(dc.GetContractByBusiness("Allphi"));
+        }
+
+
+        [Fact]
+
+        public void contracttest()
+        {
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@gmail.com", "BE0123456789");
+            dc.CreateContract("5", "Allphi", DateTime.Parse("Jan 1 2022"), DateTime.Parse("Jan 1 2023"));
+
+            dc.DeleteContract(0);
+
+            Assert.Contains(dc.GetContracts(), b => b.IsDeleted == true);
+
+
+        }
+
+        [Fact]
+
+        public void getcontractBusinessTrue()
+        {
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@gmail.com", "BE0123456789");
+            dc.CreateContract("5", "Allphi", DateTime.Parse("Jan 1 2022"), DateTime.Parse("Jan 1 2023"));
+
+            Assert.NotNull(dc.GetContractByBusiness("Allphi"));
+        }
+
+
+        [Fact]
+
+        public void updateContract()
+        {
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@gmail.com", "BE0123456789");
+            dc.CreateContract("5", "Allphi", DateTime.Parse("Jan 1 2022"), DateTime.Parse("Jan 1 2023"));
+            dc.UpdateContract("5", "Allphi", DateTime.Parse("Jan 1 2022"), DateTime.Parse("Jan 1 2028"), 0);
+            Assert.Contains(dc.GetContracts(), b => b.EndDate == DateTime.Parse("Jan 1 2028"));
+        }
+
+        #endregion contact testen
+
+        #region Visitor testen
+        [Fact]
+        public void CreateVisitorTEST()
+        {
+
+            // !!!!namen met de zijn schuffed plus omgedraaid?
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@testmail.com", "be0123456789");
+            dc.CreateEmployee("Mark boer", "test@testmail.com", "onthaalmedewerker", "Allphi", null);
+            dc.CreateVisitor("iwein", "test@testmail.com", "testorg", "mark", "Allphi");
+            Assert.Contains(dc.GetVisitors(), b => b.Name == "iwein");
+        }
+
+        [Fact]
+
+        public void UpdateVisitorTest()
+        {
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@testmail.com", "be0123456789");
+            dc.CreateEmployee("Mark boer", "test@testmail.com", "onthaalmedewerker", "Allphi", null);
+            dc.CreateVisitor("iwein", "test@testmail.com", "testorg", "mark", "Allphi");
+            dc.UpdateVisitor("frank de meersman", "test@testmail.com", "1ABC123", "Allphi", 0);
+
+            Assert.DoesNotContain(dc.GetVisitors(), b => b.Name == "iwein");
+
+        }
+
+        [Fact]
+
+        public void CreateVisitorBalieTest()
+        {
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@testmail.com", "be0123456789");
+            dc.CreateEmployee("Mark boer", "test@testmail.com", "onthaalmedewerker", "Allphi", null);
+            dc.CreateVisitorBalie("iwein", "test@testmail.com", "1ABC123", "Allphi");
+
+            Assert.NotNull(dc.GetVisitorByName("iwein"));
+
+        }
+
+        [Fact]
+
+        public void CreateVisitorPlateTest()
+        {
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@testmail.com", "be0123456789");
+            dc.CreateEmployee("Mark boer", "test@testmail.com", "onthaalmedewerker", "Allphi", null);
+            dc.CreateVisitor("iwein", "test@testmail.com", "testorg", "mark", "Allphi");
+            dc.CreateVisitorWithPlate("iwein", "test@testmail.com", "1ABC123", "notAllphi", "mark", "Allphi");
+
+            Assert.NotNull(dc.GetVisitorByEmail("test@testmail.com"));
+
+        }
+
+        [Fact]
+
+        public void deleteVisitorTest()
+        {
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@testmail.com", "be0123456789");
+            dc.CreateEmployee("Mark boer", "test@testmail.com", "onthaalmedewerker", "Allphi", null);
+            dc.CreateVisitor("iwein", "test@testmail.com", "testorg", "mark", "Allphi");
+            dc.DeleteBusiness(0);
+
+            Assert.DoesNotContain(dc.GetVisitors(), b => b.Name == "iwein" && b.IsDeleted == true);
+
+        }
+        #endregion Visitor testen
+
+        #region visit testen
+
+        [Fact]
+        public void CreateVisitTest()
+        {
+
+            // !!!!namen met de zijn schuffed plus omgedraaid?
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@testmail.com", "be0123456789");
+            dc.CreateEmployee("Mark boer", "test@testmail.com", "onthaalmedewerker", "Allphi", null);
+            dc.CreateVisitor("iwein", "test@testmail.com", "testorg", "mark", "Allphi");
+            Assert.NotNull(dc.GetVisitByName("iwein"));
+        }
+
+        [Fact]
+        public void UpdateVisitTest()
+        {
+
+            // !!!!namen met de zijn schuffed plus omgedraaid?
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@testmail.com", "be0123456789");
+            dc.CreateEmployee("Mark boer", "test@testmail.com", "onthaalmedewerker", "Allphi", null);
+            dc.CreateVisitor("iwein", "test@testmail.com", "testorg", "mark", "Allphi");
+            dc.UpdateVisit("iwein", "Mark boer", "Allphi", DateTime.Parse("Jan 1 2022 16:00:00"), DateTime.Parse("Jan 1 2023 18:00:00"));
+            Assert.Contains(dc.GetVisits(), b => b.StartDate == DateTime.Parse("Jan 1 2022 16:00:00"));
+        }
+
+        [Fact]
+        public void visit()
+        {
+
+            // !!!!namen met de zijn schuffed plus omgedraaid?
+            dc.CreateBusiness("Allphi", "testadress", "testphone", "test@testmail.com", "be0123456789");
+            dc.CreateEmployee("Mark boer", "test@testmail.com", "onthaalmedewerker", "Allphi", null);
+            dc.CreateVisitor("iwein", "test@testmail.com", "testorg", "mark", "Allphi");
+            dc.DeleteVisit("iwein");
+            Assert.Contains(dc.GetVisits(), b => b.IsDeleted == true);
+        }
+
+        #endregion visit testen
+
+
 
     }
 }

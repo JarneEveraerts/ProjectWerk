@@ -1,43 +1,43 @@
 ﻿using Domain.Models;
-using Domain.Services;
 
 namespace AllphiTests.MockClasses
 {
     public class MockVisitRepo : IVisitRepository
     {
+        List<Visit> Visitlist = new List<Visit>();
         public void CreateVisit(Visit visit)
         {
-            throw new NotImplementedException();
+            Visitlist.Add(visit);
         }
 
         public Visit GetVisitByVisitor(Visitor visitor)
         {
-            throw new NotImplementedException();
+            return Visitlist.Find(visit => visit.Visitor == visitor);
         }
 
         public List<Visit> GetVisits()
         {
-            throw new NotImplementedException();
+            return Visitlist;
         }
 
         public List<Visit> GetVisitsByBusiness(Business business)
         {
-            throw new NotImplementedException();
+            return Visitlist.FindAll(visit => visit.Business == business);
         }
 
         public List<Visit> GetVisitsByEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            return Visitlist.FindAll(visit => visit.Employee == employee);
         }
 
         public List<Visit> GetVisitsByVisitor(Visitor visitor)
         {
-            throw new NotImplementedException();
+            return Visitlist.FindAll(visit => visit.Visitor == visitor);
         }
 
         public void UpdateVisit(Visit visit)
         {
-            throw new NotImplementedException();
+            Visitlist[visit.Id] = visit;
         }
     }
 }

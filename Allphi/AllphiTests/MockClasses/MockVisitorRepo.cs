@@ -5,29 +5,30 @@ namespace AllphiTests.MockClasses
 {
     internal class MockVisitorRepo : IVisitorRepository
     {
+        List<Visitor> VisitorList = new List<Visitor>();
         public void CreateVisitor(Visitor visitor)
         {
-            throw new NotImplementedException();
+            VisitorList.Add(visitor);
         }
 
         public Visitor GetVisitorById(int id)
         {
-            throw new NotImplementedException();
+            return VisitorList[id];
         }
 
         public Visitor GetVisitorByMail(string mail)
         {
-            throw new NotImplementedException();
+            return VisitorList.Find(visitor => visitor.Email == mail);
         }
 
         public Visitor GetVisitorByName(string name)
         {
-            throw new NotImplementedException();
+            return VisitorList.Find(visitor => visitor.Name == name);
         }
 
         public List<Visitor> GetVisitors()
         {
-            throw new NotImplementedException();
+            return VisitorList;
         }
 
         public List<Visitor> GetVisitorsByBusiness(string Business)
@@ -37,12 +38,13 @@ namespace AllphiTests.MockClasses
 
         public void UpdateVisitor(Visitor visitor)
         {
-            throw new NotImplementedException();
+            VisitorList[visitor.Id] = visitor;
         }
 
         int IVisitorRepository.CreateVisitor(Visitor visitor)
         {
-            throw new NotImplementedException();
+            VisitorList.Add(visitor);
+            return VisitorList.Count;
         }
     }
 }

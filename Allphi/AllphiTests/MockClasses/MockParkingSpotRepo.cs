@@ -1,18 +1,22 @@
 ﻿using Domain.Models;
 using Domain.Services;
 
+
 namespace AllphiTests.MockClasses
 {
-     class MockParkingSpotRepo : IParkingSpotRepository
+
+    class MockParkingSpotRepo : IParkingSpotRepository
     {
+        List<ParkingSpot> parkingSpots = new List<ParkingSpot>();
+
         public int CountParkingSpotByPlate(string plate)
         {
-            throw new NotImplementedException();
+            return parkingSpots.Count(p => p.Plate == plate);
         }
 
         public void CreateParkingSpot(ParkingSpot parkingSpot)
         {
-            throw new NotImplementedException();
+            parkingSpots.Add(parkingSpot);
         }
 
         public ParkingSpot GetAvailableParkingSpotReserved(Business reserved)
@@ -32,7 +36,11 @@ namespace AllphiTests.MockClasses
 
         public ParkingSpot? GetAvailableParkingSpotUnreserved()
         {
-            return new ParkingSpot();
+            ParkingSpot parkingspot = new ParkingSpot(employee: null, visitor: null, reserved: null, plate: null);
+
+            parkingSpots.Add(parkingspot);
+
+            return parkingSpots.FirstOrDefault(p => p.Reserved == null && p.Plate == null && p.IsDeleted == false);
         }
 
         public ParkingSpot? GetParkingSpotByEmployee(Employee employee)
@@ -42,32 +50,48 @@ namespace AllphiTests.MockClasses
 
         public ParkingSpot? GetParkingSpotByPlate(string? licensePlate)
         {
-            throw new NotImplementedException();
+            if (parkingSpots.Exists(parkingSpot => parkingSpot.Plate == licensePlate))
+            {
+                return parkingSpots.Find(parkingSpot => parkingSpot.Plate == licensePlate);
+
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
         public ParkingSpot? GetParkingSpotByVisitor(Visitor visitor)
         {
-            throw new NotImplementedException();
+            return parkingSpots.Find(parkingSpot => parkingSpot.Visitor == visitor);
         }
 
         public List<ParkingSpot> GetParkingSpots()
         {
-            throw new NotImplementedException();
+            return parkingSpots;
         }
 
         public List<ParkingSpot> GetParkingSpotsByReserved(Business reserved)
+        {
+            return parkingSpots.FindAll(parkingSpot => parkingSpot.Reserved == reserved);
+        }
+
+        public bool ParkingSpotExist(ParkingSpot? parkingSpot)
         {
             throw new NotImplementedException();
         }
 
         public bool ParkingSpotExist(string plate)
         {
-            throw new NotImplementedException();
+
+            if (parkingSpots.FirstOrDefault(p => p.Plate == plate) != null) return true;
+            return false;
         }
 
         public void UpdateParkingSpot(ParkingSpot parkingSpot)
         {
-            throw new NotImplementedException();
+            parkingSpots[parkingSpot.Id] = parkingSpot;
         }
     }
 }
