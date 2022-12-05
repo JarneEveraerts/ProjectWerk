@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistance.Data;
 using Presentation;
 using Presentation.Views;
+using System.Net.Http;
 using Domain.Repositories;
 
 namespace Presentation
@@ -36,12 +37,11 @@ namespace Presentation
 
         private void ConfigureServices(ServiceCollection services)
         {
-            var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
-
             services.AddDbContext<AllphiContext>(options =>
             {
-                options.UseMySql(_configuration.GetConnectionString("DbConnection"),serverVersion);
+                options.UseSqlServer(_configuration.GetConnectionString("DbConnection"));
             });
+            services.AddHttpClient();
             services.AddScoped<IBusinessRepository, BusinessRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -61,9 +61,9 @@ namespace Presentation
         {
             //DbInitializer dbInitializer = _serviceProvider.GetService<DbInitializer>();
             //dbInitializer.Initialize();
-            //ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
+            ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
             //BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
-            //parkingApp.Show();
+            parkingApp.Show();
             //balieApp.Show();
             //LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
             //login.Show();
