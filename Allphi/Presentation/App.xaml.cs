@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistance.Data;
 using Presentation;
 using Presentation.Views;
+using System.Net.Http;
 using Domain.Repositories;
 
 namespace Presentation
@@ -40,8 +41,9 @@ namespace Presentation
 
             services.AddDbContext<AllphiContext>(options =>
             {
-                options.UseMySql(_configuration.GetConnectionString("DbConnection"),serverVersion);
+                options.UseMySql(_configuration.GetConnectionString("DbConnection"), serverVersion);
             });
+            services.AddHttpClient();
             services.AddScoped<IBusinessRepository, BusinessRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
@@ -59,18 +61,18 @@ namespace Presentation
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            //DbInitializer dbInitializer = _serviceProvider.GetService<DbInitializer>();
-            //dbInitializer.Initialize();
-            //ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
-            //BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
-            //parkingApp.Show();
-            //balieApp.Show();
-            //LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
-            //login.Show();
-            //VisitorRegistration visitorRegistration = _serviceProvider.GetRequiredService<VisitorRegistration>();
-            //visitorRegistration.Show();
-            //UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
-            //uitgangApp.Show();
+            DbInitializer dbInitializer = _serviceProvider.GetService<DbInitializer>();
+            dbInitializer.Initialize();
+            ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
+            BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
+            parkingApp.Show();
+            balieApp.Show();
+            LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
+            login.Show();
+            VisitorRegistration visitorRegistration = _serviceProvider.GetRequiredService<VisitorRegistration>();
+            visitorRegistration.Show();
+            UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
+            uitgangApp.Show();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Presentation.Views
             _dc = dc;
 
             _apiClient = clientFactory.CreateClient();
-            _apiClient.BaseAddress = new Uri("http://localhost:5076");
+            _apiClient.BaseAddress = new Uri("http://localhost:5269");
             var businessesResponse = _apiClient.GetAsync("/businesses").Result;
             var businessContentString = businessesResponse.Content.ReadAsStringAsync().Result;
             var businesses = JsonConvert.DeserializeObject<List<Business>>(businessContentString);
