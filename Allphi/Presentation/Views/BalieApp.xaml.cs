@@ -1,10 +1,19 @@
-﻿using System;
+﻿using Domain;
+using Domain.Models;
+using Domain.Models.DTOs;
+using Newtonsoft.Json;
+using Presentation.ViewModels;
+using System;
 using System.Collections.Generic;
-using Domain;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Domain.Models;
-using Presentation.ViewModels;
+using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 
 namespace Presentation.Views
 {
@@ -20,23 +29,35 @@ namespace Presentation.Views
         private List<ParkingSpotView>? _parkingSpotViews = new();
         private List<VisitorView>? _visitorViews = new();
         private List<VisitView>? _visitViews = new();
+        private HttpClient _apiClient;
+        private List<Business> _businesses = new List<Business>();
+        private List<Visitor> _visitors = new List<Visitor>();
+        private List<Employee> _employees = new List<Employee>();
+        private List<Contract> _contracts = new List<Contract>();
+        private List<Visit> _visits = new List<Visit>();
+        private List<ParkingSpot> _parkingSpots = new List<ParkingSpot>();
 
-        public BalieApp(DomainController dc)
+        public BalieApp(DomainController dc, IHttpClientFactory clientFactory)
         {
             _dc = dc;
+            _apiClient = clientFactory.CreateClient();
+            _apiClient.BaseAddress = new Uri("http://localhost:5076");
+            _apiClient.DefaultRequestHeaders
+      .Accept
+      .Add(new MediaTypeWithQualityHeaderValue("application/json"));
             InitializeComponent();
             //raise
             SetupView();
         }
 
-        private void SetupView()
+        private async void SetupView()
         {
-            _businessViews = GetBusinessViews();
-            _contractViews = GetContractViews();
-            _employeeViews = GetEmployeeViews();
-            _parkingSpotViews = GetParkingSpotViews();
-            _visitorViews = GetVisitorViews();
-            _visitViews = GetVisitViews();
+            _businessViews = await GetBusinessViews();
+            _contractViews = await GetContractViews();
+            _employeeViews = await GetEmployeeViews();
+            _parkingSpotViews = await GetParkingSpotViews();
+            _visitorViews = await GetVisitorViews();
+            _visitViews = await GetVisitViews();
             dtg_businesses.ItemsSource = _businessViews;
             dtg_contracts.ItemsSource = _contractViews;
             dtg_employees.ItemsSource = _employeeViews;
@@ -46,11 +67,14 @@ namespace Presentation.Views
 
         #region SelectionChange
 
-        private void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
             {
-                var employeesBySelectedBusiness = _dc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
+
+                var employeesBySelectedBusinessRespons = await _apiClient.GetAsync($"/employees/business/{cmb_business.SelectedItem.ToString()}");
+                var employeesBySelectedBusinessContentString = await employeesBySelectedBusinessRespons.Content.ReadAsStringAsync();
+                var employeesBySelectedBusiness = JsonConvert.DeserializeObject<List<Employee>>(employeesBySelectedBusinessContentString);
                 cmb_employees.Items.Clear();
                 foreach (var item in employeesBySelectedBusiness)
                 {
@@ -59,12 +83,15 @@ namespace Presentation.Views
             }
         }
 
-        private void cmb_employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cmb_employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmb_business.SelectedIndex == -1 || cmb_employees.SelectedIndex != -1)
             {
-                var businessBySelectedEmployees = _dc.GetBusinessIdByEmployeeName(cmb_employees.SelectedItem.ToString());
-                cmb_business.SelectedItem = businessBySelectedEmployees.Name;
+                var employeeResponse = await _apiClient.GetAsync($"/employees/{cmb_employees.SelectedItem.ToString()}/businessId");
+                var contentStringEmployee = await employeeResponse.Content.ReadAsStringAsync();
+                var businessId = JsonConvert.DeserializeObject<int>(contentStringEmployee);
+
+                cmb_business.SelectedItem = _businessViews.Single(b => b.Id == businessId);
             }
         }
 
@@ -72,10 +99,14 @@ namespace Presentation.Views
 
         #region GetViews
 
-        private List<BusinessView> GetBusinessViews()
+        private async Task<List<BusinessView>> GetBusinessViews()
         {
+            var businessesResponse = await _apiClient.GetAsync("/businesses");
+            var contentString = await businessesResponse.Content.ReadAsStringAsync();
+            var businesses = JsonConvert.DeserializeObject<List<Business>>(contentString);
+            _businesses = businesses;
             List<BusinessView> businessViews = new();
-            foreach (var item in _dc.GetBusinesses())
+            foreach (var item in businesses)
             {
                 businessViews.Add(new BusinessView(item));
                 cmb_business.Items.Add(item.Name);
@@ -83,20 +114,28 @@ namespace Presentation.Views
             return businessViews;
         }
 
-        private List<ContractView> GetContractViews()
+        private async Task<List<ContractView>> GetContractViews()
         {
+            var contractsResponse = await _apiClient.GetAsync("/contracts");
+            var contentString = await contractsResponse.Content.ReadAsStringAsync();
+            var contracts = JsonConvert.DeserializeObject<List<Contract>>(contentString);
+            _contracts = contracts;
             List<ContractView> contractViews = new();
-            foreach (var item in _dc.GetContracts())
+            foreach (var item in contracts)
             {
                 contractViews.Add(new ContractView(item));
             }
             return contractViews;
         }
 
-        private List<EmployeeView> GetEmployeeViews()
+        private async Task<List<EmployeeView>> GetEmployeeViews()
         {
+            var employeeResponse = await _apiClient.GetAsync("/employees");
+            var contentString = await employeeResponse.Content.ReadAsStringAsync();
+            var employees = JsonConvert.DeserializeObject<List<Employee>>(contentString);
+            _employees = employees;
             List<EmployeeView> employeeViews = new();
-            foreach (var item in _dc.GetEmployees())
+            foreach (var item in employees)
             {
                 employeeViews.Add(new EmployeeView(item));
                 cmb_employees.Items.Add(item.Name);
@@ -104,30 +143,42 @@ namespace Presentation.Views
             return employeeViews;
         }
 
-        private List<ParkingSpotView> GetParkingSpotViews()
+        private async Task<List<ParkingSpotView>> GetParkingSpotViews()
         {
+            var parkingSpotResponse = await _apiClient.GetAsync("/parkingspots");
+            var contentString = await parkingSpotResponse.Content.ReadAsStringAsync();
+            var parkingSpots = JsonConvert.DeserializeObject<List<ParkingSpot>>(contentString);
+            _parkingSpots = parkingSpots;
             List<ParkingSpotView> parkingSpotViews = new();
-            foreach (var item in _dc.GetParkingSpots())
+            foreach (var item in parkingSpots)
             {
                 parkingSpotViews.Add(new ParkingSpotView(item));
             }
             return parkingSpotViews;
         }
 
-        private List<VisitorView> GetVisitorViews()
+        private async Task<List<VisitorView>> GetVisitorViews()
         {
+            var visitorResponse = await _apiClient.GetAsync("/Visitors");
+            var contentString = await visitorResponse.Content.ReadAsStringAsync();
+            var visitors = JsonConvert.DeserializeObject<List<Visitor>>(contentString);
+            _visitors = visitors;
             List<VisitorView> visitorViews = new();
-            foreach (var item in _dc.GetVisitors())
+            foreach (var item in visitors)
             {
                 visitorViews.Add(new VisitorView(item));
             }
             return visitorViews;
         }
 
-        private List<VisitView> GetVisitViews()
+        private async Task<List<VisitView>> GetVisitViews()
         {
+            var visitRespons = await _apiClient.GetAsync("/Visits");
+            var contentString = await visitRespons.Content.ReadAsStringAsync();
+            var visits = JsonConvert.DeserializeObject<List<Visit>>(contentString);
+            _visits = visits;
             List<VisitView> visitViews = new();
-            foreach (var item in _dc.GetVisits())
+            foreach (var item in visits)
             {
                 visitViews.Add(new VisitView(item));
             }
@@ -138,7 +189,7 @@ namespace Presentation.Views
 
         #region UPDATE
 
-        private void btn_updateBusiness_Click(object sender, RoutedEventArgs e)
+        private async void btn_updateBusiness_Click(object sender, RoutedEventArgs e)
         {
             string _name = txt_business_name.Text;
             string? _address = txt_business_address.Text;
@@ -149,12 +200,26 @@ namespace Presentation.Views
             if (IsBusinessValid(_name, _address, _phone, _email, _btw))
             {
                 BusinessView businessView = (BusinessView)dtg_businesses.SelectedItem;
-                _dc.UpdateBusiness(_name, _address, _phone, _email, _btw, (int)businessView.Id);
-                SetupView();
+
+                var updateBusiness = new CreateAndUpdateBusinessDTO
+                {
+                    Name = _name,
+                    Address = _address,
+                    Phone = _phone,
+                    Email = _email,
+                    Btw = _btw
+                };
+                var bodyString = JsonConvert.SerializeObject(updateBusiness);
+                var businessesResponse = await _apiClient.PatchAsync($"/businesses/{(int)businessView.Id}", new StringContent(bodyString, Encoding.UTF8,
+                                    "application/json"));
+                if (businessesResponse.IsSuccessStatusCode)
+                    SetupView();
+                else
+                    throw new Exception();
             }
         }
 
-        private void btn_updateVisitor_Click(object sender, RoutedEventArgs e)
+        private async void btn_updateVisitor_Click(object sender, RoutedEventArgs e)
         {
             string _name = txt_visitor_name.Text;
             string _email = txt_visitor_email.Text;
@@ -164,12 +229,24 @@ namespace Presentation.Views
             if (IsVisitorValid(_name, _email, _plate, _business))
             {
                 VisitorView visitorView = (VisitorView)dtg_visitors.SelectedItem;
-                _dc.UpdateVisitor(_name, _email, _plate, _business, (int)visitorView.Id);
-                SetupView();
+                var updateVisitorDTO = new UpdateVisitorDTO
+                {
+                    Name = _name,
+                    Email = _email,
+                    Plate = _plate,
+                    Business = _business
+                };
+                var bodyString = JsonConvert.SerializeObject(updateVisitorDTO);
+                var response = await _apiClient.PatchAsync($"/visitors/{(int)visitorView.Id}", new StringContent(bodyString, Encoding.UTF8,
+                                    "application/json"));
+                if (response.IsSuccessStatusCode)
+                    SetupView();
+                else
+                    throw new Exception();
             }
         }
 
-        private void btn_updateContract_Click(object sender, RoutedEventArgs e)
+        private async void btn_updateContract_Click(object sender, RoutedEventArgs e)
         {
             DateTime _start = dtp_start.SelectedDate.Value;
             DateTime _end = dtp_end.SelectedDate.Value;
@@ -177,35 +254,92 @@ namespace Presentation.Views
             string _business = txt_contract_business.Text;
             if (IsContractValid(_spots, _business, _start))
             {
+                var business = _businesses.Single(b => b.Name == _business);
                 ContractView contractView = (ContractView)dtg_contracts.SelectedItem;
-                _dc.UpdateContract(_spots, _business, _start, _end, (int)contractView.Id);
-                SetupView();
+                var updateContract = new UpdateContractDTO
+                {
+                    Start = _start,
+                    End = _end,
+                    Spots = Int32.Parse(_spots),
+                    Business = business
+                };
+
+                var bodyString = JsonConvert.SerializeObject(updateContract);
+                var response = await _apiClient.PatchAsync($"/contracts/{(int)contractView.Id}", new StringContent(bodyString, Encoding.UTF8,
+                                    "application/json"));
+                if (response.IsSuccessStatusCode)
+                    SetupView();
+                else
+                    throw new Exception();
             }
         }
 
-        private void btn_updateEmployee_Click(object sender, RoutedEventArgs e)
+        private async void btn_updateEmployee_Click(object sender, RoutedEventArgs e)
         {
             string _name = txt_employee_name.Text;
             string? _email = txt_employee_email.Text;
             string _function = txt_employee_function.Text;
             string _business = txt_employee_business.Text;
             string? _plate = txt_employee_plate.Text;
+
+            var business = _businesses.Single(b => b.Name == _business);
+
             if (IsEmployeeValid(_name, _email, _function, _business, _plate))
             {
                 EmployeeView employeeView = (EmployeeView)dtg_employees.SelectedItem;
-                _dc.UpdateEmployee(_name, _email, _function, _business, _plate, (int)employeeView.Id);
-                SetupView();
+
+                var updateEmployee = new CreateAndUpdateEmployeeDTO
+                {
+                    Name = _name,
+                    Email = _email,
+                    Function = _function,
+                    Business = business,
+                    Plate = _plate
+                };
+
+                var bodyString = JsonConvert.SerializeObject(updateEmployee);
+                var employeeResponse = await _apiClient.PatchAsync($"/employees/{(int)employeeView.Id}", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                if (employeeResponse.IsSuccessStatusCode)
+                {
+                    SetupView();
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
         }
 
-        private void btn_updateVisit_Click(object sender, RoutedEventArgs e)
+        private async void btn_updateVisit_Click(object sender, RoutedEventArgs e)
         {
             string name = txt_visit_name.Text;
-            if (IsVisitValid(name))
+            var visitor = _visitors.Single(v => v.Name == name);
+            if (IsVisitValid(name, visitor))
             {
                 MessageBox.Show("Ben je zeker om deze bezoek te updaten?", "Update", MessageBoxButton.OKCancel);
-                _dc.UpdateVisit(name, cmb_employees.Text, cmb_business.Text, (DateTime)dtp_visit_start.SelectedDate, (DateTime)dtp_visit_end.SelectedDate);
-                SetupView();
+
+                var employee = _employees.Single(e => e.Name == cmb_business.Text);
+                var business = _businesses.Single(b => b.Name == cmb_business.Text);
+                var updateVisit = new UpdateVisitDTO
+                {
+                    Visitor = visitor,
+                    Employee = employee,
+                    Business = business,
+                    Start = dtp_visit_start.SelectedDate.Value,
+                    End = dtp_visit_end.SelectedDate.Value
+                };
+                var bodyString = JsonConvert.SerializeObject(updateVisit);
+                var updateVisitResponse = await _apiClient.PatchAsync($"/visits", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                if (updateVisitResponse.IsSuccessStatusCode)
+                {
+                    SetupView();
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
         }
 
@@ -213,7 +347,7 @@ namespace Presentation.Views
 
         #region ADD
 
-        private void btn_addBusiness_Click(object sender, RoutedEventArgs e)
+        private async void btn_addBusiness_Click(object sender, RoutedEventArgs e)
         {
             string _name = txt_business_name.Text;
             string? _address = txt_business_address.Text;
@@ -222,19 +356,29 @@ namespace Presentation.Views
             string _btw = txt_business_btw.Text;
             if (IsBusinessValid(_name, _address, _phone, _email, _btw))
             {
-                if (_dc.GetBusinessByBtw(_btw) == null)
+
+                var createBusiness = new CreateAndUpdateBusinessDTO
                 {
-                    _dc.CreateBusiness(_name, _address, _phone, _email, _btw);
+                    Name = _name,
+                    Address = _address,
+                    Phone = _phone,
+                    Email = _email,
+                    Btw = _btw
+                };
+                var bodyString = JsonConvert.SerializeObject(createBusiness);
+                var businessesResponse = await _apiClient.PutAsync($"/businesses", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                if (businessesResponse.IsSuccessStatusCode)
                     SetupView();
-                }
                 else
                 {
-                    MessageBox.Show("Bedrijf bestaat al");
+                    var exception = businessesResponse.Content.ReadAsStringAsync().Result;
+                    MessageBox.Show(exception);
                 }
+                SetupView();
             }
         }
 
-        private void btn_addVisitor_Click(object sender, RoutedEventArgs e)
+        private async void btn_addVisitor_Click(object sender, RoutedEventArgs e)
         {
             string _name = txt_visitor_name.Text;
             string _email = txt_visitor_email.Text;
@@ -243,10 +387,23 @@ namespace Presentation.Views
 
             if (IsVisitorValid(_name, _email, _plate, _business))
             {
-                if (_dc.GetVisitorByName(_name) == null)
+                var visitorExists = _visitors.Exists(v => v.Name == _name);
+
+                if (!visitorExists)
                 {
-                    _dc.CreateVisitorBalie(_name, _email, _plate, _business);
-                    SetupView();
+                    var createVisitor = new CreateVisitorBalieDTO
+                    {
+                        Name = _name,
+                        Email = _email,
+                        Plate = _plate,
+                        Business = _business
+                    };
+                    var bodyString = JsonConvert.SerializeObject(createVisitor);
+                    var visitorResponse = await _apiClient.PutAsync("/visitors/balie", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                    if (visitorResponse.IsSuccessStatusCode)
+                        SetupView();
+                    else
+                        MessageBox.Show("Er is iets fout gegaan");
                 }
                 else
                 {
@@ -255,7 +412,7 @@ namespace Presentation.Views
             }
         }
 
-        private void btn_addContract_Click(object sender, RoutedEventArgs e)
+        private async void btn_addContract_Click(object sender, RoutedEventArgs e)
         {
             DateTime _start = dtp_start.SelectedDate.Value;
             DateTime _end = dtp_end.SelectedDate.Value;
@@ -263,19 +420,39 @@ namespace Presentation.Views
             string _business = txt_contract_business.Text;
             if (IsContractValid(_spots, _business, _start))
             {
-                if (_dc.GetContractByBusiness(_business) == null)
+
+                var business = _businesses.SingleOrDefault(b => b.Name == _business);
+                if (business == null)
                 {
-                    _dc.CreateContract(_spots, _business, _start, _end);
-                    SetupView();
+                    MessageBox.Show("Het opgegeven bedrijf staat niet in ons systeem.");
+                    return;
                 }
-                else
+                var contractExists = _contracts.Exists(c => c.Business.Id == business.Id);
+                if (!contractExists)
                 {
-                    MessageBox.Show("Contract bestaat al");
+                    var createContractDTO = new CreateContractDTO
+                    {
+                        StartDate = _start,
+                        EndDate = _end,
+                        TotalSpaces = int.Parse(_spots),
+                        Business = business
+                    };
+
+                    var bodyString = JsonConvert.SerializeObject(createContractDTO);
+                    var contractResponse = await _apiClient.PutAsync($"/contracts", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                    if (contractResponse.IsSuccessStatusCode)
+                        SetupView();
+                    else
+                    {
+                        var exception = contractResponse.Content.ReadAsStringAsync().Result;
+                        MessageBox.Show(exception);
+                    }
+                    SetupView();
                 }
             }
         }
 
-        private void btn_addEmployee_Click(object sender, RoutedEventArgs e)
+        private async void btn_addEmployee_Click(object sender, RoutedEventArgs e)
         {
             string _name = txt_employee_name.Text;
             string? _email = txt_employee_email.Text;
@@ -285,9 +462,29 @@ namespace Presentation.Views
 
             if (IsEmployeeValid(_name, _email, _function, _business, _plate))
             {
-                if (_dc.GetEmployeeByName(_name) == null)
+                var employeeExists = _employees.Exists(e => e.Name == _name);
+                if (!employeeExists)
                 {
-                    _dc.CreateEmployee(_name, _email, _function, _business, _plate);
+                    var business = _businesses.Single(b => b.Name == _business);
+                    var CreateEmployee = new CreateAndUpdateEmployeeDTO
+                    {
+                        Name = _name,
+                        Email = _email,
+                        Function = _function,
+                        Business = business,
+                        Plate = _plate
+                    };
+                    var bodyString = JsonConvert.SerializeObject(CreateEmployee);
+                    var employeeResponse = await _apiClient.PutAsync($"/employees", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                    if (employeeResponse.IsSuccessStatusCode)
+                    {
+                        SetupView();
+                    }
+                    else
+                    {
+                        var exception = employeeResponse.Content.ReadAsStringAsync().Result;
+                        MessageBox.Show(exception);
+                    }
                     SetupView();
                 }
                 else
@@ -297,15 +494,31 @@ namespace Presentation.Views
             }
         }
 
-        private void btn_addVisit_Click(object sender, RoutedEventArgs e)
+        private async void btn_addVisit_Click(object sender, RoutedEventArgs e)
         {
             string name = txt_visit_name.Text;
             if (IsVisitValid(name))
             {
-                if (_dc.GetVisitByName(name) == null)
+                var visitExists = _visits.Exists(v => v.Visitor.Name == name);
+                if (!visitExists)
                 {
-                    _dc.CreateVisit(_dc.GetVisitorByName(name), cmb_employees.Text, cmb_business.Text);
-                    SetupView();
+                    var visitor = _visitors.Single(v => v.Name == name);
+                    var createVisitDTO = new CreateVisitDTO
+                    {
+                        Visitor = visitor,
+                        Employee = _employees.First(e => e.Name == cmb_employees.Text),
+                        Business = _businesses.First(b => b.Name == cmb_business.Text),
+                    };
+                    var bodyString = JsonConvert.SerializeObject(createVisitDTO);
+                    var employeeResponse = await _apiClient.PutAsync($"/visits", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                    if (employeeResponse.IsSuccessStatusCode)
+                    {
+                        SetupView();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Er is iets fout gegaan");
+                    }
                 }
                 else
                 {
@@ -318,7 +531,7 @@ namespace Presentation.Views
 
         #region DELETE
 
-        private void btn_deleteVisitor_Click(object sender, RoutedEventArgs e)
+        private async void btn_deleteVisitor_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -329,8 +542,9 @@ namespace Presentation.Views
                 else
                 {
                     MessageBox.Show("Ben je zeker om deze visitor te verwijderen?", "Delete", MessageBoxButton.OKCancel);
+
                     VisitorView visitorView = (VisitorView)dtg_visitors.SelectedItem;
-                    _dc.DeleteVisitor((int)visitorView.Id);
+                    var visitorResponse = await _apiClient.DeleteAsync($"/visitors/{(int)visitorView.Id}");
                     SetupView();
                 }
             }
@@ -340,7 +554,7 @@ namespace Presentation.Views
             }
         }
 
-        private void btn_deleteContract_Click(object sender, RoutedEventArgs e)
+        private async void btn_deleteContract_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -353,7 +567,7 @@ namespace Presentation.Views
                     MessageBox.Show("Ben je zeker om dit contract te verwijderen?", "Delete", MessageBoxButton.OKCancel);
 
                     ContractView contractView = (ContractView)dtg_contracts.SelectedItem;
-                    _dc.DeleteContract((int)contractView.Id);
+                    var contractResponse = await _apiClient.DeleteAsync($"/contracts/{(int)contractView.Id}");
                     SetupView();
                 }
             }
@@ -363,7 +577,7 @@ namespace Presentation.Views
             }
         }
 
-        private void btn_deleteBusiness_Click(object sender, RoutedEventArgs e)
+        private async void btn_deleteBusiness_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -376,7 +590,8 @@ namespace Presentation.Views
                     MessageBox.Show("Ben je zeker om dit bedrijf te verwijderen?", "Delete", MessageBoxButton.OKCancel);
 
                     BusinessView businessView = (BusinessView)dtg_businesses.SelectedItem;
-                    _dc.DeleteBusiness((int)businessView.Id);
+
+                    var businessesResponse = await _apiClient.DeleteAsync($"/businesses/{(int)businessView.Id}");
                     SetupView();
                 }
             }
@@ -386,7 +601,7 @@ namespace Presentation.Views
             }
         }
 
-        private void btn_deleteEmployee_Click(object sender, RoutedEventArgs e)
+        private async void btn_deleteEmployee_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -399,7 +614,7 @@ namespace Presentation.Views
                     MessageBox.Show("Ben je zeker om deze werknemer te verwijderen?", "Delete", MessageBoxButton.OKCancel);
 
                     EmployeeView employeeView = (EmployeeView)dtg_employees.SelectedItem;
-                    _dc.DeleteEmployee((int)employeeView.Id);
+                    var emloyeeResponse = await _apiClient.DeleteAsync($"/employees/{(int)employeeView.Id}");
                     SetupView();
                 }
             }
@@ -409,13 +624,15 @@ namespace Presentation.Views
             }
         }
 
-        private void btn_deleteVisit_Click(object sender, RoutedEventArgs e)
+        private async void btn_deleteVisit_Click(object sender, RoutedEventArgs e)
         {
             string name = txt_visit_name.Text;
             if (IsVisitValid(name))
             {
                 MessageBox.Show("Ben je zeker om deze bezoek te verwijderen?", "Delete", MessageBoxButton.OKCancel);
-                _dc.DeleteVisit(name);
+
+                VisitView visitView = (VisitView)dtg_employees.SelectedItem;
+                var visitResponse = await _apiClient.DeleteAsync($"/visits/{(int)visitView.Id}");
                 SetupView();
             }
         }
@@ -483,14 +700,14 @@ namespace Presentation.Views
             return true;
         }
 
-        private bool IsVisitValid(string name)
+        private bool IsVisitValid(string name, Visitor visitor = null)
         {
             if (cmb_business.SelectedIndex == -1) MessageBox.Show("Duid een bedrijf aan");
             else if (cmb_employees.SelectedIndex == -1) MessageBox.Show("Duid een werknemer aan");
             else if (dtp_visit_start.SelectedDate == null) MessageBox.Show("Duid een start datum aan");
             else if (dtp_visit_end.SelectedDate == null) MessageBox.Show("Duid een eind datum aan");
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
-            else if (_dc.GetVisitorByName(name) == null) MessageBox.Show("Visitor bestaat niet");
+            else if (visitor == null) MessageBox.Show("Visitor bestaat niet");
             else return true;
             return false;
         }

@@ -1,14 +1,14 @@
 ﻿using Domain.Models;
 
-namespace Domain.Services;
+namespace Domain.Repositories;
 
 public interface IEmployeeRepository
 {
     #region GET
 
-    List<Employee>? GetEmployees();
+    Task<List<Employee>>? GetEmployees();
 
-    List<Employee>? GetEmployeesByBusiness(Business business);
+    Task<List<Employee>>? GetEmployeesByBusiness(string business);
 
     List<Employee>? GetEmployeesByName(string name);
     Employee GetEmployeeByName(string name);

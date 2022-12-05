@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories
 {
@@ -14,15 +15,15 @@ namespace Persistance.Data.Repositories
 
         #region GET
 
-        public List<Visitor> GetVisitors()
+        public async Task<List<Visitor>> GetVisitors()
         {
-            List<Visitor> visitors = _allphiContext.Visitor.Where(v => v.IsDeleted == false).ToList();
+            List<Visitor> visitors = await _allphiContext.Visitor.Where(v => v.IsDeleted == false).ToListAsync();
             return visitors;
         }
 
-        public List<Visitor> GetVisitorsByBusiness(string Business)
+        public async Task<List<Visitor>> GetVisitorsByBusiness(string Business)
         {
-            List<Visitor> visitors = _allphiContext.Visitor.Where(v => v.Business == Business && v.IsDeleted == false).ToList();
+            List<Visitor> visitors = await _allphiContext.Visitor.Where(v => v.Business == Business && v.IsDeleted == false).ToListAsync();
             return visitors;
         }
 

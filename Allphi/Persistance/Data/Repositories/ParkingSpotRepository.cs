@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories
 {
@@ -14,9 +15,9 @@ namespace Persistance.Data.Repositories
 
         #region GET
 
-        public List<ParkingSpot> GetParkingSpots()
+        public async Task<List<ParkingSpot>> GetParkingSpots()
         {
-            List<ParkingSpot> parkingSpots = _allphiContext.ParkingSpot.Where(p => p.IsDeleted == false).ToList();
+            List<ParkingSpot> parkingSpots = await _allphiContext.ParkingSpot.Where(p => p.IsDeleted == false).ToListAsync();
             return parkingSpots;
         }
 
