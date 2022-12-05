@@ -37,9 +37,11 @@ namespace Presentation
 
         private void ConfigureServices(ServiceCollection services)
         {
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
+
             services.AddDbContext<AllphiContext>(options =>
             {
-                options.UseSqlServer(_configuration.GetConnectionString("DbConnection"));
+                options.UseMySql(_configuration.GetConnectionString("DbConnection"), serverVersion);
             });
             services.AddHttpClient();
             services.AddScoped<IBusinessRepository, BusinessRepository>();
@@ -59,18 +61,18 @@ namespace Presentation
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            //DbInitializer dbInitializer = _serviceProvider.GetService<DbInitializer>();
-            //dbInitializer.Initialize();
+            DbInitializer dbInitializer = _serviceProvider.GetService<DbInitializer>();
+            dbInitializer.Initialize();
             ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
-            //BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
+            BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
             parkingApp.Show();
-            //balieApp.Show();
-            //LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
-            //login.Show();
-            //VisitorRegistration visitorRegistration = _serviceProvider.GetRequiredService<VisitorRegistration>();
-            //visitorRegistration.Show();
-            //UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
-            //uitgangApp.Show();
+            balieApp.Show();
+            LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
+            login.Show();
+            VisitorRegistration visitorRegistration = _serviceProvider.GetRequiredService<VisitorRegistration>();
+            visitorRegistration.Show();
+            UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
+            uitgangApp.Show();
         }
     }
 }

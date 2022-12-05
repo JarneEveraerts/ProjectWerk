@@ -17,7 +17,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public async Task<List<Employee>> GetEmployees()
     {
-        List<Employee> employees = await _allphiContext.Employee.Where(e => e.IsDeleted == false).ToListAsync();
+        List<Employee> employees = await _allphiContext.Employee.Where(e => e.IsDeleted == false).Include(e => e.Business).ToListAsync();
         return employees;
     }
 

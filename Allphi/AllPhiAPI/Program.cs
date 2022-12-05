@@ -22,9 +22,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
+
 builder.Services.AddDbContext<AllphiContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
+    options.UseMySql(builder.Configuration.GetConnectionString("DbConnection"), serverVersion);
 });
 builder.Services.AddControllers();
 builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
