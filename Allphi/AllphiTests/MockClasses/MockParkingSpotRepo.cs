@@ -1,9 +1,9 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
 
 namespace AllphiTests.MockClasses
 {
-     class MockParkingSpotRepo : IParkingSpotRepository
+    class MockParkingSpotRepo : IParkingSpotRepository
     {
         public int CountParkingSpotByPlate(string plate)
         {

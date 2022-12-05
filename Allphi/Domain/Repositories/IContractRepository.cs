@@ -1,12 +1,12 @@
 ﻿using Domain.Models;
 
-namespace Domain.Services;
+namespace Domain.Repositories;
 
 public interface IContractRepository
 {
     #region GET
 
-    List<Contract> GetContracts();
+    Task<List<Contract>> GetContracts();
 
     Contract GetContractByBusiness(Business business);
 

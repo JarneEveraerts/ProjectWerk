@@ -1,14 +1,14 @@
 ﻿using Domain.Models;
 
-namespace Domain.Services;
+namespace Domain.Repositories;
 
 public interface IVisitorRepository
 {
     #region GET
 
-    List<Visitor> GetVisitors();
+    Task<List<Visitor>> GetVisitors();
 
-    List<Visitor> GetVisitorsByBusiness(string Business);
+    Task<List<Visitor>> GetVisitorsByBusiness(string Business);
 
     Visitor GetVisitorByName(string name);
 

@@ -1,4 +1,6 @@
 
+using Domain.Repositories;
+
 namespace AllphiTestsm
 {
     public class UnitTest1

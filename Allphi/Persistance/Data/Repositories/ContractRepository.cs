@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories;
 
@@ -14,9 +15,9 @@ public class ContractRepository : IContractRepository
 
     #region GET
 
-    public List<Contract> GetContracts()
+    public async Task<List<Contract>> GetContracts()
     {
-        List<Contract> contracts = _allphiContext.Contract.Where(c => c.IsDeleted == false).ToList();
+        List<Contract> contracts = await _allphiContext.Contract.Where(c => c.IsDeleted == false).ToListAsync();
         return contracts;
     }
 

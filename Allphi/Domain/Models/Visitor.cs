@@ -2,7 +2,7 @@
 {
     public class Visitor : Entity
     {
-        public Visitor(string name, string email, string business, string? plate)
+        public Visitor(string name, string email, string business, string? plate = "")
         {
             Name = name;
             Email = email;

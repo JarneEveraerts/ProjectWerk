@@ -1,12 +1,12 @@
 ﻿using Domain.Models;
 
-namespace Domain.Services
+namespace Domain.Repositories
 {
     public interface IParkingSpotRepository
     {
         #region GET
 
-        List<ParkingSpot> GetParkingSpots();
+        Task<List<ParkingSpot>> GetParkingSpots();
 
         List<ParkingSpot> GetParkingSpotsByReserved(Business reserved);
 

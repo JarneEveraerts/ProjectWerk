@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Domain;
+using Newtonsoft.Json;
 
 namespace Presentation.Views
 {
@@ -21,14 +23,17 @@ namespace Presentation.Views
     public partial class UitgangApp : Window
     {
         private DomainController _dc;
+        private HttpClient _apiClient;
 
-        public UitgangApp(DomainController dc)
+        public UitgangApp(DomainController dc, IHttpClientFactory clientFactory)
         {
             _dc = dc;
+            _apiClient = clientFactory.CreateClient();
+            _apiClient.BaseAddress = new Uri("http://localhost:5076");
             InitializeComponent();
         }
 
-        private void Btn_ExitParking_Click(object sender, RoutedEventArgs e)
+        private async void Btn_ExitParking_Click(object sender, RoutedEventArgs e)
         {
             string input = txt_LicensePlate.Text;
             if (input == "" || !_dc.IsLicensePlateValid(input))
@@ -36,7 +41,10 @@ namespace Presentation.Views
                 MessageBox.Show("License plate is not valid");
                 return;
             }
-            if (_dc.ExitParking(input))
+            var parkingSpotResponse = await _apiClient.PostAsync($"/parkingspots/exit/{input}", null);
+            var parkingSpotContentString = parkingSpotResponse.Content.ReadAsStringAsync().Result;
+            var exitedSpot = JsonConvert.DeserializeObject<bool>(parkingSpotContentString);
+            if (exitedSpot)
             {
                 MessageBox.Show("Have A Nice Trip");
             }

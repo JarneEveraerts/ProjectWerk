@@ -1,5 +1,5 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
 
 namespace AllphiTests.MockClasses
 {

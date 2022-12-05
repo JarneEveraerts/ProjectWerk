@@ -1,4 +1,4 @@
-﻿using Domain.Services;
+﻿using Domain.Repositories;
 
 namespace Persistance.Data.Repositories
 {

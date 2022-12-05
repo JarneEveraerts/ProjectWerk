@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media.Animation;
+using System.Xml.Linq;
 using Ardalis.GuardClauses;
 using Domain;
+using Domain.Models;
+using Domain.Models.DTOs;
+using Newtonsoft.Json;
 using Persistance;
 using Presentation.ViewModels;
 
@@ -17,27 +25,31 @@ namespace Presentation.Views
     public partial class ParkingApp : Window
     {
         private DomainController _dc;
-        private List<List<string>> businesses;
+        private List<Business> _businesses = new List<Business>();
         private List<BusinessView>? businessViews = new();
         private string _licensePlate;
+        private HttpClient _apiClient;
 
-        public ParkingApp(DomainController dc)
+
+        public ParkingApp(DomainController dc, IHttpClientFactory clientFactory)
         {
             InitializeComponent();
             _dc = dc;
-
-            businesses = _dc.GiveBusinesses();
+            _apiClient = clientFactory.CreateClient();
+            _apiClient.BaseAddress = new Uri("http://localhost:5076");
+            var businessesResponse = _apiClient.GetAsync("/businesses").Result;
+            var contentString = businessesResponse.Content.ReadAsStringAsync().Result;
+            var businesses = JsonConvert.DeserializeObject<List<Business>>(contentString);
+            _businesses = businesses;
             if (businesses.Count != 0)
             {
-                foreach (var item in _dc.GetBusinesses())
+                foreach (var item in businesses)
                 {
                     businessViews.Add(new BusinessView(item));
                     cmb_business.Items.Add(item.Name);
                 }
             }
         }
-
-        private string Bussines { get; set; }
 
         private void Btn_ENG_Click(object sender, RoutedEventArgs e)
         {
@@ -60,7 +72,7 @@ namespace Presentation.Views
             lbl_BedrijfNL.Content = "Login/ Register als";
         }
 
-        private void Btn_Submit_Click(object sender, RoutedEventArgs e)
+        private async void Btn_Submit_Click(object sender, RoutedEventArgs e)
         {
             _licensePlate = txtBox_LicensePlate.Text;
             string business = cmb_business.Text;
@@ -75,7 +87,33 @@ namespace Presentation.Views
                 MessageBox.Show("Please select a business");
                 return;
             }
-            if (_dc.EnterParking(_licensePlate, business))
+
+            var businessObject = _businesses.Single(b => b.Name == business);
+
+            //Contract? contract = _contractRepo.GetContractByBusiness(business);
+            var contractResponse = await _apiClient.GetAsync($"/contracts/business/{business}");
+            var contentStringContract = await contractResponse.Content.ReadAsStringAsync();
+            var contract = JsonConvert.DeserializeObject<Contract>(contentStringContract);
+
+
+            //Employee? employee = _employeeRepo.GetEmployeeByPlate(licensePlate);
+            var employeeResponse = await _apiClient.GetAsync($"/employee/licenseplate/{_licensePlate}");
+            var contentStringEmployee = await employeeResponse.Content.ReadAsStringAsync();
+            var employee = JsonConvert.DeserializeObject<Employee>(contentStringEmployee);
+
+
+            var enterParking = new EnterParkingDTO
+            {
+                Employee = employee,
+                Contract = contract,
+                Business = businessObject
+            };
+            var enterParkingString = JsonConvert.SerializeObject(enterParking);
+            var parkingSpotResponse = await _apiClient.PostAsync($"/parkingspots/enter", new StringContent(enterParkingString, Encoding.UTF8, "application/json"));
+            var parkingSpotContentString = parkingSpotResponse.Content.ReadAsStringAsync().Result;
+            var spotExists = JsonConvert.DeserializeObject<bool>(parkingSpotContentString);
+
+            if (spotExists)
             {
                 MessageBox.Show("Welcome");
             }
