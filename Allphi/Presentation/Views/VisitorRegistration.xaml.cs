@@ -162,6 +162,7 @@ namespace Presentation.Views
             {
 
                 var employeesBySelectedBusiness = _employees.Where(e => e.Business.Name == cmb_business.SelectedItem).ToList();
+
                 cmb_employees.Items.Clear();
                 foreach (var item in employeesBySelectedBusiness)
                 {

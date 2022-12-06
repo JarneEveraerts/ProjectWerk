@@ -465,7 +465,7 @@ namespace Presentation.Views
                 var employeeExists = _employees.Exists(e => e.Name == _name);
                 if (!employeeExists)
                 {
-                    var business = _businesses.Single(b => b.Name == _business);
+                    var business = _businesses.SingleOrDefault(b => b.Name == _business);
                     var CreateEmployee = new CreateAndUpdateEmployeeDTO
                     {
                         Name = _name,
@@ -663,10 +663,10 @@ namespace Presentation.Views
             return false;
         }
 
-        private bool IsEmployeeValid(string name, string email, string plate, string business, string function)
+        private bool IsEmployeeValid(string name, string email, string function, string business, string plate)
         {
             if (!_dc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
-            else if (IsLicensePlateValid(plate)) MessageBox.Show("BTW nummer is niet geldig.");
+            else if (!IsLicensePlateValid(plate)) MessageBox.Show("Nummerplaat is niet geldig.");
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
             else if (string.IsNullOrEmpty(business)) MessageBox.Show("Bedrijfsnaam is leeg");
             else if (string.IsNullOrEmpty(email)) MessageBox.Show("Email is leeg");

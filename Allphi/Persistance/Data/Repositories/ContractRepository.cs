@@ -17,7 +17,7 @@ public class ContractRepository : IContractRepository
 
     public async Task<List<Contract>> GetContracts()
     {
-        List<Contract> contracts = await _allphiContext.Contract.Where(c => c.IsDeleted == false).ToListAsync();
+        List<Contract> contracts = await _allphiContext.Contract.Where(c => c.IsDeleted == false).Include(c => c.Business).ToListAsync();
         return contracts;
     }
 

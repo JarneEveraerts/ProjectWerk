@@ -24,7 +24,7 @@ namespace AllPhiAPI.Controllers
             return await _contractService.GetContracts();
         }
 
-        [HttpPost("business/contract")]
+        [HttpPost("business/contract/{business}")]
         public Contract FetchContractByBusiness(Business business)
         {
             return _contractService.GetContractByBusiness(business);
@@ -47,7 +47,7 @@ namespace AllPhiAPI.Controllers
             _contractService.UpdateContract(contractDTO);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{contractId}")]
         public void DeleteContract([FromRoute] int contractId)
         {
             _contractService.DeleteContract(contractId);
