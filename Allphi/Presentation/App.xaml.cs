@@ -63,16 +63,16 @@ namespace Presentation
         {
             DbInitializer dbInitializer = _serviceProvider.GetService<DbInitializer>();
             dbInitializer.Initialize();
-            //ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
+            ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
             BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
-            //parkingApp.Show();
+            parkingApp.Show();
             balieApp.Show();
-            //LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
-            //login.Show();
+            LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
+            login.Show();
             VisitorRegistration visitorRegistration = _serviceProvider.GetRequiredService<VisitorRegistration>();
             visitorRegistration.Show();
-            //UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
-            //uitgangApp.Show();
+            UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
+            uitgangApp.Show();
         }
     }
 }

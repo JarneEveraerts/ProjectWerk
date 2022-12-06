@@ -11,10 +11,12 @@ namespace AllPhiAPI.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IEmployeeBusinessService _employeeBusinessService;
 
-        public EmployeeController(IEmployeeService employeeService)
+        public EmployeeController(IEmployeeService employeeService, IEmployeeBusinessService employeeBusinessService)
         {
             _employeeService = employeeService;
+            _employeeBusinessService = employeeBusinessService;
         }
         #region GET   
 
@@ -54,6 +56,8 @@ namespace AllPhiAPI.Controllers
         [HttpPut]
         public void CreateEmployee(CreateAndUpdateEmployeeDTO employee)
         {
+            var business = _employeeBusinessService.GetBusinessByIdForEmployee(employee.Business.Id);
+            employee.Business = business;
             _employeeService.CreateEmployee(employee);
         }
         #endregion

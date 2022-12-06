@@ -11,10 +11,12 @@ namespace AllPhiAPI.Controllers
     public class ContractController
     {
         private readonly IContractService _contractService;
+        private readonly IContractBusinessService _contractBusinessService;
 
-        public ContractController(IContractService contractService)
+        public ContractController(IContractService contractService, IContractBusinessService contractBusinessService)
         {
             _contractService = contractService;
+            _contractBusinessService = contractBusinessService;
         }
 
         #region GET
@@ -25,7 +27,7 @@ namespace AllPhiAPI.Controllers
         }
 
         [HttpPost("business/contract/{business}")]
-        public Contract FetchContractByBusiness(Business business)
+        public Contract FetchContractByBusiness([FromRoute] Business business)
         {
             return _contractService.GetContractByBusiness(business);
         }
@@ -36,7 +38,7 @@ namespace AllPhiAPI.Controllers
         [HttpPut]
         public void CreateContract(CreateContractDTO contract)
         {
-            _contractService.CreateContract(contract);
+            _contractBusinessService.CreateContract(contract);
         }
         #endregion
 

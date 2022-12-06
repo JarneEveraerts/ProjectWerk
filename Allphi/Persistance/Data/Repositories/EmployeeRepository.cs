@@ -35,7 +35,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public Employee GetEmployeeByName(string name)
     {
-        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false);
+        Employee employee = _allphiContext.Employee.Include(e => e.Business).FirstOrDefault(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false);
         return employee;
     }
 

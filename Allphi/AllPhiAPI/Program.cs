@@ -27,7 +27,7 @@ var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
 builder.Services.AddDbContext<AllphiContext>(options =>
 {
     options.UseMySql(builder.Configuration.GetConnectionString("DbConnection"), serverVersion);
-});
+}, ServiceLifetime.Scoped);
 builder.Services.AddControllers();
 builder.Services.AddScoped<IBusinessRepository, BusinessRepository>();
 builder.Services.AddScoped<IBusinessService, BusinessService>();
@@ -36,7 +36,8 @@ builder.Services.AddScoped<IContractService, ContractService>();
 builder.Services.AddScoped<IVisitorService, VisitorService>();
 builder.Services.AddScoped<IVisitService, VisitService>();
 builder.Services.AddScoped<IParkingSpotService, ParkingSpotService>();
-
+builder.Services.AddScoped<IEmployeeBusinessService, EmployeeBusinessService>();
+builder.Services.AddScoped<IContractBusinessService, ContractBusinessService>();
 
 builder.Services.AddScoped<IContractRepository, ContractRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
