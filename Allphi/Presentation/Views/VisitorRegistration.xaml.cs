@@ -81,6 +81,7 @@ namespace Presentation.Views
 
                 //GET Business
                 var business = _businesses.Single(b => b.Name == _businessName);
+                
                 //GET Employee
                 var employee = _employees.Single(e => e.Name == _employeeName);
 
@@ -161,7 +162,7 @@ namespace Presentation.Views
             if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
             {
 
-                var employeesBySelectedBusiness = _employees.Where(e => e.Business.Name == cmb_business.SelectedItem).ToList();
+                var employeesBySelectedBusiness = _employees.Where(e => cmb_business.SelectedItem.Equals(e.Business.Name)).ToList();
 
                 cmb_employees.Items.Clear();
                 foreach (var item in employeesBySelectedBusiness)
