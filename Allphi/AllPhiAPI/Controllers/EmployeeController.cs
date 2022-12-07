@@ -31,7 +31,7 @@ namespace AllPhiAPI.Controllers
         {
             return _employeeService.GetBusinessIdByEmployeeName(name);
         }
-        //all business staan op null
+       
         [HttpGet("business/{business}")]
         public async Task<List<Employee>> GetEmployeesByBusiness([FromRoute] string business)
         {

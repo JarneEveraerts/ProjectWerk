@@ -10,7 +10,8 @@ namespace Domain.Models.DTOs
     {
         public string Plate { get; set; }
         public Business Business { get; set; }
-        public Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
+        public Visitor? Visitor { get; set; }
         public Contract Contract { get; set; }
     }
 }

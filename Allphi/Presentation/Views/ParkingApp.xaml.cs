@@ -104,12 +104,14 @@ namespace Presentation.Views
             var employee = JsonConvert.DeserializeObject<Employee>(contentStringEmployee);
 
 
+
             var enterParking = new EnterParkingDTO
             {
                 Plate = _licensePlate,
                 Employee = employee,
-                Contract = contract,
-                Business = businessObject
+                Business = businessObject,
+                Visitor = null,
+                Contract = contract
             };
 
             var enterParkingString = JsonConvert.SerializeObject(enterParking);

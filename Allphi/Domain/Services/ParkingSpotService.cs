@@ -29,6 +29,7 @@ namespace Domain.Services
         {
             string license = Guard.Against.NullOrEmpty(licensePlate, nameof(licensePlate));
             ParkingSpot parkingSpot = _parkingSpotRepository.GetAvailableParkingSpotUnreserved();
+            
             if (_domainController.IsLicensePlateValid(license) && parkingSpot != null &&
                 _parkingSpotRepository.CountParkingSpotByPlate(license) == 0)
             {

@@ -47,7 +47,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public Employee GetEmployeeByPlate(string licensePlate)
     {
-        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Plate == licensePlate);
+        Employee employee = _allphiContext.Employee.Include(e => e.Business).FirstOrDefault(e => e.Plate == licensePlate);
         return employee;
     }
 
