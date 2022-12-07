@@ -144,15 +144,26 @@ namespace Presentation.Views
             var visitorContentString = visitorResponse.Content.ReadAsStringAsync().Result;
             var visitor = JsonConvert.DeserializeObject<Visitor>(visitorContentString);
 
-            var parkingSpotResponse = await _apiClient.GetAsync($"/parkingspots/{visitorPlate}/exists");
-            var parkingSpotContentString = parkingSpotResponse.Content.ReadAsStringAsync().Result;
-            var spotExists = JsonConvert.DeserializeObject<bool>(parkingSpotContentString);
+            bool Spots = true;
+            if (visitorPlate != "")
+            {
+                if (!_dc.IsLicensePlateValid(visitorPlate)) {
+                    MessageBox.Show("Please enter a valid license plate");
+                }
+                else { 
+
+                var parkingSpotResponse = await _apiClient.GetAsync($"/parkingspots/{visitorPlate}/exists");
+                var parkingSpotContentString = parkingSpotResponse.Content.ReadAsStringAsync().Result;
+                var spotExists = JsonConvert.DeserializeObject<bool>(parkingSpotContentString);
+                Spots = spotExists;
+                }
+            }
+         
 
             if (cmb_business.SelectedIndex == -1 || cmb_business.SelectedIndex == -1 || visitorName == "" || visitorEmail == "" || organisation == "") MessageBox.Show("Please fill in all required fields");
             else if (!_dc.IsEmailValid(visitorEmail)) { MessageBox.Show("Please enter a valid email address"); }
             else if (visitor != null) { MessageBox.Show("This visitor is already registered"); }
-            else if (!_dc.IsLicensePlateValid(visitorPlate)) MessageBox.Show("Please enter a valid license plate");
-            else if (!spotExists) MessageBox.Show("This license plate is not registered in the ParkingSpot database");
+            else if (!Spots) MessageBox.Show("This license plate is not registered in the ParkingSpot database");
             else return true;
             return false;
         }
