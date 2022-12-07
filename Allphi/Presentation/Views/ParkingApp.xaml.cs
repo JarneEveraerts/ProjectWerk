@@ -27,6 +27,7 @@ namespace Presentation.Views
         private DomainController _dc;
         private List<Business> _businesses = new List<Business>();
         private List<BusinessView>? businessViews = new();
+        private List<Contract> _contracts= new List<Contract>();
         private string _licensePlate;
         private HttpClient _apiClient;
 
@@ -41,6 +42,11 @@ namespace Presentation.Views
             var contentString = businessesResponse.Content.ReadAsStringAsync().Result;
             var businesses = JsonConvert.DeserializeObject<List<Business>>(contentString);
             _businesses = businesses;
+            var contractResponse = _apiClient.GetAsync("/contracts").Result;
+            var contractContentString = contractResponse.Content.ReadAsStringAsync().Result;
+            var contracts = JsonConvert.DeserializeObject<List<Contract>>(contractContentString);
+            _contracts = contracts;
+
             if (businesses.Count != 0)
             {
                 foreach (var item in businesses)
@@ -88,39 +94,47 @@ namespace Presentation.Views
                 return;
             }
 
-            var businessObject = _businesses.Single(b => b.Name == business);
+            var businessObject = _businesses.SingleOrDefault(b => b.Name == business);
 
-            //Contract? contract = _contractRepo.GetContractByBusiness(business);
-            var contractResponse = await _apiClient.GetAsync($"/contracts/business/{business}");
-            var contentStringContract = await contractResponse.Content.ReadAsStringAsync();
-            var contract = JsonConvert.DeserializeObject<Contract>(contentStringContract);
+            var contract = _contracts.SingleOrDefault(c => c.Business.Id == businessObject.Id);
 
 
-            //Employee? employee = _employeeRepo.GetEmployeeByPlate(licensePlate);
-            var employeeResponse = await _apiClient.GetAsync($"/employee/licenseplate/{_licensePlate}");
+            var employeeResponse = await _apiClient.GetAsync($"/employees/licenseplate/{_licensePlate}");
             var contentStringEmployee = await employeeResponse.Content.ReadAsStringAsync();
             var employee = JsonConvert.DeserializeObject<Employee>(contentStringEmployee);
 
 
+
             var enterParking = new EnterParkingDTO
             {
+                Plate = _licensePlate,
                 Employee = employee,
-                Contract = contract,
-                Business = businessObject
+                Business = businessObject,
+                Visitor = null,
+                Contract = contract
             };
+
             var enterParkingString = JsonConvert.SerializeObject(enterParking);
             var parkingSpotResponse = await _apiClient.PostAsync($"/parkingspots/enter", new StringContent(enterParkingString, Encoding.UTF8, "application/json"));
-            var parkingSpotContentString = parkingSpotResponse.Content.ReadAsStringAsync().Result;
-            var spotExists = JsonConvert.DeserializeObject<bool>(parkingSpotContentString);
-
-            if (spotExists)
+            if (parkingSpotResponse.IsSuccessStatusCode)
             {
-                MessageBox.Show("Welcome");
+                var parkingSpotContentString = parkingSpotResponse.Content.ReadAsStringAsync().Result;
+                var spotExists = JsonConvert.DeserializeObject<bool>(parkingSpotContentString);
+                if (spotExists)
+                {
+                    MessageBox.Show("Welcome");
+                }
+                else
+                {
+                    MessageBox.Show("No Free Spots");
+                }
+
             }
             else
             {
-                MessageBox.Show("No Free Spots");
+                MessageBox.Show($"Error: {parkingSpotResponse.StatusCode}");
             }
+
         }
     }
 }

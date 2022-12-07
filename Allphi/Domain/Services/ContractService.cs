@@ -40,8 +40,6 @@ namespace Domain.Services
 
         public void CreateContract(CreateContractDTO contractDTO)
         {
-            // Moet apart gedaan worden adhv aparte httpcall van front end naar BusinessController
-            //Business selectedBusiness = _businessRepo.GetBusinessByName(contractDTO.Business);
             _contractRepository.CreateContract(new Contract(
                 contractDTO.Business,
                 contractDTO.StartDate,

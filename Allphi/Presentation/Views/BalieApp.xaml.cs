@@ -261,16 +261,18 @@ namespace Presentation.Views
                     Start = _start,
                     End = _end,
                     Spots = Int32.Parse(_spots),
-                    Business = business
+                    Business = business,
+                    Id = contractView.Id,
+                    Contract = _contracts.SingleOrDefault(c => c.Id == contractView.Id)
                 };
 
                 var bodyString = JsonConvert.SerializeObject(updateContract);
-                var response = await _apiClient.PatchAsync($"/contracts/{(int)contractView.Id}", new StringContent(bodyString, Encoding.UTF8,
+                var response = await _apiClient.PatchAsync($"/contracts", new StringContent(bodyString, Encoding.UTF8,
                                     "application/json"));
                 if (response.IsSuccessStatusCode)
                     SetupView();
                 else
-                    throw new Exception();
+                    MessageBox.Show(response.ReasonPhrase);
             }
         }
 
@@ -465,7 +467,7 @@ namespace Presentation.Views
                 var employeeExists = _employees.Exists(e => e.Name == _name);
                 if (!employeeExists)
                 {
-                    var business = _businesses.Single(b => b.Name == _business);
+                    var business = _businesses.SingleOrDefault(b => b.Name == _business);
                     var CreateEmployee = new CreateAndUpdateEmployeeDTO
                     {
                         Name = _name,
@@ -497,12 +499,12 @@ namespace Presentation.Views
         private async void btn_addVisit_Click(object sender, RoutedEventArgs e)
         {
             string name = txt_visit_name.Text;
-            if (IsVisitValid(name))
+            var visitor = _visitors.FirstOrDefault(b => b.Name == name);
+            if (IsVisitValid(name, visitor))
             {
                 var visitExists = _visits.Exists(v => v.Visitor.Name == name);
                 if (!visitExists)
-                {
-                    var visitor = _visitors.Single(v => v.Name == name);
+                {                   
                     var createVisitDTO = new CreateVisitDTO
                     {
                         Visitor = visitor,
@@ -663,10 +665,10 @@ namespace Presentation.Views
             return false;
         }
 
-        private bool IsEmployeeValid(string name, string email, string plate, string business, string function)
+        private bool IsEmployeeValid(string name, string email, string function, string business, string plate)
         {
             if (!_dc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
-            else if (IsLicensePlateValid(plate)) MessageBox.Show("BTW nummer is niet geldig.");
+            else if (!IsLicensePlateValid(plate)) MessageBox.Show("Nummerplaat is niet geldig.");
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
             else if (string.IsNullOrEmpty(business)) MessageBox.Show("Bedrijfsnaam is leeg");
             else if (string.IsNullOrEmpty(email)) MessageBox.Show("Email is leeg");
@@ -678,7 +680,7 @@ namespace Presentation.Views
         private bool IsVisitorValid(string name, string email, string plate, string business)
         {
             if (!_dc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
-            else if (IsLicensePlateValid(plate)) MessageBox.Show("nummer plaat is niet geldig.");
+            else if (!IsLicensePlateValid(plate)) MessageBox.Show("Nummerplaat is niet geldig.");
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
             else if (string.IsNullOrEmpty(business)) MessageBox.Show("Bedrijfsnaam is leeg");
             else if (string.IsNullOrEmpty(email)) MessageBox.Show("Email is leeg");

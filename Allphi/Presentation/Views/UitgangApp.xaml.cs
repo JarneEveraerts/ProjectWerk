@@ -29,7 +29,7 @@ namespace Presentation.Views
         {
             _dc = dc;
             _apiClient = clientFactory.CreateClient();
-            _apiClient.BaseAddress = new Uri("http://localhost:5076");
+            _apiClient.BaseAddress = new Uri("http://localhost:5269");
             InitializeComponent();
         }
 

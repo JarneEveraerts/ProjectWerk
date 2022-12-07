@@ -51,8 +51,6 @@ namespace Domain.Services
 
         public void CreateEmployee(CreateAndUpdateEmployeeDTO createAndUpdateEmployeeDTO)
         {
-            // Moet apart gedaan worden adhv aparte httpcall van front end naar BusinessController
-            // Business selectedBusiness = _businessRepo.GetBusinessByName(business);
             List<string> names = createAndUpdateEmployeeDTO.Name.Split(' ').ToList();
             Employee employee = new Employee()
             {

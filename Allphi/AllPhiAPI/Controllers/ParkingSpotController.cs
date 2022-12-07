@@ -12,10 +12,12 @@ namespace AllPhiAPI.Controllers
     public class ParkingSpotController
     {
         private readonly IParkingSpotService _ParkingSpotService;
+        private readonly IParkingspotBusinesEmployeeService _parkingspotBusinesEmployeeService;
 
-        public ParkingSpotController(IParkingSpotService parkingSpotService)
-        {
+        public ParkingSpotController(IParkingSpotService parkingSpotService, IParkingspotBusinesEmployeeService parkingspotBusinesEmployeeService)
+        {   
             _ParkingSpotService = parkingSpotService;
+            _parkingspotBusinesEmployeeService= parkingspotBusinesEmployeeService;
         }
 
         #region GET
@@ -31,7 +33,7 @@ namespace AllPhiAPI.Controllers
         [HttpPost("enter")]
         public bool EnterParking(EnterParkingDTO enterParkingDTO)
         {
-            return _ParkingSpotService.EnterParking(enterParkingDTO);
+            return _parkingspotBusinesEmployeeService.EnterParking(enterParkingDTO);
         }
 
         [HttpPost("exit/{licenseplate}")]

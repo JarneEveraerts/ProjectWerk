@@ -17,7 +17,7 @@ namespace Persistance.Data.Repositories
 
         public async Task<List<ParkingSpot>> GetParkingSpots()
         {
-            List<ParkingSpot> parkingSpots = await _allphiContext.ParkingSpot.Where(p => p.IsDeleted == false).ToListAsync();
+            List<ParkingSpot> parkingSpots = await _allphiContext.ParkingSpot.Include(p => p.Employee).Include(p => p.Reserved).Include(p => p.Visitor).Where(p => p.IsDeleted == false).ToListAsync();
             return parkingSpots;
         }
 
