@@ -162,7 +162,7 @@
                                     <DatePicker x:Name="dtp_end" SelectedDate="{Binding SelectedItem.EndDate,ElementName=dtg_contracts,Mode=OneWay}" Width="120" FontSize="16" Foreground ="#303030" />
                                 </DockPanel>
                                 <TextBox x:Name="txt_contract_business" materialDesign:HintAssist.Hint="Bedrijf" Text="{Binding SelectedItem.Business.Name ,ElementName=dtg_contracts,Mode=OneWay}" Width="320" Margin="0,0,0,0" Height="50" HorizontalAlignment="Left" FontSize="16" Foreground ="#303030" />
-                                <TextBox x:Name="txt_contract_spots" materialDesign:HintAssist.Hint="Spots" Text="{Binding SelectedItem.Business.Name, ElementName=dtg_contracts, Mode=OneWay}" Width="100" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
+                                <TextBox x:Name="txt_contract_spots" materialDesign:HintAssist.Hint="Spots" Text="{Binding SelectedItem.TotalSpaces, ElementName=dtg_contracts, Mode=OneWay}" Width="100" Height="50" FontSize="16" HorizontalAlignment="Left" Foreground ="#303030" />
                             </StackPanel>
                             <StackPanel Margin="0,100,0,0">
                                 <DockPanel HorizontalAlignment="Center">
