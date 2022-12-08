@@ -114,7 +114,7 @@ namespace Domain
             Contract? contract = _contractRepo.GetContractByBusiness(business);
             Employee? employee = _employeeRepo.GetEmployeeByPlate(licensePlate);
             if (_parkingRepo.GetParkingSpotByPlate(licensePlate) != null) return false;
-            if (contract != null && contract.TotalSpaces <= _parkingRepo.GetParkingSpotsByReserved(business).Count)
+            if (contract != null && contract.TotalSpaces >= _parkingRepo.GetParkingSpotsByReserved(business).Count)
             {
                 _parkingRepo.CreateParkingSpot(new ParkingSpot(employee, null, licensePlate, business));
                 return true;

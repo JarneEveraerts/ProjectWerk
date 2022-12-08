@@ -16,7 +16,7 @@ namespace AllphiTests.MockClasses
 
         public Business GetBusinessByBTW(string btw)
         {
-            throw new NotImplementedException();
+            return businessesList.Find(b => b.Btw == btw);
         }
 
         public Business GetBusinessByEmail(string email)
@@ -31,12 +31,7 @@ namespace AllphiTests.MockClasses
 
         public Business GetBusinessByName(string name)
         {
-            return new Business("testbedrijf", "testbtw", "test");
-            /*if (null != name)
-            {
-                return new Business(name, "test", "test");
-            }
-            throw new NullReferenceException("Business is null");*/
+            return businessesList.Find(b => b.Name == name);
         }
 
         public List<Business> GetBusinesses()
