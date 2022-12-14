@@ -128,5 +128,9 @@ namespace Presentation.ViewModels
             Plate = employee.Plate;
             IsDeleted = employee.IsDeleted;
         }
+        public EmployeeView()
+        {
+
+        }
     }
 }

@@ -30,12 +30,6 @@ namespace Presentation.Views
         private List<VisitorView>? _visitorViews = new();
         private List<VisitView>? _visitViews = new();
         private HttpClient _apiClient;
-        private List<Business> _businesses = new List<Business>();
-        private List<Visitor> _visitors = new List<Visitor>();
-        private List<Employee> _employees = new List<Employee>();
-        private List<Contract> _contracts = new List<Contract>();
-        private List<Visit> _visits = new List<Visit>();
-        private List<ParkingSpot> _parkingSpots = new List<ParkingSpot>();
 
         public BalieApp(DomainController dc, IHttpClientFactory clientFactory)
         {
@@ -72,7 +66,7 @@ namespace Presentation.Views
             if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
             {
 
-                var employeesBySelectedBusinessRespons = await _apiClient.GetAsync($"/employees/business/{cmb_business.SelectedItem.ToString()}");
+                var employeesBySelectedBusinessRespons = await _apiClient.GetAsync($"/employees/business/{cmb_business.SelectedItem}");
                 var employeesBySelectedBusinessContentString = await employeesBySelectedBusinessRespons.Content.ReadAsStringAsync();
                 var employeesBySelectedBusiness = JsonConvert.DeserializeObject<List<Employee>>(employeesBySelectedBusinessContentString);
                 cmb_employees.Items.Clear();
@@ -103,86 +97,75 @@ namespace Presentation.Views
         {
             var businessesResponse = await _apiClient.GetAsync("/businesses");
             var contentString = await businessesResponse.Content.ReadAsStringAsync();
-            var businesses = JsonConvert.DeserializeObject<List<Business>>(contentString);
-            _businesses = businesses;
-            List<BusinessView> businessViews = new();
+            var businesses = JsonConvert.DeserializeObject<List<BusinessView>>(contentString);
             foreach (var item in businesses)
             {
-                businessViews.Add(new BusinessView(item));
+                _businessViews.Add(item);
                 cmb_business.Items.Add(item.Name);
             }
-            return businessViews;
+            return _businessViews;
         }
 
         private async Task<List<ContractView>> GetContractViews()
         {
             var contractsResponse = await _apiClient.GetAsync("/contracts");
             var contentString = await contractsResponse.Content.ReadAsStringAsync();
-            var contracts = JsonConvert.DeserializeObject<List<Contract>>(contentString);
-            _contracts = contracts;
-            List<ContractView> contractViews = new();
+            var contracts = JsonConvert.DeserializeObject<List<ContractView>>(contentString);
             foreach (var item in contracts)
             {
-                contractViews.Add(new ContractView(item));
+                _contractViews.Add(item);
             }
-            return contractViews;
+            return _contractViews;
         }
 
         private async Task<List<EmployeeView>> GetEmployeeViews()
         {
             var employeeResponse = await _apiClient.GetAsync("/employees");
             var contentString = await employeeResponse.Content.ReadAsStringAsync();
-            var employees = JsonConvert.DeserializeObject<List<Employee>>(contentString);
-            _employees = employees;
-            List<EmployeeView> employeeViews = new();
+            var employees = JsonConvert.DeserializeObject<List<EmployeeView>>(contentString);
             foreach (var item in employees)
             {
-                employeeViews.Add(new EmployeeView(item));
+                _employeeViews.Add(item);
                 cmb_employees.Items.Add(item.Name);
             }
-            return employeeViews;
+            return _employeeViews;
         }
 
         private async Task<List<ParkingSpotView>> GetParkingSpotViews()
         {
             var parkingSpotResponse = await _apiClient.GetAsync("/parkingspots");
             var contentString = await parkingSpotResponse.Content.ReadAsStringAsync();
-            var parkingSpots = JsonConvert.DeserializeObject<List<ParkingSpot>>(contentString);
-            _parkingSpots = parkingSpots;
-            List<ParkingSpotView> parkingSpotViews = new();
+            var parkingSpots = JsonConvert.DeserializeObject<List<ParkingSpotView>>(contentString);
             foreach (var item in parkingSpots)
             {
-                parkingSpotViews.Add(new ParkingSpotView(item));
+                
+                _parkingSpotViews.Add(item);
             }
-            return parkingSpotViews;
+            return _parkingSpotViews;
         }
 
         private async Task<List<VisitorView>> GetVisitorViews()
         {
             var visitorResponse = await _apiClient.GetAsync("/Visitors");
             var contentString = await visitorResponse.Content.ReadAsStringAsync();
-            var visitors = JsonConvert.DeserializeObject<List<Visitor>>(contentString);
-            _visitors = visitors;
-            List<VisitorView> visitorViews = new();
+            `var visitors = JsonConvert.DeserializeObject<List<VisitorView>>(contentString);
             foreach (var item in visitors)
             {
-                visitorViews.Add(new VisitorView(item));
+                _visitorViews.Add(item);
             }
-            return visitorViews;
+            return _visitorViews;
         }
 
         private async Task<List<VisitView>> GetVisitViews()
         {
             var visitRespons = await _apiClient.GetAsync("/Visits");
             var contentString = await visitRespons.Content.ReadAsStringAsync();
-            var visits = JsonConvert.DeserializeObject<List<Visit>>(contentString);
-            _visits = visits;
-            List<VisitView> visitViews = new();
+            var visits = JsonConvert.DeserializeObject<List<VisitView>>(contentString);
             foreach (var item in visits)
             {
-                visitViews.Add(new VisitView(item));
+                _visitViews.Add(item);
             }
-            return visitViews;
+            return _visitViews;
         }
 
         #endregion GetViews
@@ -254,16 +237,39 @@ namespace Presentation.Views
             string _business = txt_contract_business.Text;
             if (IsContractValid(_spots, _business, _start))
             {
-                var business = _businesses.Single(b => b.Name == _business);
+                var business = _businessViews.Single(b => b.Name == _business);
                 ContractView contractView = (ContractView)dtg_contracts.SelectedItem;
                 var updateContract = new UpdateContractDTO
                 {
                     Start = _start,
                     End = _end,
                     Spots = Int32.Parse(_spots),
-                    Business = business,
+                    Business = new Business
+                    {
+                        Id= business.Id,
+                        Address = business.Address,
+                        Btw= business.Btw,
+                        Email= business.Email,
+                        Name= business.Name,
+                        Phone = business.Phone
+                    },
                     Id = contractView.Id,
-                    Contract = _contracts.SingleOrDefault(c => c.Id == contractView.Id)
+                    Contract = new Contract
+                    {
+                         Id= contractView.Id,
+                         EndDate= contractView.EndDate,
+                         StartDate= contractView.StartDate,
+                         TotalSpaces= contractView.TotalSpaces,
+                         Business = new Business
+                         {
+                             Id = business.Id,
+                             Address = business.Address,
+                             Btw = business.Btw,
+                             Email = business.Email,
+                             Name = business.Name,
+                             Phone = business.Phone
+                         }
+                    }
                 };
 
                 var bodyString = JsonConvert.SerializeObject(updateContract);
@@ -284,7 +290,7 @@ namespace Presentation.Views
             string _business = txt_employee_business.Text;
             string? _plate = txt_employee_plate.Text;
 
-            var business = _businesses.Single(b => b.Name == _business);
+            var business = _businessViews.Single(b => b.Name == _business);
 
             if (IsEmployeeValid(_name, _email, _function, _business, _plate))
             {
@@ -295,7 +301,15 @@ namespace Presentation.Views
                     Name = _name,
                     Email = _email,
                     Function = _function,
-                    Business = business,
+                    Business = new Business {
+                        Id = business.Id,
+                        Address = business.Address,
+                        Btw = business.Btw,
+                        Email = business.Email,
+                        Name = business.Name,
+                        Phone = business.Phone
+
+                    },
                     Plate = _plate
                 };
 
@@ -316,18 +330,48 @@ namespace Presentation.Views
         private async void btn_updateVisit_Click(object sender, RoutedEventArgs e)
         {
             string name = txt_visit_name.Text;
-            var visitor = _visitors.Single(v => v.Name == name);
-            if (IsVisitValid(name, visitor))
+            var visitor = _visitorViews.Single(v => v.Name == name);
+            if (IsVisitValid(name, new Visitor
+            {
+                Email = visitor.Email,
+                Id= visitor.Id,
+                Name= visitor.Name,
+                Plate= visitor.Plate,
+                Business = visitor.Business
+            }))
             {
                 MessageBox.Show("Ben je zeker om deze bezoek te updaten?", "Update", MessageBoxButton.OKCancel);
 
-                var employee = _employees.Single(e => e.Name == cmb_business.Text);
-                var business = _businesses.Single(b => b.Name == cmb_business.Text);
+                var employee = _employeeViews.Single(e => e.Name == cmb_business.Text);
+                var business = _businessViews.Single(b => b.Name == cmb_business.Text);
                 var updateVisit = new UpdateVisitDTO
                 {
-                    Visitor = visitor,
-                    Employee = employee,
-                    Business = business,
+                    Visitor = new Visitor {
+                        Email = visitor.Email,
+                        Id = visitor.Id,
+                        Name = visitor.Name,
+                        Plate = visitor.Plate,
+                        Business = visitor.Business
+                    },
+                    Employee = new Employee
+                    {
+                        Email = employee.Email, 
+                        Id = employee.Id,
+                        Name = employee.Name,
+                        FirstName= employee.FirstName,
+                        Function = employee.Function,
+                        Plate= employee.Plate,
+                        Business= employee.Business
+                    },
+                    Business = new Business
+                    {
+                        Name= business.Name,
+                        Email= business.Email,
+                        Address= business.Address,
+                        Btw= business.Btw,  
+                        Id  = business.Id,
+                        Phone= business.Phone  
+                    },
                     Start = dtp_visit_start.SelectedDate.Value,
                     End = dtp_visit_end.SelectedDate.Value
                 };
@@ -389,7 +433,8 @@ namespace Presentation.Views
 
             if (IsVisitorValid(_name, _email, _plate, _business))
             {
-                var visitorExists = _visitors.Exists(v => v.Name == _name);
+
+                var visitorExists = _visitorViews.Exists(v => v.Name == _name);
 
                 if (!visitorExists)
                 {
@@ -423,13 +468,13 @@ namespace Presentation.Views
             if (IsContractValid(_spots, _business, _start))
             {
 
-                var business = _businesses.SingleOrDefault(b => b.Name == _business);
+                var business = _businessViews.SingleOrDefault(b => b.Name == _business);
                 if (business == null)
                 {
                     MessageBox.Show("Het opgegeven bedrijf staat niet in ons systeem.");
                     return;
                 }
-                var contractExists = _contracts.Exists(c => c.Business.Id == business.Id);
+                var contractExists = _contractViews.Exists(c => c.Business.Id == business.Id);
                 if (!contractExists)
                 {
                     var createContractDTO = new CreateContractDTO
@@ -437,7 +482,15 @@ namespace Presentation.Views
                         StartDate = _start,
                         EndDate = _end,
                         TotalSpaces = int.Parse(_spots),
-                        Business = business
+                        Business =new Business
+                        {
+                            Id = business.Id,
+                            Address = business.Address,
+                            Btw = business.Btw,
+                            Email = business.Email,
+                            Name = business.Name,
+                            Phone = business.Phone
+                        }
                     };
 
                     var bodyString = JsonConvert.SerializeObject(createContractDTO);
@@ -464,16 +517,24 @@ namespace Presentation.Views
 
             if (IsEmployeeValid(_name, _email, _function, _business, _plate))
             {
-                var employeeExists = _employees.Exists(e => e.Name == _name);
+                var employeeExists = _employeeViews.Exists(e => e.Name == _name);
                 if (!employeeExists)
                 {
-                    var business = _businesses.SingleOrDefault(b => b.Name == _business);
+                    var business = _businessViews.SingleOrDefault(b => b.Name == _business);
                     var CreateEmployee = new CreateAndUpdateEmployeeDTO
                     {
                         Name = _name,
                         Email = _email,
                         Function = _function,
-                        Business = business,
+                        Business = new Business
+                        {
+                            Address = business.Address,
+                            Btw= business.Btw,
+                            Email= business.Email,
+                            Id= business.Id,
+                            Name = business.Name,
+                            Phone= business.Phone,
+                        },
                         Plate = _plate
                     };
                     var bodyString = JsonConvert.SerializeObject(CreateEmployee);
@@ -498,18 +559,52 @@ namespace Presentation.Views
 
         private async void btn_addVisit_Click(object sender, RoutedEventArgs e)
         {
+             var em = _employeeViews.First(e => e.Name == cmb_employees.Text);
+            var bu = _businessViews.First(b => b.Name == cmb_business.Text);
             string name = txt_visit_name.Text;
-            var visitor = _visitors.FirstOrDefault(b => b.Name == name);
-            if (IsVisitValid(name, visitor))
+            var visitor = _visitorViews.FirstOrDefault(b => b.Name == name);
+            if (IsVisitValid(name, new Visitor
             {
-                var visitExists = _visits.Exists(v => v.Visitor.Name == name);
+                Email = visitor.Email,
+                Id= visitor.Id,
+                Name = visitor.Name,
+                Plate= visitor.Plate,
+                Business= visitor.Business,
+            } ))
+            {
+                var visitExists = _visitViews.Exists(v => v.Visitor.Name == name);
                 if (!visitExists)
                 {                   
                     var createVisitDTO = new CreateVisitDTO
                     {
-                        Visitor = visitor,
-                        Employee = _employees.First(e => e.Name == cmb_employees.Text),
-                        Business = _businesses.First(b => b.Name == cmb_business.Text),
+                        Visitor = new Visitor
+                        {
+                            Email = visitor.Email,
+                            Id = visitor.Id,
+                            Name = visitor.Name,
+                            Plate = visitor.Plate,
+                            Business = visitor.Business,
+                        },
+
+                        Employee = new Employee
+                        {
+                            Id = em.Id,
+                            Email= em.Email,
+                            FirstName= em.FirstName,
+                            Function = em.Function,
+                            Name = em.Name,
+                            Plate= em.Plate,
+                            Business= em.Business,
+                        },
+                        Business = new Business
+                        {
+                            Id = bu.Id,
+                            Address = bu.Address,
+                            Btw = bu.Btw,
+                            Name= bu.Name,
+                            Email= bu.Email,
+                            Phone= bu.Phone
+                        },
                     };
                     var bodyString = JsonConvert.SerializeObject(createVisitDTO);
                     var employeeResponse = await _apiClient.PutAsync($"/visits", new StringContent(bodyString, Encoding.UTF8, "application/json"));
