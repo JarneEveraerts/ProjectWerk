@@ -99,5 +99,9 @@ namespace Presentation.ViewModels
             TotalSpaces = contract.TotalSpaces;
             IsDeleted = contract.IsDeleted;
         }
+        public ContractView()
+        {
+                
+        }
     }
 }

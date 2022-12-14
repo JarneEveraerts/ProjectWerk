@@ -83,5 +83,9 @@ namespace Presentation.ViewModels
             Plate = parkingSpot.Plate;
             Reserved = parkingSpot.Reserved;
         }
+        public ParkingSpotView()
+        {
+
+        }
     }
 }
