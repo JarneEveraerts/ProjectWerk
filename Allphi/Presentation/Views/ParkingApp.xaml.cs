@@ -25,9 +25,8 @@ namespace Presentation.Views
     public partial class ParkingApp : Window
     {
         private DomainController _dc;
-        private List<Business> _businesses = new List<Business>();
-        private List<BusinessView>? businessViews = new();
-        private List<Contract> _contracts= new List<Contract>();
+        private List<BusinessView>? _businessViews = new();
+        private List<ContractView> _contractViews= new List<ContractView>();
         private string _licensePlate;
         private HttpClient _apiClient;
 
@@ -40,18 +39,17 @@ namespace Presentation.Views
             _apiClient.BaseAddress = new Uri("http://localhost:5269");
             var businessesResponse = _apiClient.GetAsync("/businesses").Result;
             var contentString = businessesResponse.Content.ReadAsStringAsync().Result;
-            var businesses = JsonConvert.DeserializeObject<List<Business>>(contentString);
-            _businesses = businesses;
+            var businesses = JsonConvert.DeserializeObject<List<BusinessView>>(contentString);
+            _businessViews = businesses;
             var contractResponse = _apiClient.GetAsync("/contracts").Result;
             var contractContentString = contractResponse.Content.ReadAsStringAsync().Result;
-            var contracts = JsonConvert.DeserializeObject<List<Contract>>(contractContentString);
-            _contracts = contracts;
+            var contracts = JsonConvert.DeserializeObject<List<ContractView>>(contractContentString);
+            _contractViews = contracts;
 
             if (businesses.Count != 0)
             {
                 foreach (var item in businesses)
                 {
-                    businessViews.Add(new BusinessView(item));
                     cmb_business.Items.Add(item.Name);
                 }
             }
@@ -94,10 +92,25 @@ namespace Presentation.Views
                 return;
             }
 
-            var businessObject = _businesses.SingleOrDefault(b => b.Name == business);
+            var businessView = _businessViews.SingleOrDefault(b => b.Name == business);
+            var businessObject = new Business { 
+            Id = businessView.Id,
+            Name = businessView.Name,
+            Address= businessView.Address,
+            Btw =   businessView.Btw,
+            Email= businessView.Email,
+            Phone= businessView.Phone,
+            };
 
-            var contract = _contracts.SingleOrDefault(c => c.Business.Id == businessObject.Id);
-
+            var contractView = _contractViews.SingleOrDefault(c => c.Business.Id == businessObject.Id);
+            var contract = new Contract
+            {
+                Id = contractView.Id,
+                Business = contractView.Business,
+                EndDate = contractView.EndDate,
+                StartDate = contractView.StartDate,
+                TotalSpaces= contractView.TotalSpaces,
+            };
 
             var employeeResponse = await _apiClient.GetAsync($"/employees/licenseplate/{_licensePlate}");
             var contentStringEmployee = await employeeResponse.Content.ReadAsStringAsync();

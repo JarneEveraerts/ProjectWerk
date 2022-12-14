@@ -148,7 +148,7 @@ namespace Presentation.Views
         {
             var visitorResponse = await _apiClient.GetAsync("/Visitors");
             var contentString = await visitorResponse.Content.ReadAsStringAsync();
-            `var visitors = JsonConvert.DeserializeObject<List<VisitorView>>(contentString);
+            var visitors = JsonConvert.DeserializeObject<List<VisitorView>>(contentString);
             foreach (var item in visitors)
             {
                 _visitorViews.Add(item);
@@ -342,36 +342,13 @@ namespace Presentation.Views
             {
                 MessageBox.Show("Ben je zeker om deze bezoek te updaten?", "Update", MessageBoxButton.OKCancel);
 
-                var employee = _employeeViews.Single(e => e.Name == cmb_business.Text);
+                var employee = _employeeViews.Single(e => e.Name == cmb_employees.Text);
                 var business = _businessViews.Single(b => b.Name == cmb_business.Text);
                 var updateVisit = new UpdateVisitDTO
                 {
-                    Visitor = new Visitor {
-                        Email = visitor.Email,
-                        Id = visitor.Id,
-                        Name = visitor.Name,
-                        Plate = visitor.Plate,
-                        Business = visitor.Business
-                    },
-                    Employee = new Employee
-                    {
-                        Email = employee.Email, 
-                        Id = employee.Id,
-                        Name = employee.Name,
-                        FirstName= employee.FirstName,
-                        Function = employee.Function,
-                        Plate= employee.Plate,
-                        Business= employee.Business
-                    },
-                    Business = new Business
-                    {
-                        Name= business.Name,
-                        Email= business.Email,
-                        Address= business.Address,
-                        Btw= business.Btw,  
-                        Id  = business.Id,
-                        Phone= business.Phone  
-                    },
+                    Visitor = visitor.Id,
+                    Employee = employee.Name,
+                    Business = business.Name,
                     Start = dtp_visit_start.SelectedDate.Value,
                     End = dtp_visit_end.SelectedDate.Value
                 };
@@ -577,34 +554,9 @@ namespace Presentation.Views
                 {                   
                     var createVisitDTO = new CreateVisitDTO
                     {
-                        Visitor = new Visitor
-                        {
-                            Email = visitor.Email,
-                            Id = visitor.Id,
-                            Name = visitor.Name,
-                            Plate = visitor.Plate,
-                            Business = visitor.Business,
-                        },
-
-                        Employee = new Employee
-                        {
-                            Id = em.Id,
-                            Email= em.Email,
-                            FirstName= em.FirstName,
-                            Function = em.Function,
-                            Name = em.Name,
-                            Plate= em.Plate,
-                            Business= em.Business,
-                        },
-                        Business = new Business
-                        {
-                            Id = bu.Id,
-                            Address = bu.Address,
-                            Btw = bu.Btw,
-                            Name= bu.Name,
-                            Email= bu.Email,
-                            Phone= bu.Phone
-                        },
+                        Visitor = visitor.Name,
+                        Employee = em.Name,
+                        Business = bu.Name
                     };
                     var bodyString = JsonConvert.SerializeObject(createVisitDTO);
                     var employeeResponse = await _apiClient.PutAsync($"/visits", new StringContent(bodyString, Encoding.UTF8, "application/json"));

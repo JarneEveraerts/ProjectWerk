@@ -114,5 +114,9 @@ namespace Presentation.ViewModels
             Business = visit.Business;
             IsDeleted = visit.IsDeleted;
         }
+        public VisitView()
+        {
+
+        }
     }
 }

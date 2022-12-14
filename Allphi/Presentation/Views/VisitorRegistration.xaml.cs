@@ -23,8 +23,6 @@ namespace Presentation.Views
         private DomainController _dc;
         private List<BusinessView>? businessViews = new();
         private List<EmployeeView>? employeeViews = new();
-        private List<Business> _businesses = new List<Business>();
-        private List<Employee> _employees = new List<Employee>();
         private HttpClient _apiClient;
 
         public VisitorRegistration(DomainController dc, IHttpClientFactory clientFactory)
@@ -36,17 +34,16 @@ namespace Presentation.Views
             _apiClient.BaseAddress = new Uri("http://localhost:5269");
             var businessesResponse = _apiClient.GetAsync("/businesses").Result;
             var businessContentString = businessesResponse.Content.ReadAsStringAsync().Result;
-            var businesses = JsonConvert.DeserializeObject<List<Business>>(businessContentString);
-            _businesses = businesses; ;
+            var businesses = JsonConvert.DeserializeObject<List<BusinessView>>(businessContentString);
+            businessViews = businesses;
             var employeesResponse = _apiClient.GetAsync("/employees").Result;
             var employeesContentString = employeesResponse.Content.ReadAsStringAsync().Result;
-            var employees = JsonConvert.DeserializeObject<List<Employee>>(employeesContentString);
-            _employees = employees;
+            var employees = JsonConvert.DeserializeObject<List<EmployeeView>>(employeesContentString);
+            employeeViews = employees;
             if (businesses.Count != 0)
             {
                 foreach (var item in businesses)
                 {
-                    businessViews.Add(new BusinessView(item));
                     cmb_business.Items.Add(item.Name);
                 }
             }
@@ -54,7 +51,6 @@ namespace Presentation.Views
             {
                 foreach (var item in employees)
                 {
-                    employeeViews.Add(new EmployeeView(item));
                     cmb_employees.Items.Add(item.Name);
                 }
             }
@@ -79,12 +75,6 @@ namespace Presentation.Views
 
                 };
 
-                //GET Business
-                var business = _businesses.Single(b => b.Name == _businessName);
-                
-                //GET Employee
-                var employee = _employees.Single(e => e.Name == _employeeName);
-
                 if (_visitorPlate == "")
                 {
                     //CREATE Visitor
@@ -96,9 +86,9 @@ namespace Presentation.Views
                     //CREATE Visit
                     var createVisit = new CreateVisitDTO
                     {
-                        Visitor = visitor,
-                        Business = business,
-                        Employee = employee
+                        Visitor = visitor.Name,
+                        Business = _businessName,
+                        Employee = _employeeName
                     };
                     await CreateVisit(createVisit);
                 }
@@ -110,8 +100,8 @@ namespace Presentation.Views
                         Email = _visitorEmail,
                         Plate = _visitorPlate,
                         Organisation = _organisation,
-                        Employee = employee,
-                        Business = business
+                        Employee = _employeeName,
+                        Business = _businessName
                     };
                     //CREATE Visitor with Plate
                     var bodyString = JsonConvert.SerializeObject(createVisitorWithPlateDTO);
@@ -122,9 +112,9 @@ namespace Presentation.Views
                     //CREATE Visit
                     var createVisit = new CreateVisitDTO
                     {
-                        Visitor = visitor,
-                        Business = business,
-                        Employee = employee
+                        Visitor = visitor.Name,
+                        Business = _businessName,
+                        Employee = _employeeName
                     };
                     await CreateVisit(createVisit);
                 };
@@ -173,7 +163,7 @@ namespace Presentation.Views
             if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
             {
 
-                var employeesBySelectedBusiness = _employees.Where(e => cmb_business.SelectedItem.Equals(e.Business.Name)).ToList();
+                var employeesBySelectedBusiness = employeeViews.Where(e => cmb_business.SelectedItem.Equals(e.Business.Name)).ToList();
 
                 cmb_employees.Items.Clear();
                 foreach (var item in employeesBySelectedBusiness)
@@ -187,8 +177,8 @@ namespace Presentation.Views
         {
             if (cmb_business.SelectedIndex == -1 || cmb_employees.SelectedIndex != -1)
             {
-                var businessId = _employees.Single(e => e.Name == cmb_employees.SelectedItem.ToString()).Business.Id;
-                var business = _businesses.Single(b => b.Id == businessId);
+                var businessId = employeeViews.Single(e => e.Name == cmb_employees.SelectedItem.ToString()).Business.Id;
+                var business = businessViews.Single(b => b.Id == businessId);
                 cmb_business.SelectedItem = business.Name;
             }
         }

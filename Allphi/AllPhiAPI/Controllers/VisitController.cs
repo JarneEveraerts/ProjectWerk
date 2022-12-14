@@ -11,10 +11,12 @@ namespace AllPhiAPI.Controllers
     public class VisitController
     {
         private readonly IVisitService _visitService;
+        private readonly IVisitorBusinessEmployeeVisitService visitorBusinessEmployeeVisitService;
 
-        public VisitController(IVisitService visitService)
+        public VisitController(IVisitService visitService, IVisitorBusinessEmployeeVisitService visitorBusinessEmployeeVisitService)
         {
             _visitService = visitService;
+            this.visitorBusinessEmployeeVisitService = visitorBusinessEmployeeVisitService;
         }
         #region GET
 
@@ -47,7 +49,7 @@ namespace AllPhiAPI.Controllers
         [HttpPatch]
         public void UpdateVisit(UpdateVisitDTO visitDTO)
         {
-            _visitService.UpdateVisit(visitDTO);
+            visitorBusinessEmployeeVisitService.UpdateVisit(visitDTO);
         }
 
         [HttpDelete("{visitorId}")]
@@ -59,7 +61,7 @@ namespace AllPhiAPI.Controllers
         [HttpPut]
         public void CreateVisit(CreateVisitDTO visitDTO)
         {
-            _visitService.CreateVisit(visitDTO);
+            visitorBusinessEmployeeVisitService.CreateVisit(visitDTO);
         }
 
 
