@@ -39,6 +39,7 @@ builder.Services.AddScoped<IParkingSpotService, ParkingSpotService>();
 builder.Services.AddScoped<IEmployeeBusinessService, EmployeeBusinessService>();
 builder.Services.AddScoped<IContractBusinessService, ContractBusinessService>();
 builder.Services.AddScoped<IParkingspotBusinesEmployeeService, ParkingspotBusinesEmployeeService>();
+builder.Services.AddScoped<IVisitorBusinessEmployeeVisitService, VisitorBusinessEmployeeVisitService>();
 
 builder.Services.AddScoped<IContractRepository, ContractRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();

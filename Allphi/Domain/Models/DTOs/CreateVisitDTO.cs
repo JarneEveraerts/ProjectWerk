@@ -8,8 +8,8 @@ namespace Domain.Models.DTOs
 {
     public class CreateVisitDTO
     {
-        public Visitor Visitor { get; set; }
-        public Employee Employee { get; set; }
-        public Business Business { get; set; }
+        public string Visitor { get; set; }
+        public string Employee { get; set; }
+        public string Business { get; set; }
     }
 }

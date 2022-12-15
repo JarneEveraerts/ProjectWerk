@@ -109,5 +109,9 @@ namespace Presentation.ViewModels
             Plate = visitor.Plate;
             IsDeleted = visitor.IsDeleted;
         }
+        public VisitorView()
+        {
+                
+        }
     }
 }

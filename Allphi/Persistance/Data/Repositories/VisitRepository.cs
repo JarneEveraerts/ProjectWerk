@@ -17,32 +17,44 @@ public class VisitRepository : IVisitRepository
 
     public async Task<List<Visit>> GetVisits()
     {
-        List<Visit> visits = await _allphiContext.Visit.Where(v => v.IsDeleted == false).ToListAsync();
+        List<Visit> visits = await _allphiContext.Visit.Where(v => v.IsDeleted == false)
+            .Include(v => v.Business)
+            .Include(v => v.Employee).ThenInclude(e => e.Business)
+            .Include(v => v.Visitor)
+            .ToListAsync();
         return visits;
     }
 
     public List<Visit> GetVisitsByEmployee(int employeeId)
     {
 
-        List<Visit> visits = _allphiContext.Visit.Where(v => v.Employee.Id == employeeId).ToList();
+        List<Visit> visits = _allphiContext.Visit.Where(v => v.Employee.Id == employeeId).Include(v => v.Business)
+            .Include(v => v.Employee).ThenInclude(e => e.Business)
+            .Include(v => v.Visitor).ToList();
         return visits;
     }
 
     public List<Visit> GetVisitsByBusiness(int businessId)
     {
-        List<Visit> visits = _allphiContext.Visit.Where(v => v.Business.Id == businessId).ToList();
+        List<Visit> visits = _allphiContext.Visit.Where(v => v.Business.Id == businessId).Include(v => v.Business)
+            .Include(v => v.Employee).ThenInclude(e => e.Business)
+            .Include(v => v.Visitor).ToList();
         return visits;
     }
 
     public List<Visit> GetVisitsByVisitor(int visitorId)
     {
-        List<Visit> visits = _allphiContext.Visit.Where(v => v.Visitor.Id == visitorId).ToList();
+        List<Visit> visits = _allphiContext.Visit.Where(v => v.Visitor.Id == visitorId).Include(v => v.Business)
+            .Include(v => v.Employee).ThenInclude(e => e.Business)
+            .Include(v => v.Visitor).ToList();
         return visits;
     }
 
     public Visit GetVisitByVisitor(int visitorId)
     {
-        Visit visit = _allphiContext.Visit.OrderByDescending(v => v.EndDate).FirstOrDefault(v => v.Visitor.Id == visitorId);
+        Visit visit = _allphiContext.Visit.OrderByDescending(v => v.EndDate).Include(v => v.Business)
+            .Include(v => v.Employee).ThenInclude(e => e.Business)
+            .Include(v => v.Visitor).FirstOrDefault(v => v.Visitor.Id == visitorId);
         return visit;
     }
 

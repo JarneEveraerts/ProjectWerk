@@ -34,32 +34,12 @@ namespace Domain.Services
         {
             return _visitRepository.GetVisitByVisitor(visitorId);
         }
-        public void UpdateVisit(UpdateVisitDTO visitDTO)
-        {
-            Visit visit = _visitRepository.GetVisitByVisitor(visitDTO.Visitor.Id);
-            visit.Visitor = visitDTO.Visitor;
-            visit.Employee = visitDTO.Employee;
-            visit.Business = visitDTO.Business;
-            visit.StartDate = visitDTO.Start;
-            visit.EndDate = visitDTO.End;
-            _visitRepository.UpdateVisit(visit);
-        }
 
         public void DeleteVisit(int visitorId)
         {
             Visit visit = _visitRepository.GetVisitByVisitor(visitorId);
             visit.IsDeleted = true;
             _visitRepository.UpdateVisit(visit);
-        }
-
-        public void CreateVisit(CreateVisitDTO visitDTO)
-        {
-            Visit visit = new Visit();
-            visit.Visitor = visitDTO.Visitor;
-            visit.Employee = visitDTO.Employee;
-            visit.Business = visitDTO.Business;
-            visit.StartDate = DateTime.Now;
-            _visitRepository.CreateVisit(visit);
         }
 
     }

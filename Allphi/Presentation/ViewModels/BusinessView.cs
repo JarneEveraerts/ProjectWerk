@@ -128,5 +128,9 @@ namespace Presentation.ViewModels
             Phone = business.Phone;
             IsDeleted = business.IsDeleted;
         }
+        public BusinessView()
+        {
+
+        }
     }
 }

@@ -12,7 +12,7 @@ namespace Domain.Models.DTOs
         public string Email { get; set; }
         public string Plate { get; set; }
         public string Organisation { get; set; }
-        public Employee Employee { get; set; }
-        public Business Business { get; set; }
+        public string Employee { get; set; }
+        public string Business { get; set; }
     }
 }
