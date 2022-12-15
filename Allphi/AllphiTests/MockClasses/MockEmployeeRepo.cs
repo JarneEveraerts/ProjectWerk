@@ -8,7 +8,7 @@ namespace AllphiTests.MockClasses
 
         List<Employee> employeeslist = new List<Employee>();
         public void CreateEmployee(Employee employee)
-        {
+        {   
             employeeslist.Add(employee);
         }
 
@@ -19,7 +19,7 @@ namespace AllphiTests.MockClasses
 
         public Employee GetEmployeeByName(string name)
         {
-            throw new NotImplementedException();
+            return employeeslist.Find(employee => employee.Name == name);
         }
 
         public Employee? GetEmployeeByPlate(string licensePlate)
@@ -49,12 +49,12 @@ namespace AllphiTests.MockClasses
 
         public List<Employee>? GetEmployeesByBusiness(Business business)
         {
-            throw new NotImplementedException();
+            return employeeslist.FindAll(employee => employee.Business == business);
         }
 
         public List<Employee>? GetEmployeesByName(string name)
         {
-            throw new NotImplementedException();
+            return employeeslist.FindAll(employee => employee.Name == name);
         }
 
         public void UpdateEmployee(Employee employee)

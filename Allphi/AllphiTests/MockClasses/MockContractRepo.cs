@@ -5,34 +5,50 @@ namespace AllphiTests.MockClasses
 {
     internal class MockContractRepo : IContractRepository
     {
+        List<Contract> contracts = new List<Contract>();
         public void CreateContract(Contract contract)
         {
-            throw new NotImplementedException();
+            contracts.Add(contract);
         }
 
         public Contract GetContractByBusiness(Business business)
         {
-            throw new NotImplementedException();
+            foreach (Contract item in contracts)
+            {
+                if (item.Business == business)
+                {
+                    return item;
+                }
+            }
+
+            return null;
         }
 
         public Contract GetContractByEndDate(DateTime date)
         {
-            throw new NotImplementedException();
+            foreach (Contract item in contracts)
+            {
+                if (item.EndDate == date)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         public Contract GetContractById(int id)
         {
-            throw new NotImplementedException();
+            return contracts[id];
         }
 
         public List<Contract> GetContracts()
         {
-            throw new NotImplementedException();
+            return contracts;
         }
 
         public void UpdateContract(Contract contract)
         {
-            throw new NotImplementedException();
+            contracts[contract.Id] = contract;
         }
     }
 }
