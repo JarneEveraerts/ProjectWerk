@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.Repositories;
 
 namespace AllphiTests.MockClasses
 {

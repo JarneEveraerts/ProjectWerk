@@ -1,25 +1,17 @@
 ﻿using Domain;
 using Domain.Models;
+using Domain.Models.DTOs;
 using MaterialDesignThemes.Wpf;
+using Newtonsoft.Json;
 using Presentation.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
-using MaterialDesignThemes.Wpf;
-
-using MaterialDesignColors.Recommended;
-using System.ComponentModel;
 
 namespace Presentation.Views
 {
@@ -29,31 +21,38 @@ namespace Presentation.Views
     public partial class VisitorRegistration : Window
     {
         private DomainController _dc;
-        private List<List<string>> businesses;
         private List<BusinessView>? businessViews = new();
-        private List<VisitView>? visitViews = new();
-        private List<VisitorView>? visitorViews = new();
         private List<EmployeeView>? employeeViews = new();
-        private List<ParkingSpotView>? parkingSpotViews = new();
-        private VisitorView Visitor;
+        private List<Business> _businesses = new List<Business>();
+        private List<Employee> _employees = new List<Employee>();
+        private HttpClient _apiClient;
 
-        public VisitorRegistration(DomainController dc)
+        public VisitorRegistration(DomainController dc, IHttpClientFactory clientFactory)
         {
             InitializeComponent();
             _dc = dc;
 
-            businesses = _dc.GiveBusinesses();
+            _apiClient = clientFactory.CreateClient();
+            _apiClient.BaseAddress = new Uri("http://localhost:5269");
+            var businessesResponse = _apiClient.GetAsync("/businesses").Result;
+            var businessContentString = businessesResponse.Content.ReadAsStringAsync().Result;
+            var businesses = JsonConvert.DeserializeObject<List<Business>>(businessContentString);
+            _businesses = businesses; ;
+            var employeesResponse = _apiClient.GetAsync("/employees").Result;
+            var employeesContentString = employeesResponse.Content.ReadAsStringAsync().Result;
+            var employees = JsonConvert.DeserializeObject<List<Employee>>(employeesContentString);
+            _employees = employees;
             if (businesses.Count != 0)
             {
-                foreach (var item in _dc.GetBusinesses())
+                foreach (var item in businesses)
                 {
                     businessViews.Add(new BusinessView(item));
                     cmb_business.Items.Add(item.Name);
                 }
             }
-            if (_dc.GetEmployees().Count != 0)
+            if (employees.Count != 0)
             {
-                foreach (var item in _dc.GetEmployees())
+                foreach (var item in employees)
                 {
                     employeeViews.Add(new EmployeeView(item));
                     cmb_employees.Items.Add(item.Name);
@@ -61,38 +60,110 @@ namespace Presentation.Views
             }
         }
 
-        private void btn_Registreren_Click(object sender, RoutedEventArgs e)
+        private async void btn_Registreren_Click(object sender, RoutedEventArgs e)
         {
             string _visitorName = txt_name.Text;
             string _visitorEmail = txt_email.Text;
             string _visitorPlate = txt_plate.Text;
             string _organisation = txt_organisation.Text;
 
-            if (isVisitorValid(_visitorName, _visitorEmail, _visitorPlate, _organisation))
+            if (await isVisitorValid(_visitorName, _visitorEmail, _visitorPlate, _organisation))
             {
                 string _businessName = cmb_business.SelectedItem.ToString();
                 string _employeeName = cmb_employees.SelectedItem.ToString();
-                if (_visitorPlate == "") _dc.CreateVisitor(_visitorName, _visitorEmail, _organisation, _employeeName, _businessName);
-                else _dc.CreateVisitorWithPlate(_visitorName, _visitorEmail, _visitorPlate, _organisation, _employeeName, _businessName);
+                var createVisitorDTO = new CreateVisitorDTO
+                {
+                    Name = _visitorName,
+                    Email = _visitorEmail,
+                    Organisation = _organisation
+
+                };
+
+                //GET Business
+                var business = _businesses.Single(b => b.Name == _businessName);
+                
+                //GET Employee
+                var employee = _employees.Single(e => e.Name == _employeeName);
+
+                if (_visitorPlate == "")
+                {
+                    //CREATE Visitor
+                    var bodyString = JsonConvert.SerializeObject(createVisitorDTO);
+                    var visitorResponse = await _apiClient.PutAsync("/visitors", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                    var visitorContentString = visitorResponse.Content.ReadAsStringAsync().Result;
+                    var visitor = JsonConvert.DeserializeObject<Visitor>(visitorContentString);
+
+                    //CREATE Visit
+                    var createVisit = new CreateVisitDTO
+                    {
+                        Visitor = visitor,
+                        Business = business,
+                        Employee = employee
+                    };
+                    await CreateVisit(createVisit);
+                }
+                else
+                {
+                    var createVisitorWithPlateDTO = new CreateVisitorWithPlateDTO
+                    {
+                        Name = _visitorName,
+                        Email = _visitorEmail,
+                        Plate = _visitorPlate,
+                        Organisation = _organisation,
+                        Employee = employee,
+                        Business = business
+                    };
+                    //CREATE Visitor with Plate
+                    var bodyString = JsonConvert.SerializeObject(createVisitorWithPlateDTO);
+                    var visitorResponse = await _apiClient.PutAsync("/visitors", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+                    var visitorContentString = visitorResponse.Content.ReadAsStringAsync().Result;
+                    var visitor = JsonConvert.DeserializeObject<Visitor>(visitorContentString);
+
+                    //CREATE Visit
+                    var createVisit = new CreateVisitDTO
+                    {
+                        Visitor = visitor,
+                        Business = business,
+                        Employee = employee
+                    };
+                    await CreateVisit(createVisit);
+                };
+
             }
         }
 
-        private bool isVisitorValid(string visitorName, string visitorEmail, string visitorPlate, string organisation)
+        private async Task CreateVisit(CreateVisitDTO visitDTO)
         {
+            var bodyString = JsonConvert.SerializeObject(visitDTO);
+            await _apiClient.PutAsync("/visits", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+
+        }
+        private async Task<bool> isVisitorValid(string visitorName, string visitorEmail, string visitorPlate, string organisation)
+        {
+            var visitorResponse = await _apiClient.GetAsync($"/visitors/email/{visitorEmail}");
+            var visitorContentString = visitorResponse.Content.ReadAsStringAsync().Result;
+            var visitor = JsonConvert.DeserializeObject<Visitor>(visitorContentString);
+
+            var parkingSpotResponse = await _apiClient.GetAsync($"/parkingspots/{visitorPlate}/exists");
+            var parkingSpotContentString = parkingSpotResponse.Content.ReadAsStringAsync().Result;
+            var spotExists = JsonConvert.DeserializeObject<bool>(parkingSpotContentString);
+
             if (cmb_business.SelectedIndex == -1 || cmb_business.SelectedIndex == -1 || visitorName == "" || visitorEmail == "" || organisation == "") MessageBox.Show("Please fill in all required fields");
             else if (!_dc.IsEmailValid(visitorEmail)) { MessageBox.Show("Please enter a valid email address"); }
-            else if (_dc.GetVisitorByEmail(visitorEmail) != null) { MessageBox.Show("This visitor is already registered"); }
+            else if (visitor != null) { MessageBox.Show("This visitor is already registered"); }
             else if (!_dc.IsLicensePlateValid(visitorPlate)) MessageBox.Show("Please enter a valid license plate");
-            else if (!_dc.ParkingSpotExists(visitorPlate)) MessageBox.Show("This license plate is not registered in the ParkingSpot database");
+            else if (!spotExists) MessageBox.Show("This license plate is not registered in the ParkingSpot database");
             else return true;
             return false;
         }
 
-        private void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
             {
-                var employeesBySelectedBusiness = _dc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
+
+                var employeesBySelectedBusiness = _employees.Where(e => cmb_business.SelectedItem.Equals(e.Business.Name)).ToList();
+
                 cmb_employees.Items.Clear();
                 foreach (var item in employeesBySelectedBusiness)
                 {
@@ -101,12 +172,13 @@ namespace Presentation.Views
             }
         }
 
-        private void cmb_employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void cmb_employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmb_business.SelectedIndex == -1 || cmb_employees.SelectedIndex != -1)
             {
-                var businessBySelectedEmployees = _dc.GetBusinessIdByEmployeeName(cmb_employees.SelectedItem.ToString());
-                cmb_business.SelectedItem = businessBySelectedEmployees.Name;
+                var businessId = _employees.Single(e => e.Name == cmb_employees.SelectedItem.ToString()).Business.Id;
+                var business = _businesses.Single(b => b.Id == businessId);
+                cmb_business.SelectedItem = business.Name;
             }
         }
 

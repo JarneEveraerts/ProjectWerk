@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories;
 
@@ -14,15 +15,15 @@ public class EmployeeRepository : IEmployeeRepository
 
     #region GET
 
-    public List<Employee> GetEmployees()
+    public async Task<List<Employee>> GetEmployees()
     {
-        List<Employee> employees = _allphiContext.Employee.Where(e => e.IsDeleted == false).ToList();
+        List<Employee> employees = await _allphiContext.Employee.Where(e => e.IsDeleted == false).Include(e => e.Business).ToListAsync();
         return employees;
     }
 
-    public List<Employee> GetEmployeesByBusiness(Business business)
+    public async Task<List<Employee>> GetEmployeesByBusiness(string business)
     {
-        List<Employee> employees = _allphiContext.Employee.Where(e => e.Business == business && e.IsDeleted == false).ToList();
+        List<Employee> employees = await _allphiContext.Employee.Where(e => e.Business.Name == business && e.IsDeleted == false).ToListAsync();
         return employees;
     }
 
@@ -34,7 +35,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public Employee GetEmployeeByName(string name)
     {
-        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false);
+        Employee employee = _allphiContext.Employee.Include(e => e.Business).FirstOrDefault(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false);
         return employee;
     }
 
@@ -46,7 +47,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public Employee GetEmployeeByPlate(string licensePlate)
     {
-        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Plate == licensePlate);
+        Employee employee = _allphiContext.Employee.Include(e => e.Business).FirstOrDefault(e => e.Plate == licensePlate);
         return employee;
     }
 

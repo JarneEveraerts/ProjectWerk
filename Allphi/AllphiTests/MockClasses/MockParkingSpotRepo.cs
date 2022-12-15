@@ -1,10 +1,8 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
 
 
 namespace AllphiTests.MockClasses
-{
-
     class MockParkingSpotRepo : IParkingSpotRepository
     {
         List<ParkingSpot> parkingSpots = new List<ParkingSpot>();

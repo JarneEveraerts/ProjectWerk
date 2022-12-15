@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories;
 
@@ -14,9 +15,9 @@ public class BusinessRepository : IBusinessRepository
 
     #region GET
 
-    public List<Business> GetBusinesses()
+    public async Task<List<Business>> GetBusinesses()
     {
-        List<Business> businesses = _allphiContext.Business.Where(b => b.IsDeleted == false).ToList();
+        List<Business> businesses = await _allphiContext.Business.Where(b => b.IsDeleted == false).ToListAsync();
         return businesses;
     }
 

@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
-using Domain.Services;
+using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories;
 
@@ -14,33 +15,34 @@ public class VisitRepository : IVisitRepository
 
     #region GET
 
-    public List<Visit> GetVisits()
+    public async Task<List<Visit>> GetVisits()
     {
-        List<Visit> visits = _allphiContext.Visit.Where(v => v.IsDeleted == false).ToList();
+        List<Visit> visits = await _allphiContext.Visit.Where(v => v.IsDeleted == false).ToListAsync();
         return visits;
     }
 
-    public List<Visit> GetVisitsByEmployee(Employee employee)
+    public List<Visit> GetVisitsByEmployee(int employeeId)
     {
-        List<Visit> visits = _allphiContext.Visit.Where(v => v.Employee == employee).ToList();
+
+        List<Visit> visits = _allphiContext.Visit.Where(v => v.Employee.Id == employeeId).ToList();
         return visits;
     }
 
-    public List<Visit> GetVisitsByBusiness(Business business)
+    public List<Visit> GetVisitsByBusiness(int businessId)
     {
-        List<Visit> visits = _allphiContext.Visit.Where(v => v.Business == business).ToList();
+        List<Visit> visits = _allphiContext.Visit.Where(v => v.Business.Id == businessId).ToList();
         return visits;
     }
 
-    public List<Visit> GetVisitsByVisitor(Visitor visitor)
+    public List<Visit> GetVisitsByVisitor(int visitorId)
     {
-        List<Visit> visits = _allphiContext.Visit.Where(v => v.Visitor == visitor).ToList();
+        List<Visit> visits = _allphiContext.Visit.Where(v => v.Visitor.Id == visitorId).ToList();
         return visits;
     }
 
-    public Visit GetVisitByVisitor(Visitor visitor)
+    public Visit GetVisitByVisitor(int visitorId)
     {
-        Visit visit = _allphiContext.Visit.FirstOrDefault(v => v.Visitor == visitor);
+        Visit visit = _allphiContext.Visit.OrderByDescending(v => v.EndDate).FirstOrDefault(v => v.Visitor.Id == visitorId);
         return visit;
     }
 

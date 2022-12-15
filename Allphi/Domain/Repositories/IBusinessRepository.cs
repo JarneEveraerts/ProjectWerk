@@ -1,12 +1,12 @@
 ﻿using Domain.Models;
 
-namespace Domain.Services;
+namespace Domain.Repositories;
 
 public interface IBusinessRepository
 {
     #region GET
 
-    List<Business> GetBusinesses();
+    Task<List<Business>> GetBusinesses();
 
     Business GetBusinessByName(string name);
 

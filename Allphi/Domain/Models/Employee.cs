@@ -1,4 +1,6 @@
-﻿namespace Domain.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Domain.Models
 {
     public class Employee : Entity
     {
@@ -7,6 +9,7 @@
             Name = name;
             FirstName = firstname;
             Function = function;
+            
             Business = business;
             Email = email;
             Plate = plate;
@@ -22,7 +25,8 @@
         public string? Email { get; set; }
         public string Function { get; set; }
         public string? Plate { get; set; }
-        public Business Business { get; set; }
+        [ForeignKey("BusinessId")]
+        public virtual Business Business { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

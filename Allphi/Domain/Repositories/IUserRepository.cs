@@ -1,4 +1,4 @@
-﻿namespace Domain.Services;
+﻿namespace Domain.Repositories;
 
 public interface IUserRepository
 {
