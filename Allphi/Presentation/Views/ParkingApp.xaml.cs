@@ -23,6 +23,7 @@ namespace Presentation.Views
 
         public ParkingApp(DomainController dc)
         {
+            DataContext = new ParkingAppViewModel();
             InitializeComponent();
             _dc = dc;
 
@@ -50,14 +51,12 @@ namespace Presentation.Views
         {
             Btn_Visitor.Content = "Visiteur";
             lbl_LicensePlateNL.Content = "Plaque d'immatriculation";
-            lbl_BedrijfNL.Content = "Connexion/enregistrement en tant que";
         }
 
         private void Btn_NL_Click(object sender, RoutedEventArgs e)
         {
             Btn_Visitor.Content = "Bezoeker";
             lbl_LicensePlateNL.Content = "Nummerplaat";
-            lbl_BedrijfNL.Content = "Login/ Register als";
         }
 
         private void Btn_Submit_Click(object sender, RoutedEventArgs e)

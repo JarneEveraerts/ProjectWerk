@@ -1,4 +1,6 @@
 ﻿using Domain.Models;
+using MVVM;
+using Shared.Dto;
 
 namespace Presentation.ViewModels
 {
@@ -103,9 +105,9 @@ namespace Presentation.ViewModels
             }
         }
 
-        private Business _business;
+        private BusinessDto _business;
 
-        public Business Business
+        public BusinessDto Business
         {
             get { return _business; }
             set
@@ -118,7 +120,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public BusinessView(Business business)
+        public BusinessView(BusinessDto business)
         {
             Id = business.Id;
             Name = business.Name;
