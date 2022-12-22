@@ -1,25 +1,12 @@
 ﻿using Domain;
-using Domain.Models;
 using MaterialDesignThemes.Wpf;
 using Presentation.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
-using MaterialDesignThemes.Wpf;
-
-using MaterialDesignColors.Recommended;
-using System.ComponentModel;
+using Newtonsoft.Json;
+using Shared.Dto;
+using System.Net.Http;
 
 namespace Presentation.Views
 {
@@ -36,20 +23,23 @@ namespace Presentation.Views
         private List<EmployeeView>? employeeViews = new();
         private List<ParkingSpotView>? parkingSpotViews = new();
         private VisitorView Visitor;
+        private HttpClient _api =  new();
 
         public VisitorRegistration(DomainController dc)
         {
             InitializeComponent();
             _dc = dc;
 
-            businesses = _dc.GiveBusinesses();
-            if (businesses.Count != 0)
+            List<BusinessView> businessViews = new();
+
+            var result = _api.GetAsync("https://localhost:7207/Businesses").Result;
+            var content = result.Content.ReadAsStringAsync().Result;
+            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
+
+            foreach (var item in businesses)
             {
-                foreach (var item in _dc.GetBusinesses())
-                {
-                    businessViews.Add(new BusinessView(item));
-                    cmb_business.Items.Add(item.Name);
-                }
+                businessViews.Add(new BusinessView(item));
+                cmb_business.Items.Add(item.Name);
             }
             if (_dc.GetEmployees().Count != 0)
             {

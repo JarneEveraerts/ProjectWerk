@@ -5,6 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using Domain.Models;
 using Presentation.ViewModels;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Shared.Dto;
 
 namespace Presentation.Views
 {
@@ -20,6 +23,7 @@ namespace Presentation.Views
         private List<ParkingSpotView>? _parkingSpotViews = new();
         private List<VisitorView>? _visitorViews = new();
         private List<VisitView>? _visitViews = new();
+        private HttpClient _api = new();
 
         public BalieApp(DomainController dc)
         {
@@ -75,7 +79,12 @@ namespace Presentation.Views
         private List<BusinessView> GetBusinessViews()
         {
             List<BusinessView> businessViews = new();
-            foreach (var item in _dc.GetBusinesses())
+
+            var result = _api.GetAsync("https://localhost:7207/Businesses").Result;
+            var content = result.Content.ReadAsStringAsync().Result;
+            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
+
+            foreach (var item in businesses)
             {
                 businessViews.Add(new BusinessView(item));
                 cmb_business.Items.Add(item.Name);
