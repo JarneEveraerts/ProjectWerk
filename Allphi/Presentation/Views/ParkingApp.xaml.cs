@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media.Animation;
 using Ardalis.GuardClauses;
 using Domain;
+using Newtonsoft.Json;
 using Persistance;
 using Presentation.ViewModels;
+using Shared.Dto;
+using static System.Net.WebRequestMethods;
 
 namespace Presentation.Views
 {
@@ -20,6 +24,7 @@ namespace Presentation.Views
         private List<List<string>> businesses;
         private List<BusinessView>? businessViews = new();
         private string _licensePlate;
+        private HttpClient _api = new HttpClient();
 
         public ParkingApp(DomainController dc)
         {
@@ -27,14 +32,16 @@ namespace Presentation.Views
             InitializeComponent();
             _dc = dc;
 
-            businesses = _dc.GiveBusinesses();
-            if (businesses.Count != 0)
+            List<BusinessView> businessViews = new();
+            string uri = "https://localhost:7207/Businesses";
+            var result = _api.GetAsync(uri).Result;
+            var content = result.Content.ReadAsStringAsync().Result;
+            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
+
+            foreach (var item in businesses)
             {
-                foreach (var item in _dc.GetBusinesses())
-                {
-                    businessViews.Add(new BusinessView(item));
-                    cmb_business.Items.Add(item.Name);
-                }
+                businessViews.Add(new BusinessView(item));
+                cmb_business.Items.Add(item.Name);
             }
         }
 

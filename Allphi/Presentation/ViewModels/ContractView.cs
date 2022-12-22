@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using MVVM;
 using System;
 
 namespace Presentation.ViewModels
