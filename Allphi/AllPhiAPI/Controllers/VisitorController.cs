@@ -2,6 +2,7 @@
 using Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dto;
 
 namespace AllPhiAPI.Controllers
 {
@@ -9,8 +10,6 @@ namespace AllPhiAPI.Controllers
     [ApiController]
     public class VisitorController : Controller
     {
-
-        //webapi using ivisitorrepository
         private readonly IVisitorRepository _visitorRepository;
 
         public VisitorController(IVisitorRepository visitorRepository)
@@ -26,15 +25,15 @@ namespace AllPhiAPI.Controllers
             return Ok(visitors);
         }
 
-        [HttpGet("{id}", Name = "GetVisitorById")]
+        [HttpGet("id/{id}", Name = "GetVisitorById")]
         public IActionResult GetVisitorById(int id)
         {
             var visitor = _visitorRepository.GetVisitorById(id);
-            return Ok(visitor);
+            return Ok(new VisitorDto(visitor));
         }
 
         //get visitors by business
-        [HttpGet("{business}", Name = "GetVisitorsByBusiness")]
+        [HttpGet("/business/{business}", Name = "GetVisitorsByBusiness")]
         public IActionResult GetVisitorsByBusiness(string business)
         {
             var visitor = _visitorRepository.GetVisitorsByBusiness(business);
@@ -42,14 +41,15 @@ namespace AllPhiAPI.Controllers
         }
 
         //get visitor by name
-        [HttpGet("{name}", Name = "GetVisitorByName")]
+        [HttpGet("/name/{name}", Name = "GetVisitorByName")]
         public IActionResult GetVisitorByName(string name)
         {
             var visitor = _visitorRepository.GetVisitorByName(name);
             return Ok(visitor);
         }
+
         //get visitor by mail
-        [HttpGet("{mail}", Name = "GetVisitorByMail")]
+        [HttpGet("/mail/{mail}", Name = "GetVisitorByMail")]
         public IActionResult GetVisitorByMail(string mail)
         {
             var visitor = _visitorRepository.GetVisitorByMail(mail);
@@ -64,7 +64,6 @@ namespace AllPhiAPI.Controllers
             return Ok();
         }
 
-
         //update
         [HttpPut]
         public IActionResult UpdateVisitor(Visitor visitor)
@@ -72,6 +71,5 @@ namespace AllPhiAPI.Controllers
             _visitorRepository.UpdateVisitor(visitor);
             return Ok();
         }
-        
     }
 }

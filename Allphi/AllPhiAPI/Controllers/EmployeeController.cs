@@ -25,7 +25,7 @@ namespace AllPhiAPI.Controllers
             return Ok(employees);
         }
 
-        [HttpGet("{id}", Name = "GetEmployeeById")]
+        [HttpGet("id/{id}", Name = "GetEmployeeById")]
         public IActionResult GetEmployeeById(int id)
         {
             var employee = _employeeRepository.GetEmployeeById(id);
@@ -33,7 +33,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get by name
-        [HttpGet("{name}", Name = "GetEmployeeByName")]
+        [HttpGet("name/{name}", Name = "GetEmployeeByName")]
         public IActionResult GetEmployeeByName(string name)
         {
             var employee = _employeeRepository.GetEmployeeByName(name);
@@ -41,7 +41,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get employees by name
-        [HttpGet("{employeenames}", Name = "GetEmployeesByName")]
+        [HttpGet("employee/{employeeNames}", Name = "GetEmployeesByName")]
         public IActionResult GetEmployeesByName(string name)
         {
             var employees = _employeeRepository.GetEmployeesByName(name);
@@ -49,7 +49,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get employees by business
-        [HttpGet("{business}", Name = "GetEmployeesByBusiness")]
+        [HttpGet("business/{business}", Name = "GetEmployeesByBusiness")]
         public IActionResult GetEmployeesByBusiness(Business business)
         {
             var employee = _employeeRepository.GetEmployeesByBusiness(business);
@@ -57,7 +57,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get employee by plate
-        [HttpGet("{plate}", Name = "GetEmployeeByPlate")]
+        [HttpGet("plate/{plate}", Name = "GetEmployeeByPlate")]
         public IActionResult GetEmployeeByPlate(string plate)
         {
             var employee = _employeeRepository.GetEmployeeByPlate(plate);
@@ -65,7 +65,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //create employee
-        [HttpPost("{Employee}", Name = "CreateEmployee")]
+        [HttpPost]
         public IActionResult CreateEmployee(Employee employee)
         {
             _employeeRepository.CreateEmployee(employee);
@@ -73,12 +73,11 @@ namespace AllPhiAPI.Controllers
         }
 
         //update employee
-        [HttpPut("{Employee}", Name = "UpdateEmployee")]
+        [HttpPut]
         public IActionResult UpdateEmployee(Employee employee)
         {
             _employeeRepository.UpdateEmployee(employee);
             return Ok();
         }
-
     }
 }

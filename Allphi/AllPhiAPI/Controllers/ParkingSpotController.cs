@@ -26,23 +26,15 @@ namespace AllPhiAPI.Controllers
         }
 
         //get parkingspots by reserved
-        [HttpGet("{reservedspots}", Name = "GetParkingSpotsByReserved")]
+        [HttpGet("reserved/{reservedspots}", Name = "GetParkingSpotsByReserved")]
         public IActionResult GetParkingSpotsByReserved(Business reserved)
         {
             var parkingSpots = _parkingSpotRepository.GetParkingSpotsByReserved(reserved);
             return Ok(parkingSpots);
         }
 
-        //get parkingspot by reserved
-        [HttpGet("{availablespotreserved}", Name = "GetAvailableParkingSpotReserved")]
-        public IActionResult GetAvailableParkingSpotReserved(Business reserved)
-        {
-            var parkingSpot = _parkingSpotRepository.GetAvailableParkingSpotReserved(reserved);
-            return Ok(parkingSpot);
-        }
-
         //get parking spot by plate
-        [HttpGet("{plate}", Name = "GetParkingSpotByPlate")]
+        [HttpGet("plate/{plate}", Name = "GetParkingSpotByPlate")]
         public IActionResult GetParkingSpotByPlate(string plate)
         {
             var parkingSpot = _parkingSpotRepository.GetParkingSpotByPlate(plate);
@@ -50,7 +42,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get parking spot by employee
-        [HttpGet("{employee}", Name = "GetParkingSpotByEmployee")]
+        [HttpGet("employee/{employee}", Name = "GetParkingSpotByEmployee")]
         public IActionResult GetParkingSpotByEmployee(Employee employee)
         {
             var parkingSpot = _parkingSpotRepository.GetParkingSpotByEmployee(employee);
@@ -58,7 +50,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get parking spot by visitor
-        [HttpGet("{visitor}", Name = "GetParkingSpotByVisitor")]
+        [HttpGet("visitor/{visitor}", Name = "GetParkingSpotByVisitor")]
         public IActionResult GetParkingSpotByVisitor(Visitor visitor)
         {
             var parkingSpot = _parkingSpotRepository.GetParkingSpotByVisitor(visitor);
@@ -66,11 +58,35 @@ namespace AllPhiAPI.Controllers
         }
 
         //get available parking spot
-        [HttpGet("{availablespotUnreserved}", Name = "GetAvailableParkingSpotUnreserved")]
+        [HttpGet("availableUnreserved/{availablespotUnreserved}", Name = "GetAvailableParkingSpotUnreserved")]
         public IActionResult GetAvailableParkingSpotUnreserved()
         {
             var parkingSpot = _parkingSpotRepository.GetAvailableParkingSpotUnreserved();
             return Ok(parkingSpot);
+        }
+
+        //get available parking spot reserved
+        [HttpGet("availableReserved/{availablespotreserved}", Name = "GetAvailableParkingSpotReserved")]
+        public IActionResult GetAvailableParkingSpotReserved(Business reserved)
+        {
+            var parkingSpot = _parkingSpotRepository.GetAvailableParkingSpotReserved(reserved);
+            return Ok(parkingSpot);
+        }
+
+        //count by plate
+        [HttpGet("countPlate/{countplate}", Name = "CountParkingSpotByPlate")]
+        public IActionResult GetParkingSpotCount(string plate)
+        {
+            var parkingSpotCount = _parkingSpotRepository.CountParkingSpotByPlate(plate);
+            return Ok(parkingSpotCount);
+        }
+
+        //bool exist
+        [HttpGet("spotExist/{spotexist}", Name = "ParkingSpotExists")]
+        public IActionResult ParkingSpotExists(string plate)
+        {
+            var parkingSpotExists = _parkingSpotRepository.ParkingSpotExist(plate);
+            return Ok(parkingSpotExists);
         }
 
         //create
@@ -87,22 +103,6 @@ namespace AllPhiAPI.Controllers
         {
             _parkingSpotRepository.UpdateParkingSpot(parkingSpot);
             return NoContent();
-        }
-
-        //count by plate
-        [HttpGet("{countplate}", Name = "CountParkingSpotByPlate")]
-        public IActionResult GetParkingSpotCount(string plate)
-        {
-            var parkingSpotCount = _parkingSpotRepository.CountParkingSpotByPlate(plate);
-            return Ok(parkingSpotCount);
-        }
-
-        //bool exist
-        [HttpGet("{spotexist}", Name = "ParkingSpotExists")]
-        public IActionResult ParkingSpotExists(string plate)
-        {
-            var parkingSpotExists = _parkingSpotRepository.ParkingSpotExist(plate);
-            return Ok(parkingSpotExists);
         }
     }
 }

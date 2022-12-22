@@ -25,7 +25,7 @@ namespace AllPhiAPI.Controllers
             return Ok(businesses.Select(b => new BusinessDto(b)));
         }
 
-        [HttpGet("{id}", Name = "GetBusinessById")]
+        [HttpGet("id/{id}", Name = "GetBusinessById")]
         public IActionResult GetBusinessById(int id)
         {
             var business = _businessRepository.GetBusinessById(id);
@@ -33,7 +33,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get by name
-        [HttpGet("{name}", Name = "GetBusinessByName")]
+        [HttpGet("name/{name}", Name = "GetBusinessByName")]
         public IActionResult GetBusinessByName(string name)
         {
             var business = _businessRepository.GetBusinessByName(name);
@@ -41,7 +41,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //create using business
-        [HttpPost("{Business}", Name = "CreateBusiness")]
+        [HttpPost]
         public IActionResult CreateBusiness(Business business)
         {
             _businessRepository.CreateBusiness(business);
@@ -49,7 +49,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //update using business
-        [HttpPut("{Business}", Name = "UpdateBusiness")]
+        [HttpPut]
         public IActionResult UpdateBusiness(Business business)
         {
             _businessRepository.UpdateBusiness(business);
