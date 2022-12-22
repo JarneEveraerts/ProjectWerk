@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using MVVM;
+using Shared.Dto;
 using System;
 
 namespace Presentation.ViewModels
@@ -7,11 +8,11 @@ namespace Presentation.ViewModels
     public class VisitView : ViewModelBase
     {
         private int _id;
-        private Visitor _visitor;
+        private VisitorDto _visitor;
         private DateTime _startDate;
         private DateTime? _endDate;
-        private Employee _employee;
-        private Business _business;
+        private EmployeeDto _employee;
+        private BusinessDto _business;
         private bool _isDeleted;
 
         public int Id
@@ -27,7 +28,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public Visitor Visitor
+        public VisitorDto Visitor
         {
             get { return _visitor; }
             set
@@ -66,7 +67,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public Employee Employee
+        public EmployeeDto Employee
         {
             get { return _employee; }
             set
@@ -79,7 +80,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public Business Business
+        public BusinessDto Business
         {
             get { return _business; }
             set
@@ -105,7 +106,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public VisitView(Visit visit)
+        public VisitView(VisitDto visit)
         {
             Id = visit.Id;
             Visitor = visit.Visitor;

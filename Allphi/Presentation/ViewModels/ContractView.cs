@@ -1,13 +1,14 @@
 ﻿using Domain.Models;
 using MVVM;
 using System;
+using Shared.Dto;
 
 namespace Presentation.ViewModels
 {
     public class ContractView : ViewModelBase
     {
         private int _id;
-        private Business _business;
+        private BusinessDto _business;
         private DateTime _startDate;
         private DateTime _endDate;
         private int _totalSpaces;
@@ -26,7 +27,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public Business Business
+        public BusinessDto Business
         {
             get { return _business; }
             set
@@ -91,7 +92,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public ContractView(Contract contract)
+        public ContractView(ContractDto contract)
         {
             Id = contract.Id;
             Business = contract.Business;

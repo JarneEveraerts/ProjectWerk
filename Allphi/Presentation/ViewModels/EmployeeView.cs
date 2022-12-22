@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using MVVM;
+using Shared.Dto;
 
 namespace Presentation.ViewModels
 {
@@ -9,7 +10,7 @@ namespace Presentation.ViewModels
         private string _name;
         private string _firstName;
         private string _function;
-        private Business _business;
+        private BusinessDto _business;
         private string _email;
         private string _plate;
         private bool _isDeleted;
@@ -92,7 +93,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public Business Business
+        public BusinessDto Business
         {
             get { return _business; }
             set
@@ -118,7 +119,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public EmployeeView(Employee employee)
+        public EmployeeView(EmployeeDto employee)
         {
             Id = employee.Id;
             Name = employee.Name;
