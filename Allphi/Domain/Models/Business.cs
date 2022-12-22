@@ -1,4 +1,6 @@
-﻿namespace Domain.Models
+﻿using Newtonsoft.Json;
+
+namespace Domain.Models
 {
     public class Business : Entity
     {
@@ -18,6 +20,9 @@
             Phone = phone;
             IsDeleted = false;
         }
+
+        [JsonProperty]
+        public int Id { get; set; }
 
         public string Name { get; set; }
         public string Btw { get; set; }

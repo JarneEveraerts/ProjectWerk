@@ -1,4 +1,6 @@
-﻿namespace Domain.Models
+﻿using Newtonsoft.Json;
+
+namespace Domain.Models
 {
     public class Visitor : Entity
     {
@@ -14,6 +16,9 @@
         public Visitor()
         {
         }
+
+        [JsonProperty]
+        public int Id { get; set; }
 
         public string Name { get; set; }
         public string Email { get; set; }

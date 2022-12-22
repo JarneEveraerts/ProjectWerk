@@ -1,4 +1,6 @@
-﻿namespace Domain.Models
+﻿using Newtonsoft.Json;
+
+namespace Domain.Models
 {
     public class Contract : Entity
     {
@@ -14,6 +16,9 @@
         public Contract()
         {
         }
+
+        [JsonProperty]
+        public int Id { get; set; }
 
         public Business Business { get; set; }
         public DateTime StartDate { get; set; }
