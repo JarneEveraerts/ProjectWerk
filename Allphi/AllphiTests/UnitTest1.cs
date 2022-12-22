@@ -1,9 +1,9 @@
-
 namespace AllphiTestsm
 {
     public class UnitTest1
     {
         #region Repos
+
         private DomainController cd;
         private IBusinessRepository businessRepo = new MockBusinessRepo();
         private IContractRepository contractRepo = new MockContractRepo();
@@ -11,16 +11,20 @@ namespace AllphiTestsm
         private IParkingSpotRepository parkingRepo = new MockParkingSpotRepo();
         private IVisitorRepository visitorRepo = new MockVisitorRepo();
         private IVisitRepository visitRepo = new MockVisitRepo();
+
         #endregion Repos
 
         #region DCD
+
         public UnitTest1()
         {
-            cd = new DomainController(businessRepo, contractRepo, employeeRepo, parkingRepo, visitorRepo, visitRepo);
+            // cd = new DomainController(businessRepo, contractRepo, employeeRepo, parkingRepo, visitorRepo, visitRepo, clientFactory);
         }
+
         #endregion DCD
-        
+
         #region licenseplatecheck testen
+
         [Theory]
         [InlineData("1aBC213")]
         [InlineData("9zzz999")]
@@ -34,6 +38,7 @@ namespace AllphiTestsm
         {
             Assert.False(cd.IsLicensePlateValid(licensceplate));
         }
+
         [Theory]
         [InlineData("1ABC213")]
         [InlineData("123ABC")]
@@ -44,6 +49,7 @@ namespace AllphiTestsm
         {
             Assert.True(cd.IsLicensePlateValid(licensplate));
         }
+
         #endregion licenseplatecheck testen
 
         #region btwnumbercheck testen
@@ -57,6 +63,7 @@ namespace AllphiTestsm
         {
             Assert.True(cd.IsBtwValid(btwNumber));
         }
+
         //uitlegvragen
         [Theory]
         [InlineData("BE99999999")]
@@ -71,10 +78,10 @@ namespace AllphiTestsm
             Assert.False(cd.IsBtwValid(btwNumber));
         }
 
-
         #endregion btwnumbercheck testen
 
         #region Employee test
+
         [Fact]
         public void checkEmployeeLicesenseplatetrue()
         {
@@ -97,13 +104,10 @@ namespace AllphiTestsm
         [InlineData("1ABC123")]
         [InlineData("2ABC123")]
         [InlineData("3ABC123")]
-        //broken
         public void checkcreateEmployeeAndCheckEmployeeplateTrue(string licenseplate)
         {
-
-
             Employee employee = new Employee("test naam", "test", "test", new Business("testbedrijf", "testbtw", "test"), "test", "1ABC123");
-            
+
             cd.CreateEmployee("test naam", "test", "test", "test", licenseplate);
 
             Assert.Equal(employee, cd.CheckEmployeePlate(licenseplate));
@@ -114,7 +118,6 @@ namespace AllphiTestsm
         [InlineData("1aBC123")]
         [InlineData("2BC123")]
         [InlineData("aze123")]
-        //nog aan te passen
         public void checkEmployeeflase(string licenseplate)
         {
             Employee employee = new Employee("test naam", "test", "test", new Business("testbedrijf", "testbtw", "test"), "test", "1ABC123");
@@ -126,16 +129,14 @@ namespace AllphiTestsm
             Assert.Equal(employee, cd.CheckEmployeePlate(licenseplate));
             //Assert.Throws<MissingMethodException>(() => cd.DeleteEmployee(testemployee.Id));
         }
+
         [Fact]
-        //verandert naar * als input die geparst wordt wa formatexeption geeft cuz tis geen getal tis en ster
         public void DeleteEmployeefailtest()
         {
             Assert.Throws<FormatException>(() => cd.DeleteEmployee(int.Parse("*")));
-
         }
 
         [Fact]
-
         public void deleteEmployeetrue()
         {
             cd.CreateEmployee("test naam", "test", "test", "test", "test");
@@ -143,8 +144,8 @@ namespace AllphiTestsm
 
             Assert.Contains(cd.GetEmployees(), e => e.IsDeleted == true);
         }
+
         [Fact]
-        //fixed
         public void updateEmployeetesttrue()
         {
             Employee employee = new Employee("update naam", "update", "update", new Business("testbedrijf", "testbtw", "test"), "update", "1ABC123");
@@ -153,39 +154,32 @@ namespace AllphiTestsm
             cd.UpdateEmployee("update naam", "update", "update", "update", "1ABC123", 0);
             Assert.True(cd.GetEmployees().Contains(employee));
 
-
             //weet niet goed hoe correct dees is want u email is update dus da wa raar update ook eigenlijk niks
         }
 
         [Fact]
-        //wachten op validatie
-        public void updateEmployetestfalse() 
-        
+        public void updateEmployetestfalse()
+
         {
-                Employee employee = new Employee("update naam", "update", "update", new Business("testbedrijf", "testbtw", "test"), "update", "1aBC123");
-                cd.CreateEmployee("test naam", "test", "test", "test", "test");
+            Employee employee = new Employee("update naam", "update", "update", new Business("testbedrijf", "testbtw", "test"), "update", "1aBC123");
+            cd.CreateEmployee("test naam", "test", "test", "test", "test");
 
-                cd.UpdateEmployee("update naam", "update", "update", "update", "1aBC123", 0);
-                Assert.False(cd.GetEmployees().Contains(employee));
-
+            cd.UpdateEmployee("update naam", "update", "update", "update", "1aBC123", 0);
+            Assert.False(cd.GetEmployees().Contains(employee));
         }
 
-
         [Fact]
-
         public void getEmployeeTest()
         {
             cd.CreateEmployee("test naam", "test", "test", "test", "test");
             Assert.NotNull(cd.GetEmployees());
         }
 
-
         #endregion Employee test
 
         #region business test
 
         [Fact]
-
         public void createBusinessTest()
         {
             Business business = new Business("testbedrijf", "testbtw", "test");
@@ -194,7 +188,6 @@ namespace AllphiTestsm
         }
 
         [Fact]
-        //no validation
         public void createBusinessfalsetest()
         {
             Business business = new Business("testbedrijf", "testbtw", "test");
@@ -203,17 +196,14 @@ namespace AllphiTestsm
         }
 
         [Fact]
-
         public void getBusinessTest()
         {
             Assert.Empty(cd.GetBusinesses());
         }
 
         [Fact]
-
         public void deleteBusinessTest()
         {
-
             cd.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
 
             cd.DeleteBusiness(0);
@@ -222,7 +212,6 @@ namespace AllphiTestsm
         }
 
         [Fact]
-
         public void updateBusinessTest()
         {
             cd.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
@@ -230,50 +219,43 @@ namespace AllphiTestsm
             cd.UpdateBusiness("updatebedrijf", "updateadress", "updatephone", "test@testing.com", "BE0123488789", 0);
 
             Assert.Contains(cd.GetBusinesses(), b => b.Btw == "BE0123488789");
-
         }
 
         [Fact]
-        //missing validation in dc
         public void updateBusinessTestfalse()
         {
             cd.CreateBusiness("testbedrijf", "testadress", "testphone", "test@test.com", "BE0123456789");
 
             cd.UpdateBusiness("updatebedrijf", "updateadress", "updatephone", "test@testing.com", "BE0128789", 0);
-           
-            
-            Assert.DoesNotContain(cd.GetBusinesses(), b => b.Btw == "BE0128789");
 
+            Assert.DoesNotContain(cd.GetBusinesses(), b => b.Btw == "BE0128789");
         }
 
         [Fact]
-
         public void getBusinessTesttrue()
         {
-
             cd.CreateBusiness("testbedrijf1", "testadress", "testphone", "test@test.com", "BE0123456789");
             cd.CreateBusiness("testbedrijf2", "testadress", "testphone", "test@test.com", "BE0123456789");
             cd.CreateBusiness("testbedrijf3", "testadress", "testphone", "test@test.com", "BE0123456789");
 
-
             Assert.NotEmpty(cd.GiveBusinesses());
             //Assert.Contains(cd.GiveBusinesses(), b => b == ["testbedrijf1", "testadress", "testphone", "test@test.com", "BE0123456789","false"]);
-
-
         }
 
-
-            #endregion business test
+        #endregion business test
 
         #region Email validation test
-    [Fact]
+
+        [Fact]
         public void badEmail()
         {
             Assert.False(cd.IsEmailValid("slechteemail"));
         }
+
         #endregion Email validation test
 
         #region parkingtesten
+
         [Fact]
         public void ParkingSpotCheckVisitor()
         {
@@ -282,8 +264,5 @@ namespace AllphiTestsm
         }
 
         #endregion parkingtesten
-
-        
-
     }
 }
