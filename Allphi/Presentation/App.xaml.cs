@@ -40,8 +40,9 @@ namespace Presentation
 
             services.AddDbContext<AllphiContext>(options =>
             {
-                options.UseMySql(_configuration.GetConnectionString("DbConnection"),serverVersion);
+                options.UseMySql(_configuration.GetConnectionString("DbConnection"), serverVersion);
             });
+            services.AddHttpClient();
             services.AddScoped<IBusinessRepository, BusinessRepository>();
             services.AddScoped<IContractRepository, ContractRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();

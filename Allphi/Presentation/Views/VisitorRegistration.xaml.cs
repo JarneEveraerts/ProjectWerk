@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using Newtonsoft.Json;
 using Shared.Dto;
 using System.Net.Http;
+using System;
 
 namespace Presentation.Views
 {
@@ -23,30 +24,44 @@ namespace Presentation.Views
         private List<EmployeeView>? employeeViews = new();
         private List<ParkingSpotView>? parkingSpotViews = new();
         private VisitorView Visitor;
-        private HttpClient _api =  new();
+        private HttpClient _api;
 
-        public VisitorRegistration(DomainController dc)
+        public VisitorRegistration(DomainController dc, IHttpClientFactory clientFactory)
         {
             InitializeComponent();
             _dc = dc;
+            _api = clientFactory.CreateClient();
+            _api.BaseAddress = new Uri("http://localhost:5038");
+            GetBusinessViews();
+            GetEmployeeViews();
+        }
 
-            List<BusinessView> businessViews = new();
-
-            var result = _api.GetAsync("https://localhost:7207/Businesses").Result;
-            var content = result.Content.ReadAsStringAsync().Result;
-            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
-
-            foreach (var item in businesses)
+        private void GetEmployeeViews()
+        {
+            var response = _api.GetAsync("/Employees").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var employees = JsonConvert.DeserializeObject<List<EmployeeDto>>(content);
+            if (employees.Count != 0)
             {
-                businessViews.Add(new BusinessView(item));
-                cmb_business.Items.Add(item.Name);
-            }
-            if (_dc.GetEmployees().Count != 0)
-            {
-                foreach (var item in _dc.GetEmployees())
+                foreach (var item in employees)
                 {
                     employeeViews.Add(new EmployeeView(item));
                     cmb_employees.Items.Add(item.Name);
+                }
+            }
+        }
+
+        private void GetBusinessViews()
+        {
+            var response = _api.GetAsync("/Businesses").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
+            if (businesses.Count != 0)
+            {
+                foreach (var item in businesses)
+                {
+                    businessViews.Add(new BusinessView(item));
+                    cmb_business.Items.Add(item.Name);
                 }
             }
         }

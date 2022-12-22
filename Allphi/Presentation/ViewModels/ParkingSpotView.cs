@@ -1,14 +1,15 @@
 ﻿using Domain.Models;
 using MVVM;
+using Shared.Dto;
 
 namespace Presentation.ViewModels
 {
     public class ParkingSpotView : ViewModelBase
     {
         private int _id;
-        private Employee? _employee;
-        private Visitor? _visitor;
-        private Business? _reserved;
+        private EmployeeDto? _employee;
+        private VisitorDto? _visitor;
+        private BusinessDto? _reserved;
         private string? _plate;
 
         public int Id
@@ -24,7 +25,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public Employee? Employee
+        public EmployeeDto? Employee
         {
             get { return _employee; }
             set
@@ -37,7 +38,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public Visitor? Visitor
+        public VisitorDto? Visitor
         {
             get { return _visitor; }
             set
@@ -50,7 +51,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public Business? Reserved
+        public BusinessDto? Reserved
         {
             get { return _reserved; }
             set
@@ -76,7 +77,7 @@ namespace Presentation.ViewModels
             }
         }
 
-        public ParkingSpotView(ParkingSpot parkingSpot)
+        public ParkingSpotView(ParkingSpotDto parkingSpot)
         {
             Id = parkingSpot.Id;
             Employee = parkingSpot.Employee;

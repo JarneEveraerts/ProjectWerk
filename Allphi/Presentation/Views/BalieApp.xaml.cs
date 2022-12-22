@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
+using System.Net.Http.Json;
 using Domain;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,11 +25,13 @@ namespace Presentation.Views
         private List<ParkingSpotView>? _parkingSpotViews = new();
         private List<VisitorView>? _visitorViews = new();
         private List<VisitView>? _visitViews = new();
-        private HttpClient _api = new();
+        private HttpClient _api;
 
-        public BalieApp(DomainController dc)
+        public BalieApp(DomainController dc, IHttpClientFactory clientFactory)
         {
             _dc = dc;
+            _api = clientFactory.CreateClient();
+            _api.BaseAddress = new Uri("http://localhost:5038");
             InitializeComponent();
             //raise
             SetupView();
@@ -80,8 +84,8 @@ namespace Presentation.Views
         {
             List<BusinessView> businessViews = new();
 
-            var result = _api.GetAsync("https://localhost:7207/Businesses").Result;
-            var content = result.Content.ReadAsStringAsync().Result;
+            var response = _api.GetAsync("/Businesses").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
             var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
 
             foreach (var item in businesses)
@@ -95,7 +99,10 @@ namespace Presentation.Views
         private List<ContractView> GetContractViews()
         {
             List<ContractView> contractViews = new();
-            foreach (var item in _dc.GetContracts())
+            var response = _api.GetAsync("/Contracts").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var contracts = JsonConvert.DeserializeObject<List<ContractDto>>(content);
+            foreach (var item in contracts)
             {
                 contractViews.Add(new ContractView(item));
             }
@@ -105,7 +112,10 @@ namespace Presentation.Views
         private List<EmployeeView> GetEmployeeViews()
         {
             List<EmployeeView> employeeViews = new();
-            foreach (var item in _dc.GetEmployees())
+            var response = _api.GetAsync("/Employees").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var employees = JsonConvert.DeserializeObject<List<EmployeeDto>>(content);
+            foreach (var item in employees)
             {
                 employeeViews.Add(new EmployeeView(item));
                 cmb_employees.Items.Add(item.Name);
@@ -116,7 +126,10 @@ namespace Presentation.Views
         private List<ParkingSpotView> GetParkingSpotViews()
         {
             List<ParkingSpotView> parkingSpotViews = new();
-            foreach (var item in _dc.GetParkingSpots())
+            var response = _api.GetAsync("/ParkingSpots").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var parkingSpots = JsonConvert.DeserializeObject<List<ParkingSpotDto>>(content);
+            foreach (var item in parkingSpots)
             {
                 parkingSpotViews.Add(new ParkingSpotView(item));
             }
@@ -126,7 +139,10 @@ namespace Presentation.Views
         private List<VisitorView> GetVisitorViews()
         {
             List<VisitorView> visitorViews = new();
-            foreach (var item in _dc.GetVisitors())
+            var response = _api.GetAsync("/Visitors").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var visitors = JsonConvert.DeserializeObject<List<VisitorDto>>(content);
+            foreach (var item in visitors)
             {
                 visitorViews.Add(new VisitorView(item));
             }
@@ -136,7 +152,10 @@ namespace Presentation.Views
         private List<VisitView> GetVisitViews()
         {
             List<VisitView> visitViews = new();
-            foreach (var item in _dc.GetVisits())
+            var response = _api.GetAsync("/Visits").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var visits = JsonConvert.DeserializeObject<List<VisitDto>>(content);
+            foreach (var item in visits)
             {
                 visitViews.Add(new VisitView(item));
             }

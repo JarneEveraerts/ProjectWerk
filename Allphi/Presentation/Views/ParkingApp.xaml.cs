@@ -26,14 +26,16 @@ namespace Presentation.Views
         private string _licensePlate;
         private HttpClient _api = new HttpClient();
 
-        public ParkingApp(DomainController dc)
+        public ParkingApp(DomainController dc, IHttpClientFactory clientFactory)
         {
             DataContext = new ParkingAppViewModel();
+            _api = clientFactory.CreateClient();
+            _api.BaseAddress = new Uri("http://localhost:5038");
             InitializeComponent();
             _dc = dc;
 
             List<BusinessView> businessViews = new();
-            string uri = "https://localhost:7207/Businesses";
+            string uri = "/Businesses";
             var result = _api.GetAsync(uri).Result;
             var content = result.Content.ReadAsStringAsync().Result;
             var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);

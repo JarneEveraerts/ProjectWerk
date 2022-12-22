@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using MVVM;
+using Shared.Dto;
 
 namespace Presentation.ViewModels
 {
@@ -98,10 +99,9 @@ namespace Presentation.ViewModels
             Plate = plate;
             Business = business;
             IsDeleted = isDeleted;
-  
         }
 
-        public VisitorView(Visitor visitor)
+        public VisitorView(VisitorDto visitor)
         {
             Id = visitor.Id;
             Name = visitor.Name;
