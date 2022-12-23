@@ -26,7 +26,7 @@ namespace AllPhiAPI.Controllers
             return Ok(contracts);
         }
 
-        [HttpGet("{id}", Name = "GetContractById")]
+        [HttpGet("id/{id}", Name = "GetContractById")]
         public IActionResult GetContractById(int id)
         {
             var contract = _contractRepository.GetContractById(id);
@@ -34,7 +34,7 @@ namespace AllPhiAPI.Controllers
         }
 
         // get by business
-        [HttpGet("{business}", Name = "GetContractByBusiness")]
+        [HttpGet("business/{business}", Name = "GetContractByBusiness")]
         public IActionResult GetContractByBusiness(Business business)
         {
             var contract = _contractRepository.GetContractByBusiness(business);
@@ -42,7 +42,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get contract by endDate
-        [HttpGet("{endDate}", Name = "GetContractByEndDate")]
+        [HttpGet("enddate/{endDate}", Name = "GetContractByEndDate")]
         public IActionResult GetContractByEndDate(DateTime endDate)
         {
             var contract = _contractRepository.GetContractByEndDate(endDate);
@@ -50,7 +50,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //create contract
-        [HttpPost("{Contract}", Name = "CreateContract")]
+        [HttpPost]
         public IActionResult CreateContract(Contract contract)
         {
             _contractRepository.CreateContract(contract);
@@ -58,12 +58,11 @@ namespace AllPhiAPI.Controllers
         }
 
         //update contract
-        [HttpPut("{Contract}", Name = "UpdateContract")]
+        [HttpPut]
         public IActionResult UpdateContract(Contract contract)
         {
             _contractRepository.UpdateContract(contract);
             return Ok();
         }
-
     }
 }

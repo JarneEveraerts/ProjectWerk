@@ -24,7 +24,7 @@ namespace Presentation.Views
         private List<List<string>> businesses;
         private List<BusinessView>? businessViews = new();
         private string _licensePlate;
-        private HttpClient _api = new HttpClient();
+        private HttpClient _api;
 
         public ParkingApp(DomainController dc, IHttpClientFactory clientFactory)
         {

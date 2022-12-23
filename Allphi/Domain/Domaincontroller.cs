@@ -6,6 +6,10 @@ using Domain.Services;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using Padi.Vies;
+using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System;
+using System.Text;
 
 namespace Domain
 {
@@ -19,6 +23,7 @@ namespace Domain
         private IParkingSpotRepository _parkingRepo;
         private IVisitorRepository _visitorRepo;
         private IVisitRepository _visitRepo;
+        private HttpClient _api;
 
         #endregion Decleration
 
@@ -26,7 +31,7 @@ namespace Domain
 
         public DomainController(IBusinessRepository businessRepo, IContractRepository contractRepo,
             IEmployeeRepository employeeRepo, IParkingSpotRepository parkingRepo, IVisitorRepository visitorRepo,
-            IVisitRepository visitRepo)
+            IVisitRepository visitRepo, IHttpClientFactory clientFactory)
         {
             this._businessRepo = businessRepo;
             this._contractRepo = contractRepo;
@@ -34,6 +39,8 @@ namespace Domain
             this._parkingRepo = parkingRepo;
             this._visitorRepo = visitorRepo;
             this._visitRepo = visitRepo;
+            this._api = clientFactory.CreateClient();
+            this._api.BaseAddress = new Uri("http://localhost:5038");
         }
 
         #endregion CTOR
@@ -292,37 +299,57 @@ namespace Domain
 
         public void DeleteVisitor(int id)
         {
-            Visitor visitor = _visitorRepo.GetVisitorById(id);
+            var response = _api.GetAsync($"Visitors/id/{id}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            Visitor visitor = JsonConvert.DeserializeObject<Visitor>(content);
             visitor.IsDeleted = true;
-            _visitorRepo.UpdateVisitor(visitor);
+            var json = JsonConvert.SerializeObject(visitor);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var responsePut = _api.PutAsync($"/Visitors", data);
         }
 
         public void DeleteContract(int id)
         {
-            Contract contract = _contractRepo.GetContractById(id);
+            var response = _api.GetAsync($"Contracts/id/{id}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            Contract contract = JsonConvert.DeserializeObject<Contract>(content);
             contract.IsDeleted = true;
-            _contractRepo.UpdateContract(contract);
+            var json = JsonConvert.SerializeObject(contract);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var responsePut = _api.PutAsync($"/Contracts", data).Result;
         }
 
         public void DeleteBusiness(int id)
         {
-            Business business = _businessRepo.GetBusinessById(id);
+            var response = _api.GetAsync($"Businesses/id/{id}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            Business business = JsonConvert.DeserializeObject<Business>(content);
             business.IsDeleted = true;
-            _businessRepo.UpdateBusiness(business);
+            var json = JsonConvert.SerializeObject(business);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var responsePut = _api.PutAsync($"/Businesses", data).Result;
         }
 
         public void DeleteEmployee(int id)
         {
-            Employee employee = _employeeRepo.GetEmployeeById(id);
+            var response = _api.GetAsync($"Employees/id/{id}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            Employee employee = JsonConvert.DeserializeObject<Employee>(content);
             employee.IsDeleted = true;
-            _employeeRepo.UpdateEmployee(employee);
+            var json = JsonConvert.SerializeObject(employee);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var responsePut = _api.PutAsync($"/Employees", data).Result;
         }
 
         public void DeleteVisit(string name)
         {
-            Visit visit = _visitRepo.GetVisitByVisitor(GetVisitorByName(name));
+            var response = _api.GetAsync($"Visits/visitor/{name}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            Visit visit = JsonConvert.DeserializeObject<Visit>(content);
             visit.IsDeleted = true;
-            _visitRepo.UpdateVisit(visit);
+            var json = JsonConvert.SerializeObject(visit);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var responsePut = _api.PutAsync($"/Visits", data).Result;
         }
 
         #endregion DELETE

@@ -27,7 +27,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get visits by employee
-        [HttpGet("{employee}", Name = "GetVisitsByEmployee")]
+        [HttpGet("employee/{employee}", Name = "GetVisitsByEmployee")]
         public IActionResult GetVisitsByEmployee(Employee employee)
         {
             var visits = _visitRepository.GetVisitsByEmployee(employee);
@@ -35,7 +35,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get visits by business
-        [HttpGet("{business}", Name = "GetVisitsByBusiness")]
+        [HttpGet("business/{business}", Name = "GetVisitsByBusiness")]
         public IActionResult GetVisitsByBusiness(Business business)
         {
             var visits = _visitRepository.GetVisitsByBusiness(business);
@@ -43,7 +43,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get visits by visitor
-        [HttpGet("{visitsvisitor}", Name = "GetVisitsByVisitor")]
+        [HttpGet("visits/{visitor}", Name = "GetVisitsByVisitor")]
         public IActionResult GetVisitsByVisitor(Visitor visitor)
         {
             var visits = _visitRepository.GetVisitsByVisitor(visitor);
@@ -51,7 +51,7 @@ namespace AllPhiAPI.Controllers
         }
 
         //get visit by visitor
-        [HttpGet("{visitor}", Name = "GetVisitByVisitor")]
+        [HttpGet("visit/{visitor}", Name = "GetVisitByVisitor")]
         public IActionResult GetVisitByVisitor(Visitor visit)
         {
             var visits = _visitRepository.GetVisitByVisitor(visit);
@@ -73,6 +73,5 @@ namespace AllPhiAPI.Controllers
             _visitRepository.UpdateVisit(visit);
             return NoContent();
         }
-
     }
 }
