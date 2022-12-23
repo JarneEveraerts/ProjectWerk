@@ -28,7 +28,7 @@ namespace Presentation.Views
 
         public ParkingApp(DomainController dc, IHttpClientFactory clientFactory)
         {
-            DataContext = new ParkingAppViewModel(clientFactory);
+            DataContext = new ParkingAppViewModel(dc,clientFactory);
             _api = clientFactory.CreateClient();
             _api.BaseAddress = new Uri("http://localhost:5038");
             InitializeComponent();

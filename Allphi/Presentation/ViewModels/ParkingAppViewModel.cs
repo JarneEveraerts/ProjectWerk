@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Domain;
+using JetBrains.Annotations;
 using MVVM;
 using Newtonsoft.Json;
 using Shared.Dto;
@@ -20,18 +21,20 @@ namespace Presentation.ViewModels
     public class ParkingAppViewModel : ViewModelBase
     {
         #region private properties
-        
+
         private string _plate;
         private string _business;
         private RelayCommand _submitCommand;
         private bool _canSubmit;
         private ObservableCollection<string> _businessesViews;
         private HttpClient _api;
+        private DomainController _dc;
         #endregion
 
 
         #region public properties
-        [Required(ErrorMessage ="Nummerplaat mag niet leeg zijn")]
+        [Required(ErrorMessage = "nummerplaat is verplicht")]
+        [MethodValidator(nameof(IsPlateValid))]
         public string Plate
         {
             get
@@ -41,10 +44,10 @@ namespace Presentation.ViewModels
             set
             {
                 _plate = value;
-                RaisePropertyChanged(); 
+                RaisePropertyChanged();
             }
         }
-        [Required(ErrorMessage = "Bedrijf mag niet leeg zijn")]
+        [Required(ErrorMessage = "bedrijf is verplicht")]
         public string Business
         {
             get
@@ -82,10 +85,25 @@ namespace Presentation.ViewModels
             }
         }
 
+        private string IsPlateValid()
+        {
+            if (!(Plate == null))
+            {
 
+                if (!_dc.IsLicensePlateValid(Plate))
+                {
+                    return "Nummerplaat is niet geldig";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            return "";
+        }
         private bool CanSubmit()
         {
-            if (string.IsNullOrEmpty(Plate) || string.IsNullOrEmpty(Business))
+            if (string.IsNullOrEmpty(Plate) || (string.IsNullOrEmpty(Business) && _dc.IsLicensePlateValid(Plate)))
             {
                 return false;
             }
@@ -96,8 +114,9 @@ namespace Presentation.ViewModels
         }
 
         #endregion
-        public ParkingAppViewModel(IHttpClientFactory clientFactory)
+        public ParkingAppViewModel(DomainController dc, IHttpClientFactory clientFactory)
         {
+            _dc = dc;
             _businessesViews = new();
             _api = clientFactory.CreateClient();
             _api.BaseAddress = new Uri("http://localhost:5038/");
