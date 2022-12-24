@@ -51,6 +51,7 @@ namespace Presentation
             services.AddScoped<IVisitRepository, VisitRepository>();
             services.AddScoped<DomainController>();
             services.AddScoped<DbInitializer>();
+            services.AddScoped<ViewController>();
             services.AddSingleton<ParkingApp>();
             services.AddSingleton<BalieApp>();
             services.AddSingleton<LoginAdmin>();
