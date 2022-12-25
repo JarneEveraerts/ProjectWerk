@@ -22,6 +22,16 @@ public class VisitDto : EntityDto
         IsDeleted = visit.IsDeleted;
     }
 
+    public VisitDto(VisitorDto visitor, BusinessDto business, EmployeeDto employee, DateTime startDate, DateTime? endDate)
+    {
+        Visitor = visitor;
+        Business = business;
+        Employee = employee;
+        StartDate = startDate;
+        EndDate = endDate;
+        IsDeleted = false;
+    }
+
     public VisitDto()
     {
     }

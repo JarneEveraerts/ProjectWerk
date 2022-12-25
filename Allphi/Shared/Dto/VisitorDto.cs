@@ -20,6 +20,14 @@ public class VisitorDto : EntityDto
         IsDeleted = visitor.IsDeleted;
     }
 
+    public VisitorDto(string name, string email, string organisation, string plate)
+    {
+        Name = name;
+        Email = email;
+        Plate = plate;
+        Business = organisation;
+    }
+
     public VisitorDto()
     {
     }

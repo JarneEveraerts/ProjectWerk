@@ -27,6 +27,16 @@ namespace Shared.Dto
             IsDeleted = business.IsDeleted;
         }
 
+        public BusinessDto(string name, string btw, string email, string adress, string phone)
+        {
+            Name = name;
+            Btw = btw;
+            Email = email;
+            Address = adress;
+            Phone = phone;
+            IsDeleted = false;
+        }
+
         public BusinessDto()
         {
         }

@@ -4,7 +4,7 @@ namespace Shared.Dto;
 
 public class ContractDto : EntityDto
 {
-    public BusinessDto Business { get; set; }
+    public BusinessDto Reserved { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public int TotalSpaces { get; set; }
@@ -13,11 +13,20 @@ public class ContractDto : EntityDto
     public ContractDto(Contract contract)
     {
         Id = contract.Id;
-        Business = new BusinessDto(contract.Business);
+        Reserved = new BusinessDto(contract.Business);
         StartDate = contract.StartDate;
         EndDate = contract.EndDate;
         TotalSpaces = contract.TotalSpaces;
         IsDeleted = contract.IsDeleted;
+    }
+
+    public ContractDto(BusinessDto reserved, DateTime startDate, DateTime endDate, int totalSpaces)
+    {
+        Reserved = reserved;
+        StartDate = startDate;
+        EndDate = endDate;
+        TotalSpaces = totalSpaces;
+        IsDeleted = false;
     }
 
     public ContractDto()
