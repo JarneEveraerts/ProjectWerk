@@ -12,7 +12,7 @@ namespace Persistance.Data.Mappers
             builder.ToTable("ParkingSpot");
             builder.HasOne(e => e.Visitor).WithMany().OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(e => e.Employee).WithMany().OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(e => e.Reserved).WithMany().OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(e => e.Reserved).WithMany().OnDelete(DeleteBehavior.Restrict).HasForeignKey(e => e.ReservedId);
         }
     }
 }
