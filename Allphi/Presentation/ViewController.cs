@@ -8,6 +8,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Domain.Models;
 using Newtonsoft.Json;
 using Padi.Vies;
@@ -34,9 +35,12 @@ namespace Presentation
             var content = response.Content.ReadAsStringAsync().Result;
             var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
             var businessViews = new List<BusinessView>();
-            foreach (var item in businesses)
+            if (businesses != null)
             {
-                businessViews.Add(new BusinessView(item));
+                foreach (var item in businesses)
+                {
+                    businessViews.Add(new BusinessView(item));
+                }
             }
             return businessViews;
         }
@@ -47,9 +51,12 @@ namespace Presentation
             var content = response.Content.ReadAsStringAsync().Result;
             var employees = JsonConvert.DeserializeObject<List<EmployeeDto>>(content);
             var employeeViews = new List<EmployeeView>();
-            foreach (var item in employees)
+            if (employees != null)
             {
-                employeeViews.Add(new EmployeeView(item));
+                foreach (var item in employees)
+                {
+                    employeeViews.Add(new EmployeeView(item));
+                }
             }
             return employeeViews;
         }
@@ -60,9 +67,12 @@ namespace Presentation
             var content = response.Content.ReadAsStringAsync().Result;
             var visitors = JsonConvert.DeserializeObject<List<VisitorDto>>(content);
             var visitorViews = new List<VisitorView>();
-            foreach (var item in visitors)
+            if (visitors != null)
             {
-                visitorViews.Add(new VisitorView(item));
+                foreach (var item in visitors)
+                {
+                    visitorViews.Add(new VisitorView(item));
+                }
             }
             return visitorViews;
         }
@@ -73,9 +83,12 @@ namespace Presentation
             var content = response.Content.ReadAsStringAsync().Result;
             var visits = JsonConvert.DeserializeObject<List<VisitDto>>(content);
             var visitViews = new List<VisitView>();
-            foreach (var item in visits)
+            if (visits != null)
             {
-                visitViews.Add(new VisitView(item));
+                foreach (var item in visits)
+                {
+                    visitViews.Add(new VisitView(item));
+                }
             }
             return visitViews;
         }
@@ -86,9 +99,12 @@ namespace Presentation
             var content = response.Content.ReadAsStringAsync().Result;
             var parkingSpots = JsonConvert.DeserializeObject<List<ParkingSpotDto>>(content);
             var parkingSpotViews = new List<ParkingSpotView>();
-            foreach (var item in parkingSpots)
+            if (parkingSpots != null)
             {
-                parkingSpotViews.Add(new ParkingSpotView(item));
+                foreach (var item in parkingSpots)
+                {
+                    parkingSpotViews.Add(new ParkingSpotView(item));
+                }
             }
             return parkingSpotViews;
         }
@@ -99,9 +115,12 @@ namespace Presentation
             var content = response.Content.ReadAsStringAsync().Result;
             var contracts = JsonConvert.DeserializeObject<List<ContractDto>>(content);
             var contractViews = new List<ContractView>();
-            foreach (var item in contracts)
+            if (contracts != null)
             {
-                contractViews.Add(new ContractView(item));
+                foreach (var item in contracts)
+                {
+                    contractViews.Add(new ContractView(item));
+                }
             }
             return contractViews;
         }
@@ -116,30 +135,34 @@ namespace Presentation
             var response = _api.GetAsync($"/Businesses/{id}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var business = JsonConvert.DeserializeObject<BusinessDto>(content);
+            if (business == null) return null;
             return new BusinessView(business);
         }
 
         public BusinessView GetBusinessByBtw(string btw)
         {
-            var response = _api.GetAsync($"/businesses/btw/{btw}").Result;
+            var response = _api.GetAsync($"/Businesses/btw/{btw}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var business = JsonConvert.DeserializeObject<BusinessDto>(content);
+            if (business == null) return null;
             return new BusinessView(business);
         }
 
         public BusinessView GetBusinessByName(string name)
         {
-            var response = _api.GetAsync($"/businesses/name/{name}").Result;
+            var response = _api.GetAsync($"/Businesses/name/{name}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var business = JsonConvert.DeserializeObject<BusinessDto>(content);
+            if (business == null) return null;
             return new BusinessView(business);
         }
 
         public BusinessView GetBusinessByEmployeeName(string employee)
         {
-            var response = _api.GetAsync($"/employees/name/{employee}").Result;
+            var response = _api.GetAsync($"/Employees/name/{employee}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var employeeDto = JsonConvert.DeserializeObject<EmployeeDto>(content);
+            if (employeeDto == null) return null;
             return new BusinessView(employeeDto.Business);
         }
 
@@ -159,38 +182,26 @@ namespace Presentation
             };
             var json = JsonConvert.SerializeObject(business);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PostAsync("/businesses", content);
-        }
-
-        public void CreateVisitorBalie(string name, string email, string plate, string business)
-        {
-            var visitor = new VisitorDto
-            {
-                Name = name,
-                Email = email,
-                Plate = plate,
-                Business = business
-            };
-            var json = JsonConvert.SerializeObject(visitor);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PostAsync("/visitors", content);
+            _api.PostAsync("/Businesses", content);
         }
 
         #endregion Create
 
         public VisitorView GetVisitorByName(string name)
         {
-            var response = _api.GetAsync($"/visitors/name/{name}").Result;
+            var response = _api.GetAsync($"/Visitors/name/{name}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var visitor = JsonConvert.DeserializeObject<VisitorDto>(content);
+            if (visitor == null) return null;
             return new VisitorView(visitor);
         }
 
         public ContractView GetContractByBusiness(string business)
         {
-            var response = _api.GetAsync($"/contracts/business/{GetBusinessByName(business)}").Result;
+            var response = _api.GetAsync($"/Contracts/business/{GetBusinessByName(business)}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var contract = JsonConvert.DeserializeObject<ContractDto>(content);
+            if (contract == null) return null;
             return new ContractView(contract);
         }
 
@@ -199,33 +210,37 @@ namespace Presentation
             var contract = new ContractDto
             {
                 TotalSpaces = spots,
-                Business = GetBusinessDto(business),
+                Reserved = GetBusinessDto(business),
                 StartDate = start,
                 EndDate = end
             };
             var json = JsonConvert.SerializeObject(contract);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PostAsync("/contracts", content);
+            _api.PostAsync("/Contracts", content);
         }
 
         public EmployeeView GetEmployeeByName(string name)
         {
-            var response = _api.GetAsync($"/employees/name/{name}").Result;
+            var response = _api.GetAsync($"/Employees/name/{name}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var employee = JsonConvert.DeserializeObject<EmployeeDto>(content);
+            if (employee == null) return null;
             return new EmployeeView(employee);
         }
 
         public List<EmployeeView> GetEmployeesByBusiness(string business)
         {
             BusinessView _business = GetBusinessByName(business);
-            var response = _api.GetAsync($"/employees/business/{_business}").Result;
+            var response = _api.GetAsync($"/Employees/business/{_business}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var employees = JsonConvert.DeserializeObject<List<EmployeeDto>>(content);
             List<EmployeeView> employeeViews = new();
-            foreach (var item in employees)
+            if (employees != null)
             {
-                employeeViews.Add(new EmployeeView(item));
+                foreach (var item in employees)
+                {
+                    employeeViews.Add(new EmployeeView(item));
+                }
             }
             return employeeViews;
         }
@@ -242,7 +257,7 @@ namespace Presentation
             };
             var json = JsonConvert.SerializeObject(business);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/businesses", content);
+            _api.PutAsync($"/Businesses", content);
         }
 
         public void UpdateVisitor(string name, string email, string plate, string business, int visitorViewId)
@@ -256,7 +271,7 @@ namespace Presentation
             };
             var json = JsonConvert.SerializeObject(visitor);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/visitors", content);
+            _api.PutAsync($"/Visitors", content);
         }
 
         public void UpdateContract(string spots, string business, DateTime start, DateTime end, int contractViewId)
@@ -264,19 +279,19 @@ namespace Presentation
             var contract = new ContractDto
             {
                 TotalSpaces = int.Parse(spots),
-                Business = GetBusinessDto(business),
+                Reserved = GetBusinessDto(business),
                 StartDate = start,
                 EndDate = end
             };
 
             var json = JsonConvert.SerializeObject(contract);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/contracts", content);
+            _api.PutAsync($"/Contracts", content);
         }
 
         private BusinessDto GetBusinessDto(string business)
         {
-            var response = _api.GetAsync($"/businesses/name/{business}").Result;
+            var response = _api.GetAsync($"/Businesses/name/{business}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var businessDto = JsonConvert.DeserializeObject<BusinessDto>(content);
             return businessDto;
@@ -294,7 +309,7 @@ namespace Presentation
             };
             var json = JsonConvert.SerializeObject(employee);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/employees", content);
+            _api.PutAsync($"/Employees", content);
         }
 
         public void UpdateVisit(string name, string employee, string business, DateTime start, DateTime end)
@@ -309,12 +324,12 @@ namespace Presentation
             };
             var json = JsonConvert.SerializeObject(visit);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/visits", content);
+            _api.PutAsync($"/Visits", content);
         }
 
         private EmployeeDto GetEmployeeDto(string employee)
         {
-            var response = _api.GetAsync($"/employees/name/{employee}").Result;
+            var response = _api.GetAsync($"/Employees/name/{employee}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var employeeDto = JsonConvert.DeserializeObject<EmployeeDto>(content);
             return employeeDto;
@@ -322,7 +337,7 @@ namespace Presentation
 
         private VisitorDto GetVisitorDto(string name)
         {
-            var response = _api.GetAsync($"/visitors/name/{name}").Result;
+            var response = _api.GetAsync($"/Visitors/name/{name}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var visitorDto = JsonConvert.DeserializeObject<VisitorDto>(content);
             return visitorDto;
@@ -340,14 +355,15 @@ namespace Presentation
             };
             var json = JsonConvert.SerializeObject(employee);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PostAsync("/employees", content);
+            _api.PostAsync("/Employees", content);
         }
 
         public VisitView GetVisitByName(string name)
         {
-            var response = _api.GetAsync($"/visits/name/{name}").Result;
+            var response = _api.GetAsync($"/Visits/name/{name}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var visit = JsonConvert.DeserializeObject<VisitDto>(content);
+            if (visit == null) return null;
             return new VisitView(visit);
         }
 
@@ -362,7 +378,7 @@ namespace Presentation
             };
             var json = JsonConvert.SerializeObject(visit);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PostAsync("/visits", content);
+            _api.PostAsync("/Visits", content);
         }
 
         public void DeleteVisitor(int visitorViewId)
@@ -371,14 +387,15 @@ namespace Presentation
             visitor.IsDeleted = true;
             var json = JsonConvert.SerializeObject(visitor);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/visitors", content);
+            _api.PutAsync($"/Visitors", content);
         }
 
         private VisitorView GetVisitorById(int visitorViewId)
         {
-            var response = _api.GetAsync($"/visitors/id/{visitorViewId}").Result;
+            var response = _api.GetAsync($"/Visitors/id/{visitorViewId}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var visitor = JsonConvert.DeserializeObject<VisitorDto>(content);
+            if (visitor == null) return null;
             return new VisitorView(visitor);
         }
 
@@ -388,14 +405,15 @@ namespace Presentation
             contract.IsDeleted = true;
             var json = JsonConvert.SerializeObject(contract);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/contracts", content);
+            _api.PutAsync($"/Contracts", content);
         }
 
         private ContractView GetContractById(int contractViewId)
         {
-            var response = _api.GetAsync($"/contracts/id/{contractViewId}").Result;
+            var response = _api.GetAsync($"/Contracts/id/{contractViewId}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var contract = JsonConvert.DeserializeObject<ContractDto>(content);
+            if (contract == null) return null;
             return new ContractView(contract);
         }
 
@@ -405,7 +423,7 @@ namespace Presentation
             business.IsDeleted = true;
             var json = JsonConvert.SerializeObject(business);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/businesses", content);
+            _api.PutAsync($"/Businesses", content);
         }
 
         public void DeleteEmployee(int employeeViewId)
@@ -414,14 +432,15 @@ namespace Presentation
             employee.IsDeleted = true;
             var json = JsonConvert.SerializeObject(employee);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/employees", content);
+            _api.PutAsync($"/Employees", content);
         }
 
         private EmployeeView GetEmployeeById(int employeeViewId)
         {
-            var response = _api.GetAsync($"/employees/id/{employeeViewId}").Result;
+            var response = _api.GetAsync($"/Employees/id/{employeeViewId}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var employee = JsonConvert.DeserializeObject<EmployeeDto>(content);
+            if (employee == null) return null;
             return new EmployeeView(employee);
         }
 
@@ -431,7 +450,7 @@ namespace Presentation
             visit.IsDeleted = true;
             var json = JsonConvert.SerializeObject(visit);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            _api.PutAsync($"/visits", content);
+            _api.PutAsync($"/Visits", content);
         }
 
         public bool IsEmailValid(string email)
@@ -458,6 +477,154 @@ namespace Presentation
             Regex regex = new Regex(@"^[0-9]?([A-Z]{3}[0-9]{3}|[0-9]{3}[A-Z]{3})$");
             Match match = regex.Match(licensePlate);
             return match.Success;
+        }
+
+        public bool EnterParking(string licensePlate, string businessName)
+        {
+            ContractView? contract = GetContractByBusiness(businessName);
+            EmployeeView? employee = GetEmployeeByPlate(licensePlate);
+            if (GetParkingSpotByPlate(licensePlate) != null) return false;
+            if (contract != null && contract.TotalSpaces <= GetParkingSpotsByReserved(businessName).Count)
+            {
+                CreateParkingSpot(employee, licensePlate, businessName);
+                return true;
+            }
+            CreateParkingSpot(employee, licensePlate, null);
+            return true;
+        }
+
+        public void CreateParkingSpot(EmployeeView? employee, string licensePlate, string businessName)
+        {
+            var parkingSpot = new ParkingSpotDto
+            {
+                Employee = employee != null ? GetEmployeeDto(employee.Name) : null,
+                Visitor = null,
+                Plate = licensePlate,
+                ReservedId = GetBusinessDto(businessName).Id,
+                IsDeleted = false
+            };
+            var json = JsonConvert.SerializeObject(parkingSpot);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            _api.PostAsync("/ParkingSpots", content);
+        }
+
+        public void CreateVisitorBalie(string name, string email, string plate, string business)
+        {
+            var visitor = new VisitorDto
+            {
+                Name = name,
+                Email = email,
+                Plate = plate,
+                Business = business
+            };
+            var json = JsonConvert.SerializeObject(visitor);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            _api.PostAsync("/Visitors", content);
+        }
+
+        private List<ParkingSpotView> GetParkingSpotsByReserved(string business)
+        {
+            var response = _api.GetAsync($"/ParkingSpots/reserved/{business}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var parkingSpots = JsonConvert.DeserializeObject<List<ParkingSpotDto>>(content);
+            if (parkingSpots.Count == 0) return null;
+            return parkingSpots.Select(parkingSpot => new ParkingSpotView(parkingSpot)).ToList();
+        }
+
+        private EmployeeView? GetEmployeeByPlate(string licensePlate)
+        {
+            var response = _api.GetAsync($"/Employees/plate/{licensePlate}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var employee = JsonConvert.DeserializeObject<EmployeeDto>(content);
+            if (employee == null) return null;
+            return new EmployeeView(employee);
+        }
+
+        private ParkingSpotView? GetParkingSpotByPlate(string licensePlate)
+        {
+            var response = _api.GetAsync($"/ParkingSpots/plate/{licensePlate}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var parkingSpot = JsonConvert.DeserializeObject<ParkingSpotDto>(content);
+            if (parkingSpot == null) return null;
+            return new ParkingSpotView(parkingSpot);
+        }
+
+        public bool ExitParking(string input)
+        {
+            ParkingSpotView parkingSpot = GetParkingSpotByPlate(input);
+            if (parkingSpot == null) return false;
+            parkingSpot.IsDeleted = true;
+            var json = JsonConvert.SerializeObject(parkingSpot);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            _api.PutAsync($"/ParkingSpots", content);
+            return true;
+        }
+
+        public void CreateVisitor(string visitorName, string visitorEmail, string organisation, string? employeeName, string? businessName)
+        {
+            var visitor = new VisitorDto
+            {
+                Name = visitorName,
+                Email = visitorEmail,
+                Plate = null,
+                Business = organisation
+            };
+            var json = JsonConvert.SerializeObject(visitor);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            _api.PostAsync("/Visitors", content);
+            CreateVisit(visitorName, employeeName, businessName);
+        }
+
+        public void CreateVisitorWithPlate(string visitorName, string visitorEmail, string visitorPlate, string organisation, string? employeeName, string? businessName)
+        {
+            ParkingSpotView spot = GetParkingSpotByPlate(visitorPlate);
+            var visitor = new VisitorDto
+            {
+                Name = visitorName,
+                Email = visitorEmail,
+                Plate = visitorPlate,
+                Business = organisation
+            };
+            var json = JsonConvert.SerializeObject(visitor);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            _api.PostAsync("/Visitors", content);
+            spot.Visitor = visitor;
+            updateParkingSpot(spot);
+            CreateVisit(visitorName, employeeName, businessName);
+        }
+
+        private void updateParkingSpot(ParkingSpotView spot)
+        {
+            var json = JsonConvert.SerializeObject(spot);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            _api.PutAsync($"/ParkingSpots", content);
+        }
+
+        public VisitorView GetVisitorByEmail(string visitorEmail)
+        {
+            var response = _api.GetAsync($"/Visitors/email/{visitorEmail}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var visitor = JsonConvert.DeserializeObject<VisitorDto>(content);
+            if (visitor == null) return null;
+            return new VisitorView(visitor);
+        }
+
+        public bool ParkingSpotExists(string visitorPlate)
+        {
+            var response = _api.GetAsync($"/ParkingSpots/plate/{visitorPlate}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var parkingSpot = JsonConvert.DeserializeObject<ParkingSpotDto>(content);
+            if (parkingSpot == null) return false;
+            return true;
+        }
+
+        public BusinessView GetBusinessIdByEmployeeName(string employeeName)
+        {
+            var response = _api.GetAsync($"/Businesses/employee/{employeeName}").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var business = JsonConvert.DeserializeObject<BusinessDto>(content);
+            if (business == null) return null;
+            return new BusinessView(business);
         }
     }
 }

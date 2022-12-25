@@ -8,10 +8,11 @@ namespace Presentation.Views
     /// </summary>
     public partial class LoginAdmin : Window
     {
-        private readonly DomainController _dc;
+        private readonly ViewController _vc;
 
-        public LoginAdmin()
+        public LoginAdmin(ViewController vc)
         {
+            _vc = vc;
             InitializeComponent();
         }
 

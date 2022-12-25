@@ -401,7 +401,10 @@ namespace Presentation.Views
         private bool IsVisitorValid(string name, string email, string plate, string business)
         {
             if (!_vc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
-            else if (IsLicensePlateValid(plate)) MessageBox.Show("nummer plaat is niet geldig.");
+            else if (plate != "")
+            {
+                if (IsLicensePlateValid(plate)) MessageBox.Show("nummer plaat is niet geldig.");
+            }
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
             else if (string.IsNullOrEmpty(business)) MessageBox.Show("Bedrijfsnaam is leeg");
             else if (string.IsNullOrEmpty(email)) MessageBox.Show("Email is leeg");

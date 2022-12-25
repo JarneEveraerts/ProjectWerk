@@ -131,7 +131,7 @@ namespace Persistance.Migrations
                     b.Property<string>("Plate")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("ReservedId")
+                    b.Property<int>("ReservedId")
                         .HasColumnType("int");
 
                     b.Property<int?>("VisitorId")
@@ -238,7 +238,8 @@ namespace Persistance.Migrations
                     b.HasOne("Domain.Models.Business", "Reserved")
                         .WithMany()
                         .HasForeignKey("ReservedId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Visitor", "Visitor")
                         .WithMany()

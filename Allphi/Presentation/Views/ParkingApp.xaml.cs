@@ -20,29 +20,18 @@ namespace Presentation.Views
     /// </summary>
     public partial class ParkingApp : Window
     {
-        private DomainController _dc;
-        private List<List<string>> businesses;
-        private List<BusinessView>? businessViews = new();
+        private ViewController _vc;
         private string _licensePlate;
         private HttpClient _api;
 
-        public ParkingApp(DomainController dc, IHttpClientFactory clientFactory)
+        public ParkingApp(ViewController vc, IHttpClientFactory clientFactory)
         {
             DataContext = new ParkingAppViewModel();
-            _api = clientFactory.CreateClient();
-            _api.BaseAddress = new Uri("http://localhost:5038");
             InitializeComponent();
-            _dc = dc;
+            _vc = vc;
 
-            List<BusinessView> businessViews = new();
-            string uri = "/Businesses";
-            var result = _api.GetAsync(uri).Result;
-            var content = result.Content.ReadAsStringAsync().Result;
-            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
-
-            foreach (var item in businesses)
+            foreach (var item in vc.GetBusinessViews())
             {
-                businessViews.Add(new BusinessView(item));
                 cmb_business.Items.Add(item.Name);
             }
         }
@@ -73,7 +62,7 @@ namespace Presentation.Views
             _licensePlate = txtBox_LicensePlate.Text;
             string business = cmb_business.Text;
 
-            if (_licensePlate == "" || !_dc.IsLicensePlateValid(_licensePlate))
+            if (_licensePlate == "" || !_vc.IsLicensePlateValid(_licensePlate))
             {
                 MessageBox.Show("License plate is not valid");
                 return;
@@ -83,7 +72,7 @@ namespace Presentation.Views
                 MessageBox.Show("Please select a business");
                 return;
             }
-            if (_dc.EnterParking(_licensePlate, business))
+            if (_vc.EnterParking(_licensePlate, business))
             {
                 MessageBox.Show("Welcome");
             }

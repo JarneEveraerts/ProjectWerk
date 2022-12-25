@@ -20,23 +20,23 @@ namespace Presentation.Views
     /// </summary>
     public partial class UitgangApp : Window
     {
-        private DomainController _dc;
+        private ViewController _vc;
 
-        public UitgangApp(DomainController dc)
+        public UitgangApp(ViewController vc)
         {
-            _dc = dc;
+            _vc = vc;
             InitializeComponent();
         }
 
         private void Btn_ExitParking_Click(object sender, RoutedEventArgs e)
         {
             string input = txt_LicensePlate.Text;
-            if (input == "" || !_dc.IsLicensePlateValid(input))
+            if (input == "" || !_vc.IsLicensePlateValid(input))
             {
                 MessageBox.Show("License plate is not valid");
                 return;
             }
-            if (_dc.ExitParking(input))
+            if (_vc.ExitParking(input))
             {
                 MessageBox.Show("Have A Nice Trip");
             }
