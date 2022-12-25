@@ -1,6 +1,7 @@
 ﻿using Domain.Services;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dto;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -23,14 +24,16 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetContracts()
         {
             var contracts = _contractRepository.GetContracts();
-            return Ok(contracts);
+            if (contracts.Count == 0) return NoContent();
+            return Ok(contracts.Select(contract => new ContractDto(contract)));
         }
 
         [HttpGet("id/{id}", Name = "GetContractById")]
         public IActionResult GetContractById(int id)
         {
             var contract = _contractRepository.GetContractById(id);
-            return Ok(contract);
+            if (contract == null) return NoContent();
+            return Ok(new ContractDto(contract));
         }
 
         // get by business
@@ -38,7 +41,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetContractByBusiness(Business business)
         {
             var contract = _contractRepository.GetContractByBusiness(business);
-            return Ok(contract);
+            if (contract == null) return NoContent();
+            return Ok(new ContractDto(contract));
         }
 
         //get contract by endDate
@@ -46,7 +50,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetContractByEndDate(DateTime endDate)
         {
             var contract = _contractRepository.GetContractByEndDate(endDate);
-            return Ok(contract);
+            if (contract == null) return NoContent();
+            return Ok(new ContractDto(contract));
         }
 
         //create contract
