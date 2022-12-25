@@ -21,6 +21,10 @@ namespace Domain.Models
             IsDeleted = false;
         }
 
+        public Business()
+        {
+        }
+
         [JsonProperty]
         public int Id { get; set; }
 
