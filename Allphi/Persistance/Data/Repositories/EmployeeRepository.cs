@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories;
 
@@ -12,41 +13,46 @@ public class EmployeeRepository : IEmployeeRepository
         _allphiContext = allphiContext;
     }
 
+    private IQueryable<Employee> EmployeeStandard()
+    {
+        return _allphiContext.Employee.Include(e => e.Business);
+    }
+
     #region GET
 
     public List<Employee> GetEmployees()
     {
-        List<Employee> employees = _allphiContext.Employee.Where(e => e.IsDeleted == false).ToList();
+        List<Employee> employees = EmployeeStandard().Where(e => e.IsDeleted == false).ToList();
         return employees;
     }
 
     public List<Employee> GetEmployeesByBusiness(Business business)
     {
-        List<Employee> employees = _allphiContext.Employee.Where(e => e.Business == business && e.IsDeleted == false).ToList();
+        List<Employee> employees = EmployeeStandard().Where(e => e.Business == business && e.IsDeleted == false).ToList();
         return employees;
     }
 
     public List<Employee> GetEmployeesByName(string name)
     {
-        List<Employee> employees = _allphiContext.Employee.Where(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false).ToList();
+        List<Employee> employees = EmployeeStandard().Where(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false).ToList();
         return employees;
     }
 
     public Employee GetEmployeeByName(string name)
     {
-        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false);
+        Employee employee = EmployeeStandard().FirstOrDefault(e => e.Name.Contains(name) || e.FirstName.Contains(name) && e.IsDeleted == false);
         return employee;
     }
 
     public Employee GetEmployeeById(int id)
     {
-        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Id == id && e.IsDeleted == false);
+        Employee employee = EmployeeStandard().FirstOrDefault(e => e.Id == id && e.IsDeleted == false);
         return employee;
     }
 
     public Employee GetEmployeeByPlate(string licensePlate)
     {
-        Employee employee = _allphiContext.Employee.FirstOrDefault(e => e.Plate == licensePlate);
+        Employee employee = EmployeeStandard().FirstOrDefault(e => e.Plate == licensePlate);
         return employee;
     }
 
