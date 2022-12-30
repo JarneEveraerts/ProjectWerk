@@ -24,6 +24,17 @@ public class EmployeeDto : EntityDto
         IsDeleted = employee.IsDeleted;
     }
 
+    public EmployeeDto(string name, string firstName, string? email, string function, string? plate, BusinessDto business)
+    {
+        Name = name;
+        FirstName = firstName;
+        Email = email;
+        Function = function;
+        Plate = plate;
+        Business = business;
+        IsDeleted = false;
+    }
+
     public EmployeeDto()
     {
     }

@@ -22,13 +22,15 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetVisitors()
         {
             var visitors = _visitorRepository.GetVisitors();
-            return Ok(visitors);
+            if (visitors.Count == 0) return NoContent();
+            return Ok(visitors.Select(v => new VisitorDto(v)));
         }
 
         [HttpGet("id/{id}", Name = "GetVisitorById")]
         public IActionResult GetVisitorById(int id)
         {
             var visitor = _visitorRepository.GetVisitorById(id);
+            if (visitor == null) return NoContent();
             return Ok(new VisitorDto(visitor));
         }
 
@@ -36,8 +38,9 @@ namespace AllPhiAPI.Controllers
         [HttpGet("/business/{business}", Name = "GetVisitorsByBusiness")]
         public IActionResult GetVisitorsByBusiness(string business)
         {
-            var visitor = _visitorRepository.GetVisitorsByBusiness(business);
-            return Ok(visitor);
+            var visitors = _visitorRepository.GetVisitorsByBusiness(business);
+            if (visitors.Count == 0) return NoContent();
+            return Ok(visitors.Select(v => new VisitorDto(v)));
         }
 
         //get visitor by name
@@ -45,7 +48,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetVisitorByName(string name)
         {
             var visitor = _visitorRepository.GetVisitorByName(name);
-            return Ok(visitor);
+            if (visitor == null) return NoContent();
+            return Ok(new VisitorDto(visitor));
         }
 
         //get visitor by mail
@@ -53,7 +57,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetVisitorByMail(string mail)
         {
             var visitor = _visitorRepository.GetVisitorByMail(mail);
-            return Ok(visitor);
+            if (visitor == null) return NoContent();
+            return Ok(new VisitorDto(visitor));
         }
 
         //create

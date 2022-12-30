@@ -2,6 +2,7 @@
 using Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dto;
 
 namespace AllPhiAPI.Controllers
 {
@@ -22,14 +23,16 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetEmployees()
         {
             var employees = _employeeRepository.GetEmployees();
-            return Ok(employees);
+            if (employees.Count == 0) return NoContent();
+            return Ok(employees.Select(e => new EmployeeDto(e)));
         }
 
         [HttpGet("id/{id}", Name = "GetEmployeeById")]
         public IActionResult GetEmployeeById(int id)
         {
             var employee = _employeeRepository.GetEmployeeById(id);
-            return Ok(employee);
+            if (employee == null) return NoContent();
+            return Ok(new EmployeeDto(employee));
         }
 
         //get by name
@@ -37,7 +40,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetEmployeeByName(string name)
         {
             var employee = _employeeRepository.GetEmployeeByName(name);
-            return Ok(employee);
+            if (employee == null) return NoContent();
+            return Ok(new EmployeeDto(employee));
         }
 
         //get employees by name
@@ -45,15 +49,17 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetEmployeesByName(string name)
         {
             var employees = _employeeRepository.GetEmployeesByName(name);
-            return Ok(employees);
+            if (employees.Count == 0) return NoContent();
+            return Ok(employees.Select(e => new EmployeeDto(e)));
         }
 
         //get employees by business
         [HttpGet("business/{business}", Name = "GetEmployeesByBusiness")]
         public IActionResult GetEmployeesByBusiness(Business business)
         {
-            var employee = _employeeRepository.GetEmployeesByBusiness(business);
-            return Ok(employee);
+            var employees = _employeeRepository.GetEmployeesByBusiness(business);
+            if (employees.Count == 0) return NoContent();
+            return Ok(employees.Select(e => new EmployeeDto(e)));
         }
 
         //get employee by plate
@@ -61,7 +67,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetEmployeeByPlate(string plate)
         {
             var employee = _employeeRepository.GetEmployeeByPlate(plate);
-            return Ok(employee);
+            if (employee == null) return NoContent();
+            return Ok(new EmployeeDto(employee));
         }
 
         //create employee

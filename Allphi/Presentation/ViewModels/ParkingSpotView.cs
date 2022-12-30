@@ -9,8 +9,10 @@ namespace Presentation.ViewModels
         private int _id;
         private EmployeeDto? _employee;
         private VisitorDto? _visitor;
+        private int _reservedId;
         private BusinessDto? _reserved;
         private string? _plate;
+        private bool _isDeleted;
 
         public int Id
         {
@@ -51,6 +53,19 @@ namespace Presentation.ViewModels
             }
         }
 
+        public int ReservedId
+        {
+            get { return _reservedId; }
+            set
+            {
+                if (_reservedId != value)
+                {
+                    _reservedId = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public BusinessDto? Reserved
         {
             get { return _reserved; }
@@ -77,13 +92,28 @@ namespace Presentation.ViewModels
             }
         }
 
+        public bool IsDeleted
+        {
+            get { return _isDeleted; }
+            set
+            {
+                if (_isDeleted != value)
+                {
+                    _isDeleted = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public ParkingSpotView(ParkingSpotDto parkingSpot)
         {
             Id = parkingSpot.Id;
             Employee = parkingSpot.Employee;
             Visitor = parkingSpot.Visitor;
             Plate = parkingSpot.Plate;
+            ReservedId = parkingSpot.ReservedId;
             Reserved = parkingSpot.Reserved;
+            IsDeleted = parkingSpot.IsDeleted;
         }
     }
 }

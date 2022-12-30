@@ -95,7 +95,7 @@ namespace Presentation.ViewModels
         public ContractView(ContractDto contract)
         {
             Id = contract.Id;
-            Business = contract.Business;
+            Business = contract.Reserved;
             StartDate = contract.StartDate;
             EndDate = contract.EndDate;
             TotalSpaces = contract.TotalSpaces;

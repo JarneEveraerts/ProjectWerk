@@ -2,6 +2,7 @@
 using Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dto;
 
 namespace AllPhiAPI.Controllers
 {
@@ -23,7 +24,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetVisits()
         {
             var visits = _visitRepository.GetVisits();
-            return Ok(visits);
+            if (visits.Count == 0) return NoContent();
+            return Ok(visits.Select(v => new VisitDto(v)));
         }
 
         //get visits by employee
@@ -31,7 +33,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetVisitsByEmployee(Employee employee)
         {
             var visits = _visitRepository.GetVisitsByEmployee(employee);
-            return Ok(visits);
+            if (visits.Count == 0) return NoContent();
+            return Ok(visits.Select(v => new VisitDto(v)));
         }
 
         //get visits by business
@@ -39,7 +42,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetVisitsByBusiness(Business business)
         {
             var visits = _visitRepository.GetVisitsByBusiness(business);
-            return Ok(visits);
+            if (visits.Count == 0) return NoContent();
+            return Ok(visits.Select(v => new VisitDto(v)));
         }
 
         //get visits by visitor
@@ -47,15 +51,17 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetVisitsByVisitor(Visitor visitor)
         {
             var visits = _visitRepository.GetVisitsByVisitor(visitor);
-            return Ok(visits);
+            if (visits.Count == 0) return NoContent();
+            return Ok(visits.Select(v => new VisitDto(v)));
         }
 
         //get visit by visitor
         [HttpGet("visit/{visitor}", Name = "GetVisitByVisitor")]
-        public IActionResult GetVisitByVisitor(Visitor visit)
+        public IActionResult GetVisitByVisitor(Visitor visitor)
         {
-            var visits = _visitRepository.GetVisitByVisitor(visit);
-            return Ok(visits);
+            var visit = _visitRepository.GetVisitByVisitor(visitor);
+            if (visit == null) return NoContent();
+            return Ok(new VisitDto(visit));
         }
 
         //create

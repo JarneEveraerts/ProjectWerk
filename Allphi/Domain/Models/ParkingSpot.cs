@@ -32,6 +32,7 @@ namespace Domain.Models
         public Visitor? Visitor { get; set; }
         public Employee? Employee { get; set; }
         public string? Plate { get; set; }
+        public int ReservedId { get; set; }
         public Business? Reserved { get; set; }
         public bool IsDeleted { get; set; }
     }

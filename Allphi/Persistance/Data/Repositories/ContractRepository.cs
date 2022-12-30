@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories;
 
@@ -12,28 +13,32 @@ public class ContractRepository : IContractRepository
         _allphiContext = allphiContext;
     }
 
+    private IQueryable<Contract> ContractStandard()
+    {
+        return _allphiContext.Contract.Include(c => c.Business);
+    }
     #region GET
 
     public List<Contract> GetContracts()
     {
-        List<Contract> contracts = _allphiContext.Contract.Where(c => c.IsDeleted == false).ToList();
+        List<Contract> contracts = ContractStandard().Where(c => c.IsDeleted == false).ToList();
         return contracts;
     }
 
     public Contract GetContractByBusiness(Business business)
     {
-        Contract contract = _allphiContext.Contract.FirstOrDefault(c => c.Business == business && c.IsDeleted == false);
+        Contract contract = ContractStandard().FirstOrDefault(c => c.Business == business && c.IsDeleted == false);
         return contract;
     }
 
     public Contract GetContractById(int id)
     {
-        return _allphiContext.Contract.First(c => c.Id == id && c.IsDeleted == false);
+        return ContractStandard().First(c => c.Id == id && c.IsDeleted == false);
     }
 
     public Contract GetContractByEndDate(DateTime date)
     {
-        Contract contract = _allphiContext.Contract.FirstOrDefault(c => c.EndDate == date && c.IsDeleted == false);
+        Contract contract = ContractStandard().FirstOrDefault(c => c.EndDate == date && c.IsDeleted == false);
         return contract;
     }
 

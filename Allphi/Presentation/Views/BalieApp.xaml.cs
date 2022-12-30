@@ -18,7 +18,7 @@ namespace Presentation.Views
     /// </summary>
     public partial class BalieApp : Window
     {
-        private DomainController _dc;
+        private ViewController _vc;
         private List<BusinessView>? _businessViews = new();
         private List<ContractView>? _contractViews = new();
         private List<EmployeeView>? _employeeViews = new();
@@ -27,11 +27,9 @@ namespace Presentation.Views
         private List<VisitView>? _visitViews = new();
         private HttpClient _api;
 
-        public BalieApp(DomainController dc, IHttpClientFactory clientFactory)
+        public BalieApp(ViewController vc)
         {
-            _dc = dc;
-            _api = clientFactory.CreateClient();
-            _api.BaseAddress = new Uri("http://localhost:5038");
+            _vc = vc;
             InitializeComponent();
             //raise
             SetupView();
@@ -39,12 +37,12 @@ namespace Presentation.Views
 
         private void SetupView()
         {
-            _businessViews = GetBusinessViews();
-            _contractViews = GetContractViews();
-            _employeeViews = GetEmployeeViews();
-            _parkingSpotViews = GetParkingSpotViews();
-            _visitorViews = GetVisitorViews();
-            _visitViews = GetVisitViews();
+            _businessViews = _vc.GetBusinessViews();
+            _contractViews = _vc.GetContractViews();
+            _employeeViews = _vc.GetEmployeeViews();
+            _parkingSpotViews = _vc.GetParkingSpotViews();
+            _visitorViews = _vc.GetVisitorViews();
+            _visitViews = _vc.GetVisitViews();
             dtg_businesses.ItemsSource = _businessViews;
             dtg_contracts.ItemsSource = _contractViews;
             dtg_employees.ItemsSource = _employeeViews;
@@ -58,7 +56,7 @@ namespace Presentation.Views
         {
             if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
             {
-                var employeesBySelectedBusiness = _dc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
+                var employeesBySelectedBusiness = _vc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
                 cmb_employees.Items.Clear();
                 foreach (var item in employeesBySelectedBusiness)
                 {
@@ -71,98 +69,12 @@ namespace Presentation.Views
         {
             if (cmb_business.SelectedIndex == -1 || cmb_employees.SelectedIndex != -1)
             {
-                var businessBySelectedEmployees = _dc.GetBusinessIdByEmployeeName(cmb_employees.SelectedItem.ToString());
+                var businessBySelectedEmployees = _vc.GetBusinessByEmployeeName(cmb_employees.SelectedItem.ToString());
                 cmb_business.SelectedItem = businessBySelectedEmployees.Name;
             }
         }
 
         #endregion SelectionChange
-
-        #region GetViews
-
-        private List<BusinessView> GetBusinessViews()
-        {
-            List<BusinessView> businessViews = new();
-
-            var response = _api.GetAsync("/Businesses").Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
-
-            foreach (var item in businesses)
-            {
-                businessViews.Add(new BusinessView(item));
-                cmb_business.Items.Add(item.Name);
-            }
-            return businessViews;
-        }
-
-        private List<ContractView> GetContractViews()
-        {
-            List<ContractView> contractViews = new();
-            var response = _api.GetAsync("/Contracts").Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var contracts = JsonConvert.DeserializeObject<List<ContractDto>>(content);
-            foreach (var item in contracts)
-            {
-                contractViews.Add(new ContractView(item));
-            }
-            return contractViews;
-        }
-
-        private List<EmployeeView> GetEmployeeViews()
-        {
-            List<EmployeeView> employeeViews = new();
-            var response = _api.GetAsync("/Employees").Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var employees = JsonConvert.DeserializeObject<List<EmployeeDto>>(content);
-            foreach (var item in employees)
-            {
-                employeeViews.Add(new EmployeeView(item));
-                cmb_employees.Items.Add(item.Name);
-            }
-            return employeeViews;
-        }
-
-        private List<ParkingSpotView> GetParkingSpotViews()
-        {
-            List<ParkingSpotView> parkingSpotViews = new();
-            var response = _api.GetAsync("/ParkingSpots").Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var parkingSpots = JsonConvert.DeserializeObject<List<ParkingSpotDto>>(content);
-            foreach (var item in parkingSpots)
-            {
-                parkingSpotViews.Add(new ParkingSpotView(item));
-            }
-            return parkingSpotViews;
-        }
-
-        private List<VisitorView> GetVisitorViews()
-        {
-            List<VisitorView> visitorViews = new();
-            var response = _api.GetAsync("/Visitors").Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var visitors = JsonConvert.DeserializeObject<List<VisitorDto>>(content);
-            foreach (var item in visitors)
-            {
-                visitorViews.Add(new VisitorView(item));
-            }
-            return visitorViews;
-        }
-
-        private List<VisitView> GetVisitViews()
-        {
-            List<VisitView> visitViews = new();
-            var response = _api.GetAsync("/Visits").Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var visits = JsonConvert.DeserializeObject<List<VisitDto>>(content);
-            foreach (var item in visits)
-            {
-                visitViews.Add(new VisitView(item));
-            }
-            return visitViews;
-        }
-
-        #endregion GetViews
 
         #region UPDATE
 
@@ -177,7 +89,7 @@ namespace Presentation.Views
             if (IsBusinessValid(_name, _address, _phone, _email, _btw))
             {
                 BusinessView businessView = (BusinessView)dtg_businesses.SelectedItem;
-                _dc.UpdateBusiness(_name, _address, _phone, _email, _btw, (int)businessView.Id);
+                _vc.UpdateBusiness(_name, _address, _phone, _email, _btw, (int)businessView.Id);
                 SetupView();
             }
         }
@@ -192,7 +104,7 @@ namespace Presentation.Views
             if (IsVisitorValid(_name, _email, _plate, _business))
             {
                 VisitorView visitorView = (VisitorView)dtg_visitors.SelectedItem;
-                _dc.UpdateVisitor(_name, _email, _plate, _business, (int)visitorView.Id);
+                _vc.UpdateVisitor(_name, _email, _plate, _business, (int)visitorView.Id);
                 SetupView();
             }
         }
@@ -206,7 +118,7 @@ namespace Presentation.Views
             if (IsContractValid(_spots, _business, _start))
             {
                 ContractView contractView = (ContractView)dtg_contracts.SelectedItem;
-                _dc.UpdateContract(_spots, _business, _start, _end, (int)contractView.Id);
+                _vc.UpdateContract(_spots, _business, _start, _end, (int)contractView.Id);
                 SetupView();
             }
         }
@@ -221,7 +133,7 @@ namespace Presentation.Views
             if (IsEmployeeValid(_name, _email, _function, _business, _plate))
             {
                 EmployeeView employeeView = (EmployeeView)dtg_employees.SelectedItem;
-                _dc.UpdateEmployee(_name, _email, _function, _business, _plate, (int)employeeView.Id);
+                _vc.UpdateEmployee(_name, _email, _function, _business, _plate, (int)employeeView.Id);
                 SetupView();
             }
         }
@@ -232,7 +144,7 @@ namespace Presentation.Views
             if (IsVisitValid(name))
             {
                 MessageBox.Show("Ben je zeker om deze bezoek te updaten?", "Update", MessageBoxButton.OKCancel);
-                _dc.UpdateVisit(name, cmb_employees.Text, cmb_business.Text, (DateTime)dtp_visit_start.SelectedDate, (DateTime)dtp_visit_end.SelectedDate);
+                _vc.UpdateVisit(name, cmb_employees.Text, cmb_business.Text, (DateTime)dtp_visit_start.SelectedDate, (DateTime)dtp_visit_end.SelectedDate);
                 SetupView();
             }
         }
@@ -250,9 +162,9 @@ namespace Presentation.Views
             string _btw = txt_business_btw.Text;
             if (IsBusinessValid(_name, _address, _phone, _email, _btw))
             {
-                if (_dc.GetBusinessByBtw(_btw) == null)
+                if (_vc.GetBusinessByBtw(_btw) == null)
                 {
-                    _dc.CreateBusiness(_name, _address, _phone, _email, _btw);
+                    _vc.CreateBusiness(_name, _address, _phone, _email, _btw);
                     SetupView();
                 }
                 else
@@ -271,9 +183,9 @@ namespace Presentation.Views
 
             if (IsVisitorValid(_name, _email, _plate, _business))
             {
-                if (_dc.GetVisitorByName(_name) == null)
+                if (_vc.GetVisitorByName(_name) == null)
                 {
-                    _dc.CreateVisitorBalie(_name, _email, _plate, _business);
+                    _vc.CreateVisitorBalie(_name, _email, _plate, _business);
                     SetupView();
                 }
                 else
@@ -291,9 +203,9 @@ namespace Presentation.Views
             string _business = txt_contract_business.Text;
             if (IsContractValid(_spots, _business, _start))
             {
-                if (_dc.GetContractByBusiness(_business) == null)
+                if (_vc.GetContractByBusiness(_business) == null)
                 {
-                    _dc.CreateContract(_spots, _business, _start, _end);
+                    _vc.CreateContract(Convert.ToInt16(_spots), _business, _start, _end);
                     SetupView();
                 }
                 else
@@ -313,9 +225,9 @@ namespace Presentation.Views
 
             if (IsEmployeeValid(_name, _email, _function, _business, _plate))
             {
-                if (_dc.GetEmployeeByName(_name) == null)
+                if (_vc.GetEmployeeByName(_name) == null)
                 {
-                    _dc.CreateEmployee(_name, _email, _function, _business, _plate);
+                    _vc.CreateEmployee(_name, _email, _function, _business, _plate);
                     SetupView();
                 }
                 else
@@ -330,9 +242,9 @@ namespace Presentation.Views
             string name = txt_visit_name.Text;
             if (IsVisitValid(name))
             {
-                if (_dc.GetVisitByName(name) == null)
+                if (_vc.GetVisitByName(name) == null)
                 {
-                    _dc.CreateVisit(_dc.GetVisitorByName(name), cmb_employees.Text, cmb_business.Text);
+                    _vc.CreateVisit(name, cmb_employees.Text, cmb_business.Text);
                     SetupView();
                 }
                 else
@@ -358,7 +270,7 @@ namespace Presentation.Views
                 {
                     MessageBox.Show("Ben je zeker om deze visitor te verwijderen?", "Delete", MessageBoxButton.OKCancel);
                     VisitorView visitorView = (VisitorView)dtg_visitors.SelectedItem;
-                    _dc.DeleteVisitor((int)visitorView.Id);
+                    _vc.DeleteVisitor((int)visitorView.Id);
                     SetupView();
                 }
             }
@@ -381,7 +293,7 @@ namespace Presentation.Views
                     MessageBox.Show("Ben je zeker om dit contract te verwijderen?", "Delete", MessageBoxButton.OKCancel);
 
                     ContractView contractView = (ContractView)dtg_contracts.SelectedItem;
-                    _dc.DeleteContract((int)contractView.Id);
+                    _vc.DeleteContract((int)contractView.Id);
                     SetupView();
                 }
             }
@@ -404,7 +316,7 @@ namespace Presentation.Views
                     MessageBox.Show("Ben je zeker om dit bedrijf te verwijderen?", "Delete", MessageBoxButton.OKCancel);
 
                     BusinessView businessView = (BusinessView)dtg_businesses.SelectedItem;
-                    _dc.DeleteBusiness((int)businessView.Id);
+                    _vc.DeleteBusiness((int)businessView.Id);
                     SetupView();
                 }
             }
@@ -427,7 +339,7 @@ namespace Presentation.Views
                     MessageBox.Show("Ben je zeker om deze werknemer te verwijderen?", "Delete", MessageBoxButton.OKCancel);
 
                     EmployeeView employeeView = (EmployeeView)dtg_employees.SelectedItem;
-                    _dc.DeleteEmployee((int)employeeView.Id);
+                    _vc.DeleteEmployee((int)employeeView.Id);
                     SetupView();
                 }
             }
@@ -443,7 +355,7 @@ namespace Presentation.Views
             if (IsVisitValid(name))
             {
                 MessageBox.Show("Ben je zeker om deze bezoek te verwijderen?", "Delete", MessageBoxButton.OKCancel);
-                _dc.DeleteVisit(name);
+                _vc.DeleteVisit(name);
                 SetupView();
             }
         }
@@ -454,8 +366,8 @@ namespace Presentation.Views
 
         private bool IsBusinessValid(string name, string address, string phone, string email, string btw)
         {
-            if (!_dc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
-            else if (!_dc.IsBtwValid(btw)) MessageBox.Show("BTW nummer is niet geldug.");
+            if (!_vc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
+            else if (!_vc.IsBtwValid(btw)) MessageBox.Show("BTW nummer is niet geldug.");
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
             else if (string.IsNullOrEmpty(address)) MessageBox.Show("Adres is leeg");
             else if (string.IsNullOrEmpty(phone)) MessageBox.Show("Telefoonnummer is leeg");
@@ -476,7 +388,7 @@ namespace Presentation.Views
 
         private bool IsEmployeeValid(string name, string email, string plate, string business, string function)
         {
-            if (!_dc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
+            if (!_vc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
             else if (IsLicensePlateValid(plate)) MessageBox.Show("BTW nummer is niet geldig.");
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
             else if (string.IsNullOrEmpty(business)) MessageBox.Show("Bedrijfsnaam is leeg");
@@ -488,8 +400,11 @@ namespace Presentation.Views
 
         private bool IsVisitorValid(string name, string email, string plate, string business)
         {
-            if (!_dc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
-            else if (IsLicensePlateValid(plate)) MessageBox.Show("nummer plaat is niet geldig.");
+            if (!_vc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
+            else if (plate != "")
+            {
+                if (IsLicensePlateValid(plate)) MessageBox.Show("nummer plaat is niet geldig.");
+            }
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
             else if (string.IsNullOrEmpty(business)) MessageBox.Show("Bedrijfsnaam is leeg");
             else if (string.IsNullOrEmpty(email)) MessageBox.Show("Email is leeg");
@@ -501,7 +416,7 @@ namespace Presentation.Views
         {
             if (plate != "")
             {
-                if (!_dc.IsLicensePlateValid(plate))
+                if (!_vc.IsLicensePlateValid(plate))
                 {
                     MessageBox.Show("Nummerplaat is niet geldig");
                     return false;
@@ -518,7 +433,7 @@ namespace Presentation.Views
             else if (dtp_visit_start.SelectedDate == null) MessageBox.Show("Duid een start datum aan");
             else if (dtp_visit_end.SelectedDate == null) MessageBox.Show("Duid een eind datum aan");
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
-            else if (_dc.GetVisitorByName(name) == null) MessageBox.Show("Visitor bestaat niet");
+            else if (_vc.GetVisitorByName(name) == null) MessageBox.Show("Visitor bestaat niet");
             else return true;
             return false;
         }

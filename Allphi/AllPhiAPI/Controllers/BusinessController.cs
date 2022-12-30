@@ -22,6 +22,7 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetBusinesses()
         {
             var businesses = _businessRepository.GetBusinesses();
+            if (businesses.Count == 0) return NoContent();
             return Ok(businesses.Select(b => new BusinessDto(b)));
         }
 
@@ -29,6 +30,7 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetBusinessById(int id)
         {
             var business = _businessRepository.GetBusinessById(id);
+            if (business == null) return NoContent();
             return Ok(new BusinessDto(business));
         }
 
@@ -37,6 +39,7 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetBusinessByName(string name)
         {
             var business = _businessRepository.GetBusinessByName(name);
+            if (business == null) return NoContent();
             return Ok(new BusinessDto(business));
         }
 

@@ -16,8 +16,9 @@ namespace Presentation.Views
     /// </summary>
     public partial class VisitorRegistration : Window
     {
-        private DomainController _dc;
+        private ViewController _vc;
         private List<List<string>> businesses;
+
         private List<BusinessView>? businessViews = new();
         private List<VisitView>? visitViews = new();
         private List<VisitorView>? visitorViews = new();
@@ -26,26 +27,22 @@ namespace Presentation.Views
         private VisitorView Visitor;
         private HttpClient _api;
 
-        public VisitorRegistration(DomainController dc, IHttpClientFactory clientFactory)
+        public VisitorRegistration(ViewController vc, IHttpClientFactory clientFactory)
         {
             InitializeComponent();
-            _dc = dc;
-            _api = clientFactory.CreateClient();
-            _api.BaseAddress = new Uri("http://localhost:5038");
+            _vc = vc;
             GetBusinessViews();
             GetEmployeeViews();
         }
 
         private void GetEmployeeViews()
         {
-            var response = _api.GetAsync("/Employees").Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var employees = JsonConvert.DeserializeObject<List<EmployeeDto>>(content);
+            var employees = _vc.GetEmployeeViews();
             if (employees.Count != 0)
             {
                 foreach (var item in employees)
                 {
-                    employeeViews.Add(new EmployeeView(item));
+                    employeeViews.Add(item);
                     cmb_employees.Items.Add(item.Name);
                 }
             }
@@ -53,14 +50,12 @@ namespace Presentation.Views
 
         private void GetBusinessViews()
         {
-            var response = _api.GetAsync("/Businesses").Result;
-            var content = response.Content.ReadAsStringAsync().Result;
-            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
+            var businesses = _vc.GetBusinessViews();
             if (businesses.Count != 0)
             {
                 foreach (var item in businesses)
                 {
-                    businessViews.Add(new BusinessView(item));
+                    businessViews.Add(item);
                     cmb_business.Items.Add(item.Name);
                 }
             }
@@ -77,18 +72,29 @@ namespace Presentation.Views
             {
                 string _businessName = cmb_business.SelectedItem.ToString();
                 string _employeeName = cmb_employees.SelectedItem.ToString();
-                if (_visitorPlate == "") _dc.CreateVisitor(_visitorName, _visitorEmail, _organisation, _employeeName, _businessName);
-                else _dc.CreateVisitorWithPlate(_visitorName, _visitorEmail, _visitorPlate, _organisation, _employeeName, _businessName);
+                if (_visitorPlate == "") _vc.CreateVisitor(_visitorName, _visitorEmail, _organisation, _employeeName, _businessName);
+                else _vc.CreateVisitorWithPlate(_visitorName, _visitorEmail, _visitorPlate, _organisation, _employeeName, _businessName);
             }
         }
 
         private bool isVisitorValid(string visitorName, string visitorEmail, string visitorPlate, string organisation)
         {
+            if (visitorPlate != "")
+            {
+                if (!_vc.IsLicensePlateValid(visitorPlate))
+                {
+                    MessageBox.Show("Please enter a valid license plate");
+                    return false;
+                }
+                else if (!_vc.ParkingSpotExists(visitorPlate))
+                {
+                    MessageBox.Show("This license plate is not registered in the ParkingSpot database");
+                    return false;
+                }
+            }
             if (cmb_business.SelectedIndex == -1 || cmb_business.SelectedIndex == -1 || visitorName == "" || visitorEmail == "" || organisation == "") MessageBox.Show("Please fill in all required fields");
-            else if (!_dc.IsEmailValid(visitorEmail)) { MessageBox.Show("Please enter a valid email address"); }
-            else if (_dc.GetVisitorByEmail(visitorEmail) != null) { MessageBox.Show("This visitor is already registered"); }
-            else if (!_dc.IsLicensePlateValid(visitorPlate)) MessageBox.Show("Please enter a valid license plate");
-            else if (!_dc.ParkingSpotExists(visitorPlate)) MessageBox.Show("This license plate is not registered in the ParkingSpot database");
+            else if (!_vc.IsEmailValid(visitorEmail)) { MessageBox.Show("Please enter a valid email address"); }
+            else if (_vc.GetVisitorByEmail(visitorEmail) != null) { MessageBox.Show("This visitor is already registered"); }
             else return true;
             return false;
         }
@@ -97,7 +103,7 @@ namespace Presentation.Views
         {
             if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
             {
-                var employeesBySelectedBusiness = _dc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
+                var employeesBySelectedBusiness = _vc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
                 cmb_employees.Items.Clear();
                 foreach (var item in employeesBySelectedBusiness)
                 {
@@ -110,7 +116,7 @@ namespace Presentation.Views
         {
             if (cmb_business.SelectedIndex == -1 || cmb_employees.SelectedIndex != -1)
             {
-                var businessBySelectedEmployees = _dc.GetBusinessIdByEmployeeName(cmb_employees.SelectedItem.ToString());
+                var businessBySelectedEmployees = _vc.GetBusinessIdByEmployeeName(cmb_employees.SelectedItem.ToString());
                 cmb_business.SelectedItem = businessBySelectedEmployees.Name;
             }
         }

@@ -2,6 +2,7 @@
 using Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dto;
 
 namespace AllPhiAPI.Controllers
 {
@@ -12,9 +13,12 @@ namespace AllPhiAPI.Controllers
         //webapi using iparkingspotrepository
         private readonly IParkingSpotRepository _parkingSpotRepository;
 
-        public ParkingSpotController(IParkingSpotRepository parkingSpotRepository)
+        private readonly IBusinessRepository _businessRepository;
+
+        public ParkingSpotController(IParkingSpotRepository parkingSpotRepository, IBusinessRepository businessRepository)
         {
             _parkingSpotRepository = parkingSpotRepository;
+            _businessRepository = businessRepository;
         }
 
         // all get routes
@@ -22,15 +26,18 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetParkingSpots()
         {
             var parkingSpots = _parkingSpotRepository.GetParkingSpots();
-            return Ok(parkingSpots);
+            if (parkingSpots.Count == 0) return NoContent();
+            return Ok(parkingSpots.Select(p => new ParkingSpotDto(p)));
         }
 
         //get parkingspots by reserved
-        [HttpGet("reserved/{reservedspots}", Name = "GetParkingSpotsByReserved")]
-        public IActionResult GetParkingSpotsByReserved(Business reserved)
+        [HttpGet("reserved/{reserved}", Name = "GetParkingSpotsByReserved")]
+        public IActionResult GetParkingSpotsByReserved(string reserved)
         {
-            var parkingSpots = _parkingSpotRepository.GetParkingSpotsByReserved(reserved);
-            return Ok(parkingSpots);
+            var business = _businessRepository.GetBusinessByName(reserved);
+            var parkingSpots = _parkingSpotRepository.GetParkingSpotsByReserved(business);
+            if (parkingSpots.Count == 0) return NoContent();
+            return Ok(parkingSpots.Select(p => new ParkingSpotDto(p)));
         }
 
         //get parking spot by plate
@@ -38,7 +45,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetParkingSpotByPlate(string plate)
         {
             var parkingSpot = _parkingSpotRepository.GetParkingSpotByPlate(plate);
-            return Ok(parkingSpot);
+            if (parkingSpot == null) return NoContent();
+            return Ok(new ParkingSpotDto(parkingSpot));
         }
 
         //get parking spot by employee
@@ -46,7 +54,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetParkingSpotByEmployee(Employee employee)
         {
             var parkingSpot = _parkingSpotRepository.GetParkingSpotByEmployee(employee);
-            return Ok(parkingSpot);
+            if (parkingSpot == null) return NoContent();
+            return Ok(new ParkingSpotDto(parkingSpot));
         }
 
         //get parking spot by visitor
@@ -54,7 +63,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetParkingSpotByVisitor(Visitor visitor)
         {
             var parkingSpot = _parkingSpotRepository.GetParkingSpotByVisitor(visitor);
-            return Ok(parkingSpot);
+            if (parkingSpot == null) return NoContent();
+            return Ok(new ParkingSpotDto(parkingSpot));
         }
 
         //get available parking spot
@@ -62,7 +72,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetAvailableParkingSpotUnreserved()
         {
             var parkingSpot = _parkingSpotRepository.GetAvailableParkingSpotUnreserved();
-            return Ok(parkingSpot);
+            if (parkingSpot == null) return NoContent();
+            return Ok(new ParkingSpotDto(parkingSpot));
         }
 
         //get available parking spot reserved
@@ -70,7 +81,8 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetAvailableParkingSpotReserved(Business reserved)
         {
             var parkingSpot = _parkingSpotRepository.GetAvailableParkingSpotReserved(reserved);
-            return Ok(parkingSpot);
+            if (parkingSpot == null) return NoContent();
+            return Ok(new ParkingSpotDto(parkingSpot));
         }
 
         //count by plate
@@ -78,6 +90,7 @@ namespace AllPhiAPI.Controllers
         public IActionResult GetParkingSpotCount(string plate)
         {
             var parkingSpotCount = _parkingSpotRepository.CountParkingSpotByPlate(plate);
+            if (parkingSpotCount == 0) return NoContent();
             return Ok(parkingSpotCount);
         }
 
@@ -86,6 +99,7 @@ namespace AllPhiAPI.Controllers
         public IActionResult ParkingSpotExists(string plate)
         {
             var parkingSpotExists = _parkingSpotRepository.ParkingSpotExist(plate);
+            if (parkingSpotExists == false) return NoContent();
             return Ok(parkingSpotExists);
         }
 
@@ -94,7 +108,7 @@ namespace AllPhiAPI.Controllers
         public IActionResult CreateParkingSpot(ParkingSpot parkingSpot)
         {
             _parkingSpotRepository.CreateParkingSpot(parkingSpot);
-            return CreatedAtRoute("GetParkingSpotById", new { id = parkingSpot.Id }, parkingSpot);
+            return Ok();
         }
 
         //update
