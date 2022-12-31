@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllPhiAPI", "AllPhiAPI\AllP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVVM", "MVVM\MVVM.csproj", "{425C03BE-3C0E-4D38-88F3-EB21D0369D13}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "..\..\ProjectWerk\Allphi\Shared\Shared.csproj", "{CF9E4142-6FFE-4AF6-ACAD-5B9ECDFB51FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{CF9E4142-6FFE-4AF6-ACAD-5B9ECDFB51FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
