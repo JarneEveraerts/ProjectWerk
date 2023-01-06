@@ -483,8 +483,12 @@ namespace Presentation
         {
             ContractView? contract = GetContractByBusiness(businessName);
             EmployeeView? employee = GetEmployeeByPlate(licensePlate);
+            List<ParkingSpotView>? parkingSpots = GetParkingSpotsByReserved(businessName);
+            int parkingSpotsAmount = 0;
+
+            if (parkingSpots != null) parkingSpotsAmount = parkingSpots.Count;
             if (GetParkingSpotByPlate(licensePlate) != null) return false;
-            if (contract != null && contract.TotalSpaces <= GetParkingSpotsByReserved(businessName).Count)
+            if (contract != null && contract.TotalSpaces <= parkingSpotsAmount)
             {
                 CreateParkingSpot(employee, licensePlate, businessName);
                 return true;
@@ -521,13 +525,13 @@ namespace Presentation
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             _api.PostAsync("/Visitors", content);
         }
-
-        private List<ParkingSpotView> GetParkingSpotsByReserved(string business)
+        
+        private List<ParkingSpotView>? GetParkingSpotsByReserved(string business)
         {
             var response = _api.GetAsync($"/ParkingSpots/reserved/{business}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var parkingSpots = JsonConvert.DeserializeObject<List<ParkingSpotDto>>(content);
-            if (parkingSpots.Count == 0) return null;
+            if (parkingSpots == null) return null;
             return parkingSpots.Select(parkingSpot => new ParkingSpotView(parkingSpot)).ToList();
         }
 

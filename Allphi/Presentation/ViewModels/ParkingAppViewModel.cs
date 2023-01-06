@@ -1,8 +1,16 @@
-﻿using JetBrains.Annotations;
+﻿using Domain;
+using JetBrains.Annotations;
 using MVVM;
+using Newtonsoft.Json;
+using Shared.Dto;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,10 +24,17 @@ namespace Presentation.ViewModels
 
         private string _plate;
         private string _business;
+        private RelayCommand _submitCommand;
+        private bool _canSubmit;
+        private ObservableCollection<string> _businessesViews;
+        private HttpClient _api;
+        private ViewController _vc;
         #endregion
 
 
         #region public properties
+        [Required(ErrorMessage = "nummerplaat is verplicht")]
+        [MethodValidator(nameof(IsPlateValid))]
         public string Plate
         {
             get
@@ -29,9 +44,10 @@ namespace Presentation.ViewModels
             set
             {
                 _plate = value;
-                RaisePropertyChanged(); 
+                RaisePropertyChanged();
             }
         }
+        [Required(ErrorMessage = "bedrijf is verplicht")]
         public string Business
         {
             get
@@ -44,50 +60,95 @@ namespace Presentation.ViewModels
                 RaisePropertyChanged();
             }
         }
-        
 
-        #endregion
-        public ParkingAppViewModel()
-        {
-        }
-
-        private RelayCommand _fetchCommand;
-        public ICommand FetchCommand
+        public ObservableCollection<string> BusinessViews
         {
             get
             {
-                _fetchCommand ??= new RelayCommand(Fetch, param => CanFetch);
-                return _fetchCommand;
+                return _businessesViews;
             }
-        }
-        private bool _canFetch = true;
-
-        public bool CanFetch
-        {
-            get => _canFetch;
-
             set
             {
-                if (_canFetch == value) return;
-                _canFetch = value;
-
+                _businessesViews = value;
                 RaisePropertyChanged();
             }
         }
-        private void Validate(object paramater)
+
+
+        public ICommand SubmitCommand
         {
-            //validate plate and business
-            
-            
-            
+            get
+            {
+                //check if the fields has errors else cansubmit is true
+                _submitCommand ??= new RelayCommand(Submit, param => CanSubmit());
+                return _submitCommand;
+            }
+        }
+
+        private string IsPlateValid()
+        {
+            if (!(Plate == null))
+            {
+
+                if (!_vc.IsLicensePlateValid(Plate))
+                {
+                    return "Nummerplaat is niet geldig";
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            return "";
+        }
+        private bool CanSubmit()
+        {
+            if (string.IsNullOrEmpty(Plate) || (string.IsNullOrEmpty(Business) && _vc.IsLicensePlateValid(Plate)))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        #endregion
+        public ParkingAppViewModel(ViewController vc, IHttpClientFactory clientFactory)
+        {
+            _vc = vc;
+            _businessesViews = new();
+            _api = clientFactory.CreateClient();
+            _api.BaseAddress = new Uri("http://localhost:5038/");
+            FetchBusinesses();
+        }
+
+        private void FetchBusinesses()
+        {
+            //fetch businesses
+            var response = _api.GetAsync("/businesses").Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            var businesses = JsonConvert.DeserializeObject<List<BusinessDto>>(content);
+
+            foreach (var item in businesses)
+            {
+                BusinessViews.Add(item.Name);
+            }
 
         }
 
-        private void Fetch(object parameter)
+        private void Submit(object parameter)
         {
-            //fetch data from api/domaincontroller
-            
+            if (!HasErrors)
+            {
+                
+                _vc.EnterParking(Plate, Business);
+
+            }
         }
 
     }
+
+
 }
+
