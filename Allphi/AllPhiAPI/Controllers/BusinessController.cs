@@ -43,6 +43,15 @@ namespace AllPhiAPI.Controllers
             return Ok(new BusinessDto(business));
         }
 
+        //get by employee name
+        [HttpGet("employee/{employeeName}", Name = "GetBusinessByEmployeeName")]
+        public IActionResult GetBusinessByEmployeeName(string employeeName)
+        {
+            var business = _businessRepository.GetBusinessByEmployeeName(employeeName);
+            if (business == null) return NoContent();
+            return Ok(new BusinessDto(business));
+        }
+
         //create using business
         [HttpPost]
         public IActionResult CreateBusiness(Business business)

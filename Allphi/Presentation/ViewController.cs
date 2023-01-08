@@ -21,6 +21,35 @@ namespace Presentation
     {
         private readonly HttpClient _api;
 
+        public bool IsBtwValid(string btwNumber)
+        {
+            try
+            {
+                var result = ViesManager.IsValid(btwNumber);
+                return result.IsValid;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
+        }
+
+        public bool IsLicensePlateValid(string licensePlate)
+        {
+            try
+            {
+                Regex regex = new Regex(@"^[0-9]?([A-Z]{3}[0-9]{3}|[0-9]{3}[A-Z]{3})$");
+                Match match = regex.Match(licensePlate);
+                return match.Success;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
+        }
+
         public ViewController(IHttpClientFactory clientFactory)
         {
             _api = clientFactory.CreateClient();
@@ -230,8 +259,7 @@ namespace Presentation
 
         public List<EmployeeView> GetEmployeesByBusiness(string business)
         {
-            BusinessView _business = GetBusinessByName(business);
-            var response = _api.GetAsync($"/Employees/business/{_business}").Result;
+            var response = _api.GetAsync($"/Employees/business/{business}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var employees = JsonConvert.DeserializeObject<List<EmployeeDto>>(content);
             List<EmployeeView> employeeViews = new();
@@ -466,19 +494,6 @@ namespace Presentation
             }
         }
 
-        public bool IsBtwValid(string btwNumber)
-        {
-            var result = ViesManager.IsValid(btwNumber);
-            return result.IsValid;
-        }
-
-        public bool IsLicensePlateValid(string licensePlate)
-        {
-            Regex regex = new Regex(@"^[0-9]?([A-Z]{3}[0-9]{3}|[0-9]{3}[A-Z]{3})$");
-            Match match = regex.Match(licensePlate);
-            return match.Success;
-        }
-
         public bool EnterParking(string licensePlate, string businessName)
         {
             ContractView? contract = GetContractByBusiness(businessName);
@@ -525,7 +540,7 @@ namespace Presentation
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             _api.PostAsync("/Visitors", content);
         }
-        
+
         private List<ParkingSpotView>? GetParkingSpotsByReserved(string business)
         {
             var response = _api.GetAsync($"/ParkingSpots/reserved/{business}").Result;
