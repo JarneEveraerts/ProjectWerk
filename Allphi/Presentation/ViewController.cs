@@ -230,8 +230,7 @@ namespace Presentation
 
         public List<EmployeeView> GetEmployeesByBusiness(string business)
         {
-            BusinessView _business = GetBusinessByName(business);
-            var response = _api.GetAsync($"/Employees/business/{_business}").Result;
+            var response = _api.GetAsync($"/Employees/business/{business}").Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var employees = JsonConvert.DeserializeObject<List<EmployeeDto>>(content);
             List<EmployeeView> employeeViews = new();
@@ -468,15 +467,34 @@ namespace Presentation
 
         public bool IsBtwValid(string btwNumber)
         {
-            var result = ViesManager.IsValid(btwNumber);
-            return result.IsValid;
+            try
+            {
+
+                var result = ViesManager.IsValid(btwNumber);
+                return result.IsValid;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
         }
 
         public bool IsLicensePlateValid(string licensePlate)
         {
+            try
+            {
+
             Regex regex = new Regex(@"^[0-9]?([A-Z]{3}[0-9]{3}|[0-9]{3}[A-Z]{3})$");
             Match match = regex.Match(licensePlate);
             return match.Success;
+
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
         }
 
         public bool EnterParking(string licensePlate, string businessName)

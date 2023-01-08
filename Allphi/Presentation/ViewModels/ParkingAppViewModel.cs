@@ -103,7 +103,7 @@ namespace Presentation.ViewModels
         }
         private bool CanSubmit()
         {
-            if (string.IsNullOrEmpty(Plate) || (string.IsNullOrEmpty(Business) && _vc.IsLicensePlateValid(Plate)))
+            if (string.IsNullOrEmpty(Plate) && (string.IsNullOrEmpty(Business) && !_vc.IsLicensePlateValid(Plate)))
             {
                 return false;
             }

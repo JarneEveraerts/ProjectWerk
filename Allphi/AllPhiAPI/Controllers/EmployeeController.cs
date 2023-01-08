@@ -2,6 +2,7 @@
 using Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Persistance.Data.Repositories;
 using Shared.Dto;
 
 namespace AllPhiAPI.Controllers
@@ -13,9 +14,12 @@ namespace AllPhiAPI.Controllers
         //webapi using iemployeerepository
         private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeController(IEmployeeRepository employeeRepository)
+        private readonly IBusinessRepository _businessRepository;
+
+        public EmployeeController(IEmployeeRepository employeeRepository, IBusinessRepository businessRepository)
         {
             _employeeRepository = employeeRepository;
+            _businessRepository = businessRepository;
         }
 
         // all get routes
@@ -55,9 +59,10 @@ namespace AllPhiAPI.Controllers
 
         //get employees by business
         [HttpGet("business/{business}", Name = "GetEmployeesByBusiness")]
-        public IActionResult GetEmployeesByBusiness(Business business)
+        public IActionResult GetEmployeesByBusiness(string business)
         {
-            var employees = _employeeRepository.GetEmployeesByBusiness(business);
+            var _business = _businessRepository.GetBusinessByName(business);
+            var employees = _employeeRepository.GetEmployeesByBusiness(_business);
             if (employees.Count == 0) return NoContent();
             return Ok(employees.Select(e => new EmployeeDto(e)));
         }

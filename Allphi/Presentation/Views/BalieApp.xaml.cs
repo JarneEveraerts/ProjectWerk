@@ -367,7 +367,7 @@ namespace Presentation.Views
         private bool IsBusinessValid(string name, string address, string phone, string email, string btw)
         {
             if (!_vc.IsEmailValid(email)) MessageBox.Show("Email is niet geldig");
-            else if (!_vc.IsBtwValid(btw)) MessageBox.Show("BTW nummer is niet geldug.");
+            else if (!_vc.IsBtwValid(btw)) MessageBox.Show("BTW nummer is niet geldig.");
             else if (string.IsNullOrEmpty(name)) MessageBox.Show("Naam is leeg");
             else if (string.IsNullOrEmpty(address)) MessageBox.Show("Adres is leeg");
             else if (string.IsNullOrEmpty(phone)) MessageBox.Show("Telefoonnummer is leeg");

@@ -65,14 +65,14 @@ namespace Presentation
             dbInitializer.Initialize();
             ParkingApp parkingApp = _serviceProvider.GetRequiredService<ParkingApp>();
             parkingApp.Show();
-            //BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
-            //balieApp.Show();
-            //LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
-            //login.Show();
-            //VisitorRegistration visitorRegistration = _serviceProvider.GetRequiredService<VisitorRegistration>();
-            //visitorRegistration.Show();
-            //UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
-            //uitgangApp.Show();
+            BalieApp balieApp = _serviceProvider.GetRequiredService<BalieApp>();
+            balieApp.Show();
+            LoginAdmin login = _serviceProvider.GetRequiredService<LoginAdmin>();
+            login.Show();
+            VisitorRegistration visitorRegistration = _serviceProvider.GetRequiredService<VisitorRegistration>();
+            visitorRegistration.Show();
+            UitgangApp uitgangApp = _serviceProvider.GetRequiredService<UitgangApp>();
+            uitgangApp.Show();
         }
     }
 }

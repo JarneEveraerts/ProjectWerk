@@ -101,7 +101,7 @@ namespace Presentation.Views
 
         private void cmb_business_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmb_employees.SelectedIndex == -1 || cmb_business.SelectedIndex != 0)
+            if (cmb_employees.SelectedIndex == -1 && cmb_business.SelectedIndex != 0)
             {
                 var employeesBySelectedBusiness = _vc.GetEmployeesByBusiness(cmb_business.SelectedItem.ToString());
                 cmb_employees.Items.Clear();
@@ -114,7 +114,7 @@ namespace Presentation.Views
 
         private void cmb_employees_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmb_business.SelectedIndex == -1 || cmb_employees.SelectedIndex != -1)
+            if (cmb_business.SelectedIndex == -1 && cmb_employees.SelectedIndex != -1)
             {
                 var businessBySelectedEmployees = _vc.GetBusinessIdByEmployeeName(cmb_employees.SelectedItem.ToString());
                 cmb_business.SelectedItem = businessBySelectedEmployees.Name;
