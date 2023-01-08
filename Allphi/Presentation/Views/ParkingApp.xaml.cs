@@ -26,18 +26,12 @@ namespace Presentation.Views
 
         public ParkingApp(ViewController vc, IHttpClientFactory clientFactory)
         {
-            DataContext = new ParkingAppViewModel();
+
+            DataContext = new ParkingAppViewModel(vc,clientFactory);
             InitializeComponent();
             _vc = vc;
 
-            foreach (var item in vc.GetBusinessViews())
-            {
-                cmb_business.Items.Add(item.Name);
-            }
         }
-
-        private string Bussines { get; set; }
-
         private void Btn_ENG_Click(object sender, RoutedEventArgs e)
         {
             Btn_Visitor.Content = "Visitor";
@@ -55,31 +49,6 @@ namespace Presentation.Views
         {
             Btn_Visitor.Content = "Bezoeker";
             lbl_LicensePlateNL.Content = "Nummerplaat";
-        }
-
-        private void Btn_Submit_Click(object sender, RoutedEventArgs e)
-        {
-            _licensePlate = txtBox_LicensePlate.Text;
-            string business = cmb_business.Text;
-
-            if (_licensePlate == "" || !_vc.IsLicensePlateValid(_licensePlate))
-            {
-                MessageBox.Show("License plate is not valid");
-                return;
-            }
-            if (cmb_business.SelectedIndex == -1)
-            {
-                MessageBox.Show("Please select a business");
-                return;
-            }
-            if (_vc.EnterParking(_licensePlate, business))
-            {
-                MessageBox.Show("Welcome");
-            }
-            else
-            {
-                MessageBox.Show("No Free Spots");
-            }
         }
     }
 }

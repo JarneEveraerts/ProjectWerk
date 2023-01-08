@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Presentation.Views"
         mc:Ignorable="d"
         Title="ParkingSpot" Height="600" Width="800"
-                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:viewmodels="clr-namespace:Presentation.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ParkingAppViewModel}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
@@ -35,14 +35,38 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Label x:Name="lbl_LicensePlateNL" Content="Nummerplaat" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Grid.Column="2"  Grid.Row="0" Foreground ="#303030" />
+            <TextBox 
+                materialDesign:ValidationAssist.Background="Transparent"
+                materialDesign:ValidationAssist.FontSize="24"
+  Style="{StaticResource MaterialDesignFilledTextBox}"           
+  VerticalAlignment="Center" Grid.ColumnSpan="3"  Grid.Column="1" Grid.Row="1" >
+                <TextBox.Text>
+                    <Binding
+      Path="Plate"
+      UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
-            <TextBox x:Name="txtBox_LicensePlate" HorizontalAlignment="Center"  TextWrapping="Wrap" Width="450" Height="56" FontSize="24" Background="#ffff" Grid.ColumnSpan="3"  Grid.Column="1" Grid.Row="1" Foreground ="#303030" />
-
-            <ComboBox x:Name="cmb_business"
-  Style="{StaticResource MaterialDesignFilledComboBox}"
-  materialDesign:HintAssist.Hint="Kies uw bedrijf" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Foreground ="#303030">
+            <ComboBox
+  Style="{StaticResource MaterialDesignOutlinedComboBox}"
+  materialDesign:HintAssist.Hint="Kies uw bedrijf"
+  IsEditable="True"
+  ItemsSource="{Binding BusinessViews}"
+                materialDesign:ValidationAssist.Background="Transparent"
+                materialDesign:ValidationAssist.FontSize="24"
+                materialDesign:HintAssist.HelperTextFontSize="24"
+  materialDesign:TextFieldAssist.HasClearButton="True"
+  Width="256"  Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3">
+                <ComboBox.SelectedItem>
+                    <Binding
+      Path="Business"
+      Mode="TwoWay"
+      UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnNotifyDataErrors="True">
+                    </Binding>
+                </ComboBox.SelectedItem>
             </ComboBox>
-            <Button x:Name="Btn_Visitor" Content="Registreer / Login" HorizontalAlignment="Center" FontSize="30" Click="Btn_Submit_Click" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="5" Grid.Column="1" Margin="0,10,0,10" Height="50" Width="400" />
+            <Button x:Name="Btn_Visitor" Content="Registreer / Login" HorizontalAlignment="Center" FontSize="30" Command="{Binding SubmitCommand}" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="White" Grid.ColumnSpan="3" Grid.Row="5" Grid.Column="1" Margin="0,10,0,10" Height="50" Width="400" />
 
             <DockPanel Grid.Row="8" Grid.ColumnSpan="3" HorizontalAlignment="Left" Margin="0,0,10,0">
                 <Button x:Name="Btn_NL" Content="NL" HorizontalAlignment="Left" FontSize="24" Width="60" Height="44" Click="Btn_NL_Click" Background="#FF0E5600" BorderBrush="{x:Null}" Foreground="#DDFFFFFF" Margin="10,0,30,0" />
