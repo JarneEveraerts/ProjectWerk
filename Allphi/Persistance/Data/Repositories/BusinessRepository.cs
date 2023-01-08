@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data.Repositories;
 
@@ -42,6 +43,13 @@ public class BusinessRepository : IBusinessRepository
     {
         Business business = _allphiContext.Business.FirstOrDefault(b => b.Email == email && b.IsDeleted == false);
         return business;
+    }
+
+    public Business? GetBusinessByEmployeeName(string employeeName)
+    {
+        Employee employee = _allphiContext.Employee.Include(e => e.Business).FirstOrDefault(e => e.Name == employeeName && e.IsDeleted == false);
+        Business business = employee.Business;
+        return employee.Business;
     }
 
     #endregion GET

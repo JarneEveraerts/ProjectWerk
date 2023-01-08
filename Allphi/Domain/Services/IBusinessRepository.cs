@@ -16,6 +16,8 @@ public interface IBusinessRepository
 
     Business GetBusinessByEmail(string email);
 
+    Business GetBusinessByEmployeeName(string employeeName);
+
     #endregion GET
 
     #region CREATE

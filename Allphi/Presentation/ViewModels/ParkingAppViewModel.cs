@@ -29,10 +29,11 @@ namespace Presentation.ViewModels
         private ObservableCollection<string> _businessesViews;
         private HttpClient _api;
         private ViewController _vc;
-        #endregion
 
+        #endregion private properties
 
         #region public properties
+
         [Required(ErrorMessage = "nummerplaat is verplicht")]
         [MethodValidator(nameof(IsPlateValid))]
         public string Plate
@@ -47,6 +48,7 @@ namespace Presentation.ViewModels
                 RaisePropertyChanged();
             }
         }
+
         [Required(ErrorMessage = "bedrijf is verplicht")]
         public string Business
         {
@@ -74,7 +76,6 @@ namespace Presentation.ViewModels
             }
         }
 
-
         public ICommand SubmitCommand
         {
             get
@@ -89,7 +90,6 @@ namespace Presentation.ViewModels
         {
             if (!(Plate == null))
             {
-
                 if (!_vc.IsLicensePlateValid(Plate))
                 {
                     return "Nummerplaat is niet geldig";
@@ -101,9 +101,10 @@ namespace Presentation.ViewModels
             }
             return "";
         }
+
         private bool CanSubmit()
         {
-            if (string.IsNullOrEmpty(Plate) || (string.IsNullOrEmpty(Business) && _vc.IsLicensePlateValid(Plate)))
+            if (string.IsNullOrEmpty(Plate) && (string.IsNullOrEmpty(Business) && !_vc.IsLicensePlateValid(Plate)))
             {
                 return false;
             }
@@ -113,7 +114,8 @@ namespace Presentation.ViewModels
             }
         }
 
-        #endregion
+        #endregion public properties
+
         public ParkingAppViewModel(ViewController vc, IHttpClientFactory clientFactory)
         {
             _vc = vc;
@@ -134,21 +136,14 @@ namespace Presentation.ViewModels
             {
                 BusinessViews.Add(item.Name);
             }
-
         }
 
         private void Submit(object parameter)
         {
             if (!HasErrors)
             {
-                
                 _vc.EnterParking(Plate, Business);
-
             }
         }
-
     }
-
-
 }
-
